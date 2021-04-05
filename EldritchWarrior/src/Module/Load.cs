@@ -33,6 +33,25 @@ namespace Source.Module
                 {
                     NWScript.SetFogAmount(FogType.All, random.Next(0, 12), area);
                     NWScript.SetFogColor(FogType.All, (FogColorType)random.Next(0, 16), area);
+                    InitSkyboxes(random, area);
+                }
+                area = NWScript.GetNextArea();
+            }
+        }
+
+        private static void InitSkyboxes(Random random, uint area)
+        {
+            if (NWScript.GetSkyBox(area) == SkyboxType.None)
+            {
+                NWScript.SetSkyBox((SkyboxType)random.Next(4));
+
+                if (NWScript.GetSkyBox(area) == SkyboxType.GrassStorm)
+                {
+                    NWScript.SetWeather(area, WeatherType.Rain);
+                }
+                if (NWScript.GetSkyBox(area) == SkyboxType.Icy)
+                {
+                    NWScript.SetWeather(area, WeatherType.Snow);
                 }
             }
         }
