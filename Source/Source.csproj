@@ -4,4 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NWN.Framework.Lite" Version="0.3.0" />
+  </ItemGroup>
+
 </Project>
