@@ -1,4 +1,5 @@
 ﻿using NWN.Framework.Lite;
+using NWN.Framework.Lite.Enum;
 using System;
 using System.Globalization;
 
@@ -14,12 +15,27 @@ namespace Source.Module
         [ScriptHandler("x2_mod_def_load")]
         public static void OnModuleLoad()
         {
-            var mod = NWScript.GetModule();
+            uint mod = NWScript.GetModule();
+            Random random = new Random();
+
             PrintBootTime();
-            SetModuleVariables(mod);
+            InitModuleVariables(mod);
+            InitWeatherSystem(random);
         }
 
-        private static void SetModuleVariables(uint mod)
+        private static void InitWeatherSystem(Random random)
+        {
+            uint area = NWScript.GetFirstArea();
+            while (NWScript.GetIsObjectValid(area))
+            {
+                if (!NWScript.GetIsAreaInterior(area))
+                {
+                    NWScript.SetFogAmount(FogType.All, random.Next(0, 12), area);
+                }
+            }
+        }
+
+        private static void InitModuleVariables(uint mod)
         {
             NWScript.SetLocalString(mod, mod.ToString(), "X2_SWITCH_ENABLE_TAGBASED_SCRIPTS");
             NWScript.SetLocalString(mod, mod.ToString(), "X2_L_STOP_EXPERTISE_ABUSE");
@@ -27,11 +43,8 @@ namespace Source.Module
             NWScript.SetLocalString(mod, mod.ToString(), "X3_MOUNTS_EXTERNAL_ONLY");
             NWScript.SetLocalString(mod, mod.ToString(), "X3_MOUNTS_NO_UNDERGROUND");
             NWScript.SetLocalString(mod, mod.ToString(), "X2_S_UD_SPELLSCRIPT");
-            Console.WriteLine("HELLO WORLD");
         }
 
         private static void PrintBootTime() => Console.WriteLine($"SERVER LOADED:{DateTime.Now.ToString(@"yyyy/MM/dd hh:mm:ss tt", new CultureInfo("en-US"))}");
-
-
     }
 }
