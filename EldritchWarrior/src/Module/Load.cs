@@ -14,9 +14,24 @@ namespace Source.Module
         [ScriptHandler("x2_mod_def_load")]
         public static void OnModuleLoad()
         {
+            var mod = NWScript.GetModule();
             PrintBootTime();
+            SetModuleVariables(mod);
         }
+
+        private static void SetModuleVariables(uint mod)
+        {
+            NWScript.SetLocalString(mod, mod.ToString(), "X2_SWITCH_ENABLE_TAGBASED_SCRIPTS");
+            NWScript.SetLocalString(mod, mod.ToString(), "X2_L_STOP_EXPERTISE_ABUSE");
+            NWScript.SetLocalString(mod, mod.ToString(), "X2_L_NOTREASURE");
+            NWScript.SetLocalString(mod, mod.ToString(), "X3_MOUNTS_EXTERNAL_ONLY");
+            NWScript.SetLocalString(mod, mod.ToString(), "X3_MOUNTS_NO_UNDERGROUND");
+            NWScript.SetLocalString(mod, mod.ToString(), "X2_S_UD_SPELLSCRIPT");
+            Console.WriteLine("HELLO WORLD");
+        }
+
         private static void PrintBootTime() => Console.WriteLine($"SERVER LOADED:{DateTime.Now.ToString(@"yyyy/MM/dd hh:mm:ss tt", new CultureInfo("en-US"))}");
+
 
     }
 }
