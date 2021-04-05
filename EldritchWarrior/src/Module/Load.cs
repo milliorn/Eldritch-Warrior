@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NWN.Framework.Lite;
+﻿using NWN.Framework.Lite;
+using System;
+using System.Globalization;
 
 namespace Source.Module
 {
@@ -15,6 +12,11 @@ namespace Source.Module
         // The method name is arbitrary and can be called whatever you want.
         // Methods must be public and static so that the framework can pick them up when the module loads.
         [ScriptHandler("x2_mod_def_load")]
-        public static void OnModuleLoad() => Console.WriteLine($"x2_mod_def_load launched at {DateTime.Now}.");
+        public static void OnModuleLoad()
+        {
+            PrintBootTime();
+        }
+        private static void PrintBootTime() => Console.WriteLine($"SERVER LOADED:{DateTime.Now.ToString(@"yyyy/MM/dd hh:mm:ss tt", new CultureInfo("en-US"))}");
+
     }
 }
