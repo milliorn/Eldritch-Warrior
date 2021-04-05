@@ -16,7 +16,8 @@ namespace Source.Module
         public static void OnModuleLoad()
         {
             uint mod = NWScript.GetModule();
-            Random random = new Random();
+            Random random = new();
+            Load load = new();
 
             PrintBootTime();
             InitModuleVariables(mod);
