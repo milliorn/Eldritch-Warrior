@@ -32,6 +32,7 @@ namespace Source.Module
                 if (!NWScript.GetIsAreaInterior(area))
                 {
                     NWScript.SetFogAmount(FogType.All, random.Next(0, 12), area);
+                    NWScript.SetFogColor(FogType.All, (FogColorType)random.Next(0, 16), area);
                 }
             }
         }
