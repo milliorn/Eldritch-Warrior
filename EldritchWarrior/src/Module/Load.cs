@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Threading.Tasks;
 using NWN.Framework.Lite;
 using NWN.Framework.Lite.Enum;
 using NWN.Framework.Lite.NWNX;
@@ -22,13 +23,26 @@ namespace Source.Module
             InitModuleVariables();
             InitWeatherSystem();
             InitAdministration();
+
+        }
+
+        /*
+        https://nitinmanju.medium.com/a-simple-scheduled-task-using-c-and-net-c9d3230769ea
+        */
+        private static void DelayTask(Action action, int seconds)
+        {
+            if (action == null)
+                return;
+
+            Task.Run(async () =>
+            {
+                action();
+                await Task.Delay(TimeSpan.FromSeconds(seconds));
+            });
         }
 
         private static void InitAdministration()
         {
-            Administration.ClearPlayerPassword();
-            Administration.SetModuleName("Eldrtich Warrior");
-            Administration.SetServerName("");
             Administration.SetPlayOption(AdministrationOption.EnforceLegalCharacters, 1);
             Administration.SetPlayOption(AdministrationOption.ExamineChallengeRating, 1);
             Administration.SetPlayOption(AdministrationOption.ExamineEffects, 1);
