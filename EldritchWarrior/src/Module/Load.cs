@@ -48,13 +48,18 @@ namespace Source.Module
                 {
                     InitFog(random, area);
                     InitSkyboxes(random, area);
-                    Area.SetSunMoonColors(area, ColorType.MoonAmbient, random.Next(0, 16));
-                    Area.SetSunMoonColors(area, ColorType.MoonDiffuse, random.Next(0, 16));
-                    Area.SetSunMoonColors(area, ColorType.SunAmbient, random.Next(0, 16));
-                    Area.SetSunMoonColors(area, ColorType.SunDiffuse, random.Next(0, 16));
+                    InitSunMoonColors(random, area);
                 }
                 area = NWScript.GetNextArea();
             }
+        }
+
+        private static void InitSunMoonColors(Random random, uint area)
+        {
+            Area.SetSunMoonColors(area, ColorType.MoonAmbient, random.Next(0, 16));
+            Area.SetSunMoonColors(area, ColorType.MoonDiffuse, random.Next(0, 16));
+            Area.SetSunMoonColors(area, ColorType.SunAmbient, random.Next(0, 16));
+            Area.SetSunMoonColors(area, ColorType.SunDiffuse, random.Next(0, 16));
         }
 
         private static void InitFog(Random random, uint area)
