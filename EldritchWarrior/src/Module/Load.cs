@@ -24,6 +24,8 @@ namespace Source.Module
             InitMonkWeapons();
             InitModuleVariables(mod);
             InitWeatherSystem(random);
+
+            Administration.SetModuleName("Eldrtich Warrior");
         }
 
         private static void InitMonkWeapons()
