@@ -46,12 +46,21 @@ namespace Source.Module
             {
                 if (!NWScript.GetIsAreaInterior(area))
                 {
-                    NWScript.SetFogAmount(FogType.All, random.Next(0, 12), area);
-                    NWScript.SetFogColor(FogType.All, (FogColorType)random.Next(0, 16), area);
+                    InitFog(random, area);
                     InitSkyboxes(random, area);
+                    Area.SetSunMoonColors(area, ColorType.MoonAmbient, random.Next(0, 16));
+                    Area.SetSunMoonColors(area, ColorType.MoonDiffuse, random.Next(0, 16));
+                    Area.SetSunMoonColors(area, ColorType.SunAmbient, random.Next(0, 16));
+                    Area.SetSunMoonColors(area, ColorType.SunDiffuse, random.Next(0, 16));
                 }
                 area = NWScript.GetNextArea();
             }
+        }
+
+        private static void InitFog(Random random, uint area)
+        {
+            NWScript.SetFogAmount(FogType.All, random.Next(0, 12), area);
+            NWScript.SetFogColor(FogType.All, (FogColorType)random.Next(0, 16), area);
         }
 
         private static void InitSkyboxes(Random random, uint area)
