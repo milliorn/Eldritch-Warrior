@@ -26,6 +26,8 @@ namespace Source.Module
             InitWeatherSystem(random);
 
             Administration.SetModuleName("Eldrtich Warrior");
+            Administration.SetServerName("");
+            Administration.ClearPlayerPassword();
         }
 
         private static void InitMonkWeapons()
