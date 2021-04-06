@@ -1,7 +1,8 @@
-﻿using NWN.Framework.Lite;
-using NWN.Framework.Lite.Enum;
-using System;
+﻿using System;
 using System.Globalization;
+using NWN.Framework.Lite;
+using NWN.Framework.Lite.Enum;
+using NWN.Framework.Lite.NWNX;
 
 namespace Source.Module
 {
@@ -20,8 +21,22 @@ namespace Source.Module
             Load load = new();
 
             PrintBootTime();
+            InitMonkWeapons();
             InitModuleVariables(mod);
             InitWeatherSystem(random);
+        }
+
+        private static void InitMonkWeapons()
+        {
+            Weapon.SetWeaponIsMonkWeapon(BaseItemType.Dart);
+            Weapon.SetWeaponIsMonkWeapon(BaseItemType.HandAxe);
+            Weapon.SetWeaponIsMonkWeapon(BaseItemType.LightHammer);
+            Weapon.SetWeaponIsMonkWeapon(BaseItemType.LightMace);
+            Weapon.SetWeaponIsMonkWeapon(BaseItemType.QuarterStaff);
+            Weapon.SetWeaponIsMonkWeapon(BaseItemType.Sickle);
+            Weapon.SetWeaponIsMonkWeapon(BaseItemType.Shuriken);
+            Weapon.SetWeaponUnarmed(BaseItemType.Dart);
+            Weapon.SetWeaponUnarmed(BaseItemType.Shuriken);
         }
 
         private static void InitWeatherSystem(Random random)
