@@ -25,24 +25,12 @@ namespace Source.Module
             InitServerCalender();
         }
 
+        private static void PrintBootTime() => Console.WriteLine($"SERVER LOADED:{DateTime.Now.ToString(@"yyyy/MM/dd hh:mm:ss tt", new CultureInfo("en-US"))}");
+
         private static void InitServerCalender()
         {
             PrintBootTime();
-        }
-
-        /*
-        https://nitinmanju.medium.com/a-simple-scheduled-task-using-c-and-net-c9d3230769ea
-        */
-        private static void DelayTask(Action action, int hours)
-        {
-            if (action == null)
-                return;
-
-            Task.Run(async () =>
-            {
-                action();
-                await Task.Delay(TimeSpan.FromHours(hours));
-            });
+            Delay.ActionDays(() => Console.WriteLine("THIS IS A TEST"), 1);
         }
 
         private static void InitAdministration()
@@ -135,7 +123,5 @@ namespace Source.Module
             NWScript.SetLocalString(NWScript.GetModule(), NWScript.GetModule().ToString(), "X3_MOUNTS_NO_UNDERGROUND");
             NWScript.SetLocalString(NWScript.GetModule(), NWScript.GetModule().ToString(), "X2_S_UD_SPELLSCRIPT");
         }
-
-        private static void PrintBootTime() => Console.WriteLine($"SERVER LOADED:{DateTime.Now.ToString(@"yyyy/MM/dd hh:mm:ss tt", new CultureInfo("en-US"))}");
     }
 }
