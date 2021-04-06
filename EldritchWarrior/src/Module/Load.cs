@@ -17,13 +17,12 @@ namespace Source.Module
         public static void OnModuleLoad()
         {
             uint mod = NWScript.GetModule();
-            Random random = new();
             Load load = new();
 
             PrintBootTime();
             InitMonkWeapons();
             InitModuleVariables(mod);
-            InitWeatherSystem(random);
+            InitWeatherSystem();
             InitAdministration();
         }
 
@@ -47,48 +46,48 @@ namespace Source.Module
             Weapon.SetWeaponUnarmed(BaseItemType.Shuriken);
         }
 
-        private static void InitWeatherSystem(Random random)
+        private static void InitWeatherSystem()
         {
             uint area = NWScript.GetFirstArea();
             while (NWScript.GetIsObjectValid(area))
             {
                 if (!NWScript.GetIsAreaInterior(area))
                 {
-                    InitFog(random, area);
-                    InitSkyboxes(random, area);
-                    InitSunMoonColors(random, area);
-                    InitArea(random, area);
+                    InitFog(area);
+                    InitSkyboxes(area);
+                    InitSunMoonColors(area);
+                    InitArea(area);
                 }
                 area = NWScript.GetNextArea();
             }
         }
 
-        private static void InitArea(Random random, uint area)
+        private static void InitArea(uint area)
         {
-            Area.SetWindPower(area, random.Next(0, 2));
-            Area.SetWeatherChance(area, (WeatherEffectType)random.Next(0, 2), random.Next(0, 100));
-            Area.SetShadowOpacity(area, random.Next(0, 100));
+            Area.SetWindPower(area, Random.Next(0, 2));
+            Area.SetWeatherChance(area, (WeatherEffectType)Random.Next(0, 2), Random.Next(0, 100));
+            Area.SetShadowOpacity(area, Random.Next(0, 100));
         }
 
-        private static void InitSunMoonColors(Random random, uint area)
+        private static void InitSunMoonColors(uint area)
         {
-            Area.SetSunMoonColors(area, ColorType.MoonAmbient, random.Next(0, 16));
-            Area.SetSunMoonColors(area, ColorType.MoonDiffuse, random.Next(0, 16));
-            Area.SetSunMoonColors(area, ColorType.SunAmbient, random.Next(0, 16));
-            Area.SetSunMoonColors(area, ColorType.SunDiffuse, random.Next(0, 16));
+            Area.SetSunMoonColors(area, ColorType.MoonAmbient, Random.Next(0, 16));
+            Area.SetSunMoonColors(area, ColorType.MoonDiffuse, Random.Next(0, 16));
+            Area.SetSunMoonColors(area, ColorType.SunAmbient, Random.Next(0, 16));
+            Area.SetSunMoonColors(area, ColorType.SunDiffuse, Random.Next(0, 16));
         }
 
-        private static void InitFog(Random random, uint area)
+        private static void InitFog(uint area)
         {
-            NWScript.SetFogAmount(FogType.All, random.Next(0, 12), area);
-            NWScript.SetFogColor(FogType.All, (FogColorType)random.Next(0, 16), area);
+            NWScript.SetFogAmount(FogType.All, Random.Next(0, 12), area);
+            NWScript.SetFogColor(FogType.All, (FogColorType)Random.Next(0, 16), area);
         }
 
-        private static void InitSkyboxes(Random random, uint area)
+        private static void InitSkyboxes(uint area)
         {
             if (NWScript.GetSkyBox(area) == SkyboxType.None)
             {
-                NWScript.SetSkyBox((SkyboxType)random.Next(4));
+                NWScript.SetSkyBox((SkyboxType)Random.Next(4));
 
                 if (NWScript.GetSkyBox(area) == SkyboxType.GrassStorm)
                 {
