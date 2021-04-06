@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Threading.Tasks;
 using NWN.Framework.Lite;
 using NWN.Framework.Lite.Enum;
 using NWN.Framework.Lite.NWNX;
@@ -30,7 +29,13 @@ namespace Source.Module
         private static void InitServerCalender()
         {
             PrintBootTime();
-            Delay.ActionDays(() => Console.WriteLine("THIS IS A TEST"), 1);
+            Delay.ActionDays(() => Console.WriteLine("THIS IS A ActionDays"), 1);
+            Delay.ActionHours(() => Console.WriteLine("THIS IS A ActionHours"), 1);
+            Delay.ActionMilliseconds(() => Console.WriteLine("THIS IS A ActionMilliseconds"), 1);
+            Delay.ActionMinutes(() => Console.WriteLine("THIS IS A ActionMinutes"), 1);
+            Delay.ActionSeconds(() => Console.WriteLine("THIS IS A ActionSeconds"), 1);
+            Delay.ActionTicks(() => Console.WriteLine("THIS IS A ActionTicks"), 1);
+
         }
 
         private static void InitAdministration()
