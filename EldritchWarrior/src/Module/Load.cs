@@ -54,6 +54,7 @@ namespace Source.Module
                     InitSkyboxes(random, area);
                     InitSunMoonColors(random, area);
                     Area.SetWindPower(area, random.Next(0, 2));
+                    Area.SetWeatherChance(area, (WeatherEffectType)random.Next(0, 2), random.Next(0, 100));
                 }
                 area = NWScript.GetNextArea();
             }
