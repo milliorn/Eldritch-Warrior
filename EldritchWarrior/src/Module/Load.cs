@@ -3,6 +3,7 @@ using System.Globalization;
 using NWN.Framework.Lite;
 using NWN.Framework.Lite.Enum;
 using NWN.Framework.Lite.NWNX;
+using NWN.Framework.Lite.NWNX.Enum;
 
 namespace Source.Module
 {
@@ -16,21 +17,28 @@ namespace Source.Module
         [ScriptHandler("x2_mod_def_load")]
         public static void OnModuleLoad()
         {
-            uint mod = NWScript.GetModule();
-            Load load = new();
-
             PrintBootTime();
             InitMonkWeapons();
-            InitModuleVariables(mod);
+            InitModuleVariables();
             InitWeatherSystem();
             InitAdministration();
         }
 
         private static void InitAdministration()
         {
+            Administration.ClearPlayerPassword();
             Administration.SetModuleName("Eldrtich Warrior");
             Administration.SetServerName("");
-            Administration.ClearPlayerPassword();
+            Administration.SetPlayOption(AdministrationOption.EnforceLegalCharacters, 1);
+            Administration.SetPlayOption(AdministrationOption.ExamineChallengeRating, 1);
+            Administration.SetPlayOption(AdministrationOption.ExamineEffects, 1);
+            Administration.SetPlayOption(AdministrationOption.ItemLevelRestrictions, 1);
+            Administration.SetPlayOption(AdministrationOption.PauseAndPlay, 0);
+            Administration.SetPlayOption(AdministrationOption.PvpSetting, 2);
+            Administration.SetPlayOption(AdministrationOption.RestoreSpellUses, 1);
+            Administration.SetPlayOption(AdministrationOption.UseMaxHitpoints, 1);
+            Administration.SetPlayOption(AdministrationOption.ValidateSpells, 1);
+            Administration.SetPlayOption(AdministrationOption.UseMaxHitpoints, 1);
         }
 
         private static void InitMonkWeapons()
@@ -100,14 +108,14 @@ namespace Source.Module
             }
         }
 
-        private static void InitModuleVariables(uint mod)
+        private static void InitModuleVariables()
         {
-            NWScript.SetLocalString(mod, mod.ToString(), "X2_SWITCH_ENABLE_TAGBASED_SCRIPTS");
-            NWScript.SetLocalString(mod, mod.ToString(), "X2_L_STOP_EXPERTISE_ABUSE");
-            NWScript.SetLocalString(mod, mod.ToString(), "X2_L_NOTREASURE");
-            NWScript.SetLocalString(mod, mod.ToString(), "X3_MOUNTS_EXTERNAL_ONLY");
-            NWScript.SetLocalString(mod, mod.ToString(), "X3_MOUNTS_NO_UNDERGROUND");
-            NWScript.SetLocalString(mod, mod.ToString(), "X2_S_UD_SPELLSCRIPT");
+            NWScript.SetLocalString(NWScript.GetModule(), NWScript.GetModule().ToString(), "X2_SWITCH_ENABLE_TAGBASED_SCRIPTS");
+            NWScript.SetLocalString(NWScript.GetModule(), NWScript.GetModule().ToString(), "X2_L_STOP_EXPERTISE_ABUSE");
+            NWScript.SetLocalString(NWScript.GetModule(), NWScript.GetModule().ToString(), "X2_L_NOTREASURE");
+            NWScript.SetLocalString(NWScript.GetModule(), NWScript.GetModule().ToString(), "X3_MOUNTS_EXTERNAL_ONLY");
+            NWScript.SetLocalString(NWScript.GetModule(), NWScript.GetModule().ToString(), "X3_MOUNTS_NO_UNDERGROUND");
+            NWScript.SetLocalString(NWScript.GetModule(), NWScript.GetModule().ToString(), "X2_S_UD_SPELLSCRIPT");
         }
 
         private static void PrintBootTime() => Console.WriteLine($"SERVER LOADED:{DateTime.Now.ToString(@"yyyy/MM/dd hh:mm:ss tt", new CultureInfo("en-US"))}");
