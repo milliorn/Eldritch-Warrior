@@ -53,6 +53,7 @@ namespace Source.Module
                     InitFog(random, area);
                     InitSkyboxes(random, area);
                     InitSunMoonColors(random, area);
+                    Area.SetWindPower(area, random.Next(0, 2));
                 }
                 area = NWScript.GetNextArea();
             }
