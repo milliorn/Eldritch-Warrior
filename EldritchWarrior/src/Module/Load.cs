@@ -18,18 +18,22 @@ namespace Source.Module
         [ScriptHandler("x2_mod_def_load")]
         public static void OnModuleLoad()
         {
-            PrintBootTime();
             InitMonkWeapons();
             InitModuleVariables();
             InitWeatherSystem();
             InitAdministration();
+            InitServerCalender();
+        }
 
+        private static void InitServerCalender()
+        {
+            PrintBootTime();
         }
 
         /*
         https://nitinmanju.medium.com/a-simple-scheduled-task-using-c-and-net-c9d3230769ea
         */
-        private static void DelayTask(Action action, int seconds)
+        private static void DelayTask(Action action, int hours)
         {
             if (action == null)
                 return;
@@ -37,7 +41,7 @@ namespace Source.Module
             Task.Run(async () =>
             {
                 action();
-                await Task.Delay(TimeSpan.FromSeconds(seconds));
+                await Task.Delay(TimeSpan.FromHours(hours));
             });
         }
 
