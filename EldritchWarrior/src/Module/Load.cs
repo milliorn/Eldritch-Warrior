@@ -57,11 +57,17 @@ namespace Source.Module
                     InitFog(random, area);
                     InitSkyboxes(random, area);
                     InitSunMoonColors(random, area);
-                    Area.SetWindPower(area, random.Next(0, 2));
-                    Area.SetWeatherChance(area, (WeatherEffectType)random.Next(0, 2), random.Next(0, 100));
+                    InitArea(random, area);
                 }
                 area = NWScript.GetNextArea();
             }
+        }
+
+        private static void InitArea(Random random, uint area)
+        {
+            Area.SetWindPower(area, random.Next(0, 2));
+            Area.SetWeatherChance(area, (WeatherEffectType)random.Next(0, 2), random.Next(0, 100));
+            Area.SetShadowOpacity(area, random.Next(0, 100));
         }
 
         private static void InitSunMoonColors(Random random, uint area)
