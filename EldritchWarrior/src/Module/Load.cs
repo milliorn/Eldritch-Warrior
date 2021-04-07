@@ -22,19 +22,13 @@ namespace Source.Module
             InitWeatherSystem();
             InitAdministration();
             InitServerCalender();
+            
         }
 
         private static void PrintBootTime() => Console.WriteLine($"SERVER LOADED:{DateTime.Now.ToString(@"yyyy/MM/dd hh:mm:ss tt", new CultureInfo("en-US"))}");
 
         private static void InitServerCalender()
         {
-            PrintBootTime();
-            Delay.ActionDays(() => Console.WriteLine("THIS IS A ActionDays"), 1);
-            Delay.ActionHours(() => Console.WriteLine("THIS IS A ActionHours"), 1);
-            Delay.ActionMilliseconds(() => Console.WriteLine("THIS IS A ActionMilliseconds"), 1);
-            Delay.ActionMinutes(() => Console.WriteLine("THIS IS A ActionMinutes"), 1);
-            Delay.ActionSeconds(() => Console.WriteLine("THIS IS A ActionSeconds"), 1);
-            Delay.ActionTicks(() => Console.WriteLine("THIS IS A ActionTicks"), 1);
 
         }
 
