@@ -20,9 +20,18 @@ namespace Source.Module
             InitMonkWeapons();
             InitModuleVariables();
             InitWeatherSystem();
-            InitAdministration();
+            //InitAdministration();
             InitServerCalender();
             
+        }
+        
+        [ScriptHandler("p_onused_givexp")]
+        public static void OnUsed()
+        {
+            var pc = NWScript.GetLastUsedBy();
+            int nextLevel = NWScript.GetHitDice(pc) + 1;
+            NWScript.SetXP(pc, (nextLevel) * ((nextLevel) - 1) * 500);
+            NWScript.SendMessageToPC(pc, "It works!");
         }
 
         private static void PrintBootTime() => Console.WriteLine($"SERVER LOADED:{DateTime.Now.ToString(@"yyyy/MM/dd hh:mm:ss tt", new CultureInfo("en-US"))}");
@@ -32,7 +41,7 @@ namespace Source.Module
 
         }
 
-        private static void InitAdministration()
+        /*private static void InitAdministration()
         {
             Administration.SetPlayOption(AdministrationOption.EnforceLegalCharacters, 1);
             Administration.SetPlayOption(AdministrationOption.ExamineChallengeRating, 1);
@@ -44,7 +53,7 @@ namespace Source.Module
             Administration.SetPlayOption(AdministrationOption.UseMaxHitpoints, 1);
             Administration.SetPlayOption(AdministrationOption.ValidateSpells, 1);
             Administration.SetPlayOption(AdministrationOption.UseMaxHitpoints, 1);
-        }
+        }*/
 
         private static void InitMonkWeapons()
         {
