@@ -1,3 +1,3 @@
-# Lite-Starter-Module
+# Eldritch Warrior Neverwinter Nights CRPG Online Server
 
-Base module to create NWN modules in .NET.
+Future Neverwinter NIghts Module in .NET
