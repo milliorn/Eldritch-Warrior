@@ -23,13 +23,14 @@ namespace Source.Module
             InitAdministration();
             InitServerCalender();
             PrintBootTime();
+            //Chat.RegisterChatScript("");
         }
 
         private static void PrintBootTime() => Console.WriteLine($"SERVER LOADED:{DateTime.Now.ToString(@"yyyy/MM/dd hh:mm:ss tt", new CultureInfo("en-US"))}");
 
         private static void InitServerCalender()
         {
-
+            Scheduler.ScheduleRepeating(InitWeatherSystem, TimeSpan.FromSeconds(6));
         }
 
         private static void InitAdministration()
@@ -79,23 +80,34 @@ namespace Source.Module
 
         private static void InitArea(uint area)
         {
-            Area.SetWindPower(area, Random.Next(0, 2));
-            Area.SetWeatherChance(area, (WeatherEffectType)Random.Next(0, 2), Random.Next(0, 100));
-            Area.SetShadowOpacity(area, Random.Next(0, 100));
+            Area.SetWindPower(area, Random.Next(2));
+            Area.SetWeatherChance(area, (WeatherEffectType)Random.Next(2), Random.Next(100));
+            Area.SetShadowOpacity(area, Random.Next(100));
+
+            Console.WriteLine($"GetWindPower:{Area.GetWindPower(area)}");
+            Console.WriteLine($"GetShadowOpacity:{Area.GetShadowOpacity(area)}");
         }
 
         private static void InitSunMoonColors(uint area)
         {
-            Area.SetSunMoonColors(area, ColorType.MoonAmbient, Random.Next(0, 16));
-            Area.SetSunMoonColors(area, ColorType.MoonDiffuse, Random.Next(0, 16));
-            Area.SetSunMoonColors(area, ColorType.SunAmbient, Random.Next(0, 16));
-            Area.SetSunMoonColors(area, ColorType.SunDiffuse, Random.Next(0, 16));
+            Area.SetSunMoonColors(area, ColorType.MoonAmbient, Random.Next(16));
+            Area.SetSunMoonColors(area, ColorType.MoonDiffuse, Random.Next(16));
+            Area.SetSunMoonColors(area, ColorType.SunAmbient, Random.Next(16));
+            Area.SetSunMoonColors(area, ColorType.SunDiffuse, Random.Next(16));
+
+            Console.WriteLine($"GetSunMoonColorsMoonAmbient:{Area.GetSunMoonColors(area, ColorType.MoonAmbient)}");
+            Console.WriteLine($"GetSunMoonColorsMoonDiffuse:{Area.GetSunMoonColors(area, ColorType.MoonDiffuse)}");
+            Console.WriteLine($"GetSunMoonColorsSunAmbient:{Area.GetSunMoonColors(area, ColorType.SunAmbient)}");
+            Console.WriteLine($"GetSunMoonColorsSunDiffuse:{Area.GetSunMoonColors(area, ColorType.SunDiffuse)}");
+            Console.WriteLine($"GetShadowOpacity:{Area.GetShadowOpacity(area)}");
         }
 
         private static void InitFog(uint area)
         {
-            NWScript.SetFogAmount(FogType.All, Random.Next(0, 12), area);
-            NWScript.SetFogColor(FogType.All, (FogColorType)Random.Next(0, 16), area);
+            NWScript.SetFogAmount(FogType.All, Random.Next(12), area);
+            NWScript.SetFogColor(FogType.All, (FogColorType)Random.Next(16), area);
+
+            Console.WriteLine($"GetFogAmount:{NWScript.GetFogAmount(FogType.All, area)}");
         }
 
         private static void InitSkyboxes(uint area)
