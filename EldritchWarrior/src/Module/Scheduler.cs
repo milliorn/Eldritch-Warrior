@@ -47,16 +47,14 @@ namespace Source.Module
             return item;
         }
 
-        internal static void Unschedule(ScheduledItem scheduledItem)
-        {
-            scheduledItems.Remove(scheduledItem);
-        }
+        internal static void Unschedule(ScheduledItem scheduledItem) => scheduledItems.Remove(scheduledItem);
 
         public static void Process()
         {
             ProcessTime();
             ProcessScheduledItems();
         }
+        
         private static void ProcessTime()
         {
             DeltaTime = stopwatch.Elapsed.TotalSeconds;
