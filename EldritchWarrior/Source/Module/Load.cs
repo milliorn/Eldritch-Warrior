@@ -22,15 +22,15 @@ namespace Source.Module
             InitWeatherSystem();
             InitAdministration();
             InitServerCalender();
-            PrintBootTime();
             Chat.RegisterChatScript("");
+            PrintBootTime();
         }
 
         private static void PrintBootTime() => Console.WriteLine($"SERVER LOADED:{DateTime.Now.ToString(@"yyyy/MM/dd hh:mm:ss tt", new CultureInfo("en-US"))}");
 
         private static void InitServerCalender()
         {
-            Scheduler.ScheduleRepeating(PrintBootTime, TimeSpan.FromSeconds(6));
+          Scheduler.ScheduleRepeating(PrintBootTime, TimeSpan.FromSeconds(6));
         }
 
         private static void InitAdministration()
