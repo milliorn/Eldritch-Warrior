@@ -23,7 +23,7 @@ namespace Source.Module
             InitAdministration();
             InitServerCalender();
             PrintBootTime();
-            //Chat.RegisterChatScript("");
+            Chat.RegisterChatScript("");
         }
 
         private static void PrintBootTime() => Console.WriteLine($"SERVER LOADED:{DateTime.Now.ToString(@"yyyy/MM/dd hh:mm:ss tt", new CultureInfo("en-US"))}");
