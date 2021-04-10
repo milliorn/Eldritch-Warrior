@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Source.Module
+namespace Source.Schedule
 {
     public static class CollectionExtensions
     {
@@ -22,15 +22,9 @@ namespace Source.Module
             values.Add(value);
         }
 
-        public static bool ContainsElement<TKey, TValue, TCollection>(this IDictionary<TKey, TCollection> mutableLookup, TKey key, TValue value) where TCollection : ICollection<TValue>
-        {
-            return mutableLookup.TryGetValue(key, out TCollection values) && values.Contains(value);
-        }
+        public static bool ContainsElement<TKey, TValue, TCollection>(this IDictionary<TKey, TCollection> mutableLookup, TKey key, TValue value) where TCollection : ICollection<TValue> => mutableLookup.TryGetValue(key, out TCollection values) && values.Contains(value);
 
-        public static TValue SafeGet<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
-        {
-            return dictionary.TryGetValue(key, out TValue retVal) ? retVal : default;
-        }
+        public static TValue SafeGet<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key) => dictionary.TryGetValue(key, out TValue retVal) ? retVal : default;
 
         /// <summary>
         /// Wraps this object instance into an IEnumerable&lt;T&gt; consisting of a single item.

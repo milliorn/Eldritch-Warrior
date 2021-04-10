@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Source.Module
+namespace Source.Schedule
 {
     internal class ScheduledItem : IDisposable
     {
@@ -27,20 +27,9 @@ namespace Source.Module
             Repeating = true;
         }
 
-        public void Reschedule(double newTime)
-        {
-            ExecutionTime = newTime;
-        }
-
-        public void Execute()
-        {
-            task();
-        }
-
-        public void Dispose()
-        {
-            Scheduler.Unschedule(this);
-        }
+        public void Reschedule(double newTime) => ExecutionTime = newTime;
+        public void Execute() => task();
+        public void Dispose() => Scheduler.Unschedule(this);
 
         public sealed class SortedByExecutionTime : IComparer<ScheduledItem>
         {

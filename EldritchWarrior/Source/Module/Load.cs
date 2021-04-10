@@ -30,7 +30,7 @@ namespace Source.Module
 
         private static void InitServerCalender()
         {
-            Scheduler.ScheduleRepeating(PrintBootTime, TimeSpan.FromSeconds(6));
+            Schedule.Scheduler.ScheduleRepeating(PrintBootTime, TimeSpan.FromSeconds(6));
         }
 
         private static void InitAdministration()
