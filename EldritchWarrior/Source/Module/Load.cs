@@ -7,7 +7,7 @@ using NWN.Framework.Lite.NWNX.Enum;
 
 namespace Source.Module
 {
-    class Load
+    public class Load
     {
         // This method will be run whenever the script "x2_mod_def_load" is run. 
         // In our example module, this happens when the server finishes loading the module file.
@@ -22,15 +22,18 @@ namespace Source.Module
             InitWeatherSystem();
             InitAdministration();
             InitServerCalender();
+
             Chat.RegisterChatScript("");
+            //Entrypoints.MainLoopEvent += Schedule.Scheduler.Process;
+
             PrintBootTime();
         }
 
         private static void PrintBootTime() => Console.WriteLine($"SERVER LOADED:{DateTime.Now.ToString(@"yyyy/MM/dd hh:mm:ss tt", new CultureInfo("en-US"))}");
 
-        private static void InitServerCalender()
+        public static void InitServerCalender()
         {
-          Schedule.Scheduler.ScheduleRepeating(PrintBootTime, TimeSpan.FromSeconds(6));
+            Schedule.Scheduler.ScheduleRepeating(PrintBootTime, TimeSpan.FromSeconds(1));
         }
 
         private static void InitAdministration()
