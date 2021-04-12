@@ -123,7 +123,7 @@ namespace Source.ChatSystem
                     SetVisual(chat, chatArray);
                     break;
                 case "lfg":
-                    NwModule.Instance.SpeakString($"{chat.Sender.Name.ColorString(Color.WHITE)} is looking for a party!", TalkVolume.Shout);
+                    NWScript.SpeakString($"{NWScript.GetName(pc)} is looking for a party!", TalkVolumeType.Shout);
                     break;
                 case "save":
                     chat.Sender.ExportCharacter();
