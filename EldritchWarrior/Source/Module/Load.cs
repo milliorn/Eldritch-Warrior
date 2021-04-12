@@ -31,13 +31,15 @@ namespace Source.Module
         }
 
         private static void InitScheduler() => Entrypoints.MainLoopEvent += (sender, args) => Schedule.Scheduler.Process();
-
         private static void PrintBootTime() => Console.WriteLine($"SERVER LOADED:{DateTime.Now.ToString(@"yyyy/MM/dd hh:mm:ss tt", new CultureInfo("en-US"))}");
+        private static void ServerMessage1439() => NWScript.SpeakString($"Server reset in one minute.", TalkVolumeType.Shout);
 
-        public static void InitServerCalender()
+
+        private static void InitServerCalender()
         {
             Schedule.Scheduler.ScheduleRepeating(InitWeatherSystem, TimeSpan.FromHours(1));
             Schedule.Scheduler.ScheduleRepeating(ServerMessageEveryHour, TimeSpan.FromHours(1));
+            Schedule.Scheduler.ScheduleRepeating(ServerMessage1439, TimeSpan.FromMinutes(1439));
         }
 
         private static void InitAdministration()
