@@ -1,19 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="$(SolutionDir)NWN.Python\deployBuild.exe -b $(ProjectDir)$(OutDir)" />
+    <Exec Command="$(SolutionDir)NWN.Python\deployBuild.exe -b $(ProjectDir)$(OutDir)"/>
   </Target>
-  
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
-
   <PropertyGroup>
-      <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="NWN.Framework.Lite" Version="0.3.1" />
+    <PackageReference Include="NWN.Framework.Lite" Version="0.3.2"/>
   </ItemGroup>
-
 </Project>

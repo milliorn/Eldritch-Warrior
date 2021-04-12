@@ -44,7 +44,7 @@ namespace Source.Module
 
         private static void InitAdministration()
         {
-            /*
+            
             Administration.SetPlayOption(AdministrationOption.EnforceLegalCharacters, 1);
             Administration.SetPlayOption(AdministrationOption.ExamineChallengeRating, 1);
             Administration.SetPlayOption(AdministrationOption.ExamineEffects, 1);
@@ -55,7 +55,6 @@ namespace Source.Module
             Administration.SetPlayOption(AdministrationOption.UseMaxHitpoints, 1);
             Administration.SetPlayOption(AdministrationOption.ValidateSpells, 1);
             Administration.SetPlayOption(AdministrationOption.UseMaxHitpoints, 1);
-            */
         }
 
         private static void InitMonkWeapons()
