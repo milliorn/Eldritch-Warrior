@@ -3,6 +3,7 @@ using NWN.Framework.Lite;
 using NWN.Framework.Lite.Enum;
 using NWN.Framework.Lite.NWNX;
 using NWN.Framework.Lite.NWNX.Enum;
+using Effect = NWN.Framework.Lite.Effect;
 
 namespace Source.ChatSystem
 {
@@ -29,11 +30,10 @@ namespace Source.ChatSystem
             {
                 case "xp":
                     _ = int.TryParse(chatArray[1], out int x);
-                    //chat.Sender.Xp += x;
                     NWScript.SetXP(pc, x);
                     break;
                 case "live":
-                    chat.Sender.HP = chat.Sender.HP = chat.Sender.MaxHP;
+                    NWScript.ApplyEffectToObject(DurationType.Instant, NWScript.EffectHeal(NWScript.GetMaxHitPoints()), pc);
                     break;
                 case "dead":
                     chat.Sender.ApplyEffect(EffectDuration.Instant, NWN.API.Effect.Damage(1));
