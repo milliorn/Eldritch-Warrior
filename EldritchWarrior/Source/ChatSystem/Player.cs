@@ -126,7 +126,7 @@ namespace Source.ChatSystem
                     NWScript.SpeakString($"{NWScript.GetName(pc)} is looking for a party!", TalkVolumeType.Shout);
                     break;
                 case "save":
-                    chat.Sender.ExportCharacter();
+                    NWScript.ExportSingleCharacter(pc);
                     break;
                 case "delete":
                     chat.Sender.Delete($"{chat.Sender.BicFileName}.bic has been deleted.");
