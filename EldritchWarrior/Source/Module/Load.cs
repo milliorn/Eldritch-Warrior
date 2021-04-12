@@ -14,30 +14,40 @@ namespace Source.Module
         // Script names must adhere to the NWN restrictions (alphanumeric with some special characters and no longer than 16 characters)
         // The method name is arbitrary and can be called whatever you want.
         // Methods must be public and static so that the framework can pick them up when the module loads.
+
+        private static readonly int hours = 24;
+
         [ScriptHandler("x2_mod_def_load")]
         public static void OnModuleLoad()
         {
+            Chat.RegisterChatScript("");
+            Entrypoints.MainLoopEvent += (sender, args) => Schedule.Scheduler.Process();
+
+            InitScheduler();
             InitMonkWeapons();
             InitModuleVariables();
             InitWeatherSystem();
             InitAdministration();
             InitServerCalender();
 
-            Chat.RegisterChatScript("");
-            Entrypoints.MainLoopEvent += (sender, args) => Schedule.Scheduler.Process();
             PrintBootTime();
         }
 
+        private static void InitScheduler() => Entrypoints.MainLoopEvent += (sender, args) => Schedule.Scheduler.Process();
         private static void PrintBootTime() => Console.WriteLine($"SERVER LOADED:{DateTime.Now.ToString(@"yyyy/MM/dd hh:mm:ss tt", new CultureInfo("en-US"))}");
+        private static void ServerMessage1439() => NWScript.SpeakString($"Server reset in one minute.", TalkVolumeType.Shout);
+
 
         public static void InitServerCalender()
         {
-            Schedule.Scheduler.ScheduleRepeating(PrintBootTime, TimeSpan.FromSeconds(1));
+            Schedule.Scheduler.ScheduleRepeating(InitWeatherSystem, TimeSpan.FromHours(1));
+            Schedule.Scheduler.ScheduleRepeating(ServerMessageEveryHour, TimeSpan.FromHours(1));
+            Schedule.Scheduler.ScheduleRepeating(ServerMessage1439, TimeSpan.FromMinutes(1439));
         }
 
         private static void InitAdministration()
         {
-            /*
+            
             Administration.SetPlayOption(AdministrationOption.EnforceLegalCharacters, 1);
             Administration.SetPlayOption(AdministrationOption.ExamineChallengeRating, 1);
             Administration.SetPlayOption(AdministrationOption.ExamineEffects, 1);
@@ -48,7 +58,6 @@ namespace Source.Module
             Administration.SetPlayOption(AdministrationOption.UseMaxHitpoints, 1);
             Administration.SetPlayOption(AdministrationOption.ValidateSpells, 1);
             Administration.SetPlayOption(AdministrationOption.UseMaxHitpoints, 1);
-            */
         }
 
         private static void InitMonkWeapons()
@@ -126,6 +135,24 @@ namespace Source.Module
             NWScript.SetLocalString(NWScript.GetModule(), NWScript.GetModule().ToString(), "X3_MOUNTS_EXTERNAL_ONLY");
             NWScript.SetLocalString(NWScript.GetModule(), NWScript.GetModule().ToString(), "X3_MOUNTS_NO_UNDERGROUND");
             NWScript.SetLocalString(NWScript.GetModule(), NWScript.GetModule().ToString(), "X2_S_UD_SPELLSCRIPT");
+        }
+
+        private static void ServerMessageEveryHour()
+        {
+            switch (hours)
+            {
+                case >= 2:
+                    NWScript.SpeakString($"Server reset in {hours} hours.", TalkVolumeType.Shout);
+                    break;
+                case 1:
+                    NWScript.SpeakString($"Server reset in {hours} hour.", TalkVolumeType.Shout);
+                    break;
+                default:
+                    NWScript.ExportAllCharacters();
+                    Console.WriteLine($"*** SERVER RESET ***");
+                    Administration.ShutdownServer();
+                    break;
+            }
         }
     }
 }
