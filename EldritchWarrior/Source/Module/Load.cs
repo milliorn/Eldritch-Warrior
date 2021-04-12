@@ -21,12 +21,15 @@ namespace Source.Module
         public static void OnModuleLoad()
         {
             Chat.RegisterChatScript("");
+            Entrypoints.MainLoopEvent += (sender, args) => Schedule.Scheduler.Process();
+
             InitScheduler();
             InitMonkWeapons();
             InitModuleVariables();
             InitWeatherSystem();
             InitAdministration();
             InitServerCalender();
+
             PrintBootTime();
         }
 
@@ -35,7 +38,7 @@ namespace Source.Module
         private static void ServerMessage1439() => NWScript.SpeakString($"Server reset in one minute.", TalkVolumeType.Shout);
 
 
-        private static void InitServerCalender()
+        public static void InitServerCalender()
         {
             Schedule.Scheduler.ScheduleRepeating(InitWeatherSystem, TimeSpan.FromHours(1));
             Schedule.Scheduler.ScheduleRepeating(ServerMessageEveryHour, TimeSpan.FromHours(1));
