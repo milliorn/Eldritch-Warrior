@@ -29,7 +29,8 @@ namespace Source.ChatSystem
             {
                 case "xp":
                     _ = int.TryParse(chatArray[1], out int x);
-                    chat.Sender.Xp += x;
+                    //chat.Sender.Xp += x;
+                    NWScript.SetXP(pc, x);
                     break;
                 case "live":
                     chat.Sender.HP = chat.Sender.HP = chat.Sender.MaxHP;
