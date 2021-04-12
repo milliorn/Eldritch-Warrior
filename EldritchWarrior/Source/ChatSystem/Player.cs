@@ -1,3 +1,4 @@
+using System;
 using NWN.Framework.Lite;
 using NWN.Framework.Lite.Enum;
 using NWN.Framework.Lite.NWNX;
@@ -13,11 +14,18 @@ namespace Source.ChatSystem
         public static void OnPlayerChat()
         {
             string message = NWScript.GetPCChatMessage();
+            uint pc = NWScript.GetPCChatSpeaker();
+            
             if (TriggerChatTools(message))
             {
                 message = message[1..].ToLower();
-
+                Router(pc, message);
             }
+        }
+
+        private static void Router(uint pc, string message)
+        {
+            throw new NotImplementedException();
         }
 
         private static bool TriggerChatTools(string message) => message.StartsWith(wildcard);
