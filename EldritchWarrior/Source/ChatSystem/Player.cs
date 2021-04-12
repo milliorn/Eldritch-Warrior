@@ -12,10 +12,11 @@ namespace Source.ChatSystem
         [ScriptHandler("on_player_chat")]
         public static void OnPlayerChat()
         {
-            var message = NWScript.GetPCChatMessage();
+            string message = NWScript.GetPCChatMessage();
             if (TriggerChatTools(message))
             {
-                
+                message = message[1..].ToLower();
+
             }
         }
 
