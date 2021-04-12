@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using NWN.Framework.Lite;
 using NWN.Framework.Lite.Enum;
@@ -67,7 +68,7 @@ namespace Source.ChatSystem
                     Roster(pc);
                     break;
                 case "armbone":
-                    SetArmBone(chat);
+                    SetArmBone(pc);
                     break;
                 case "armskin":
                     SetArmNormal(chat);
@@ -132,6 +133,11 @@ namespace Source.ChatSystem
                 default:
                     break;
             }
+        }
+
+        private static void SetArmBone(uint pc)
+        {
+            NWScript.SetCreatureBodyPart(CreaturePartType.LeftBicep, (int)CreatureModelType.Undead, pc);
         }
     }
 }
