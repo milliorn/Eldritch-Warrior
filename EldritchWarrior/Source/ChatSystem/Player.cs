@@ -3,7 +3,6 @@ using NWN.Framework.Lite;
 using NWN.Framework.Lite.Enum;
 using NWN.Framework.Lite.NWNX;
 using NWN.Framework.Lite.NWNX.Enum;
-using Effect = NWN.Framework.Lite.Effect;
 
 namespace Source.ChatSystem
 {
@@ -36,7 +35,7 @@ namespace Source.ChatSystem
                     NWScript.ApplyEffectToObject(DurationType.Instant, NWScript.EffectHeal(NWScript.GetMaxHitPoints()), pc);
                     break;
                 case "dead":
-                    chat.Sender.ApplyEffect(EffectDuration.Instant, NWN.API.Effect.Damage(1));
+                    NWScript.ApplyEffectToObject(DurationType.Instant, NWScript.EffectDamage(NWScript.GetMaxHitPoints() + 1, DamageType.Positive, DamagePowerType.PlusTwenty), pc);
                     break;
                 case "roster":
                     Roster(chat);
