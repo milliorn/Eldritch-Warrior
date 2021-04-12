@@ -7,7 +7,7 @@ using NWN.Framework.Lite.NWNX.Enum;
 
 namespace Source.ChatSystem
 {
-    public class Player
+    public class PlayerChat
     {
         private static readonly char wildcard = '!';
 
@@ -129,7 +129,7 @@ namespace Source.ChatSystem
                     NWScript.ExportSingleCharacter(pc);
                     break;
                 case "delete":
-                    chat.Sender.Delete($"{chat.Sender.BicFileName}.bic has been deleted.");
+                    Administration.DeletePlayerCharacter(pc, true, $"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} deleted.");
                     break;
                 default:
                     break;
