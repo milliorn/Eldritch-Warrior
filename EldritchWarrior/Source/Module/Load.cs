@@ -24,8 +24,7 @@ namespace Source.Module
             InitServerCalender();
 
             Chat.RegisterChatScript("");
-            //Entrypoints.MainLoopEvent += Schedule.Scheduler.Process;
-
+            Entrypoints.MainLoopEvent += (sender, args) => Schedule.Scheduler.Process();
             PrintBootTime();
         }
 
