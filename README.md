@@ -7,3 +7,5 @@ Future Neverwinter NIghts Module in .NET
 [![Greetings](https://github.com/milliorn/Eldritch-Warrior/actions/workflows/greetings.yml/badge.svg)](https://github.com/milliorn/Eldritch-Warrior/actions/workflows/greetings.yml)
 
 [![Caching](https://github.com/milliorn/Eldritch-Warrior/actions/workflows/cache.yml/badge.svg)](https://github.com/milliorn/Eldritch-Warrior/actions/workflows/cache.yml)
+
+[![Git Version](https://github.com/milliorn/Eldritch-Warrior/actions/workflows/git-version.yml/badge.svg)](https://github.com/milliorn/Eldritch-Warrior/actions/workflows/git-version.yml)
