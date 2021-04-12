@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using NWN.Framework.Lite;
 using NWN.Framework.Lite.Enum;
 using NWN.Framework.Lite.NWNX;
@@ -23,6 +24,33 @@ namespace Source.ChatSystem
             }
         }
 
+        private static bool TriggerChatTools(string message) => message.StartsWith(wildcard);
+
+        private static void Roster(uint pc)
+        {
+            int playerCount = 0;
+            int dmCount = 0;
+            StringBuilder stringBuilder = new("Players Online.\n");
+            uint player = NWScript.GetFirstPC();
+
+            while (NWScript.GetIsObjectValid(player))
+            {
+                if (NWScript.GetIsDM(player))
+                {
+                    dmCount++;
+                }
+                else
+                {
+                    playerCount++;
+                    stringBuilder.Append($"{NWScript.GetName(player)} | {NWScript.GetArea(player)}\n");
+                }
+            }
+
+            stringBuilder.Append($"Player Online | {playerCount.ToString()}");
+            stringBuilder.Append($"DM Online | {dmCount.ToString()}");
+            NWScript.SendMessageToPC(pc, stringBuilder.ToString());
+        }
+
         private static void Router(uint pc, string[] chatArray)
         {
             switch (chatArray[0])
@@ -38,7 +66,7 @@ namespace Source.ChatSystem
                     NWScript.ApplyEffectToObject(DurationType.Instant, NWScript.EffectDamage(NWScript.GetMaxHitPoints() + 1, DamageType.Positive, DamagePowerType.PlusTwenty), pc);
                     break;
                 case "roster":
-                    Roster(chat);
+                    Roster(pc);
                     break;
                 case "armbone":
                     SetArmBone(chat);
@@ -107,7 +135,5 @@ namespace Source.ChatSystem
                     break;
             }
         }
-
-        private static bool TriggerChatTools(string message) => message.StartsWith(wildcard);
     }
 }
