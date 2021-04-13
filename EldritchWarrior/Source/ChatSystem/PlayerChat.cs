@@ -83,7 +83,7 @@ namespace Source.ChatSystem
                     SetPortrait(pc, chatArray);
                     break;
                 case "voice":
-                    SetVoice(chat, chatArray);
+                    SetVoice(pc, chatArray);
                     break;
                 case "skin":
                     SetSkin(chat, chatArray);
@@ -132,6 +132,20 @@ namespace Source.ChatSystem
                     break;
                 default:
                     break;
+            }
+        }
+
+        private static void SetVoice(uint pc, string[] chatArray)
+        {
+            _ = int.TryParse(chatArray[1], out int n);
+            try
+            {
+                Creature.SetSoundset(pc, n);
+            }
+            catch (Exception e)
+            {
+                NWScript.SendMessageToPC(pc, $"Cannot change soundset to {chatArray}.");
+                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change soundset to {chatArray}.");
             }
         }
 
