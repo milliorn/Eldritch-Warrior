@@ -107,7 +107,7 @@ namespace Source.ChatSystem
                     SetAlignment(pc, chatArray);
                     break;
                 case "resetlevel":
-                    ResetLevel(chat, chatArray);
+                    ResetLevel(pc, chatArray);
                     break;
                 case "roll":
                     RollDice(chat, chatArray);
@@ -132,6 +132,26 @@ namespace Source.ChatSystem
                     break;
                 default:
                     break;
+            }
+        }
+
+        private static void ResetLevel(uint pc, string[] chatArray)
+        {
+            if (chatArray[1].Equals("one"))
+            {
+                int hd = NWScript.GetHitDice(pc);
+                NWScript.SetXP(pc, (hd * (hd - 1) / 2 * 1000) - 1);
+            }
+            else if (chatArray[1].Equals("all"))
+            {
+                int xp = NWScript.GetXP(pc);
+                NWScript.SetXP(pc, 0);
+                NWScript.SetXP(pc, xp);
+            }
+            else
+            {
+                NWScript.SendMessageToPC(pc, $"Cannot reset levels to {chatArray}.");
+                throw new ArgumentException($"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed reset levels to {chatArray}.");
             }
         }
 
