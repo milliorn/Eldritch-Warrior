@@ -92,7 +92,7 @@ namespace Source.ChatSystem
                     SetHair(pc, chatArray);
                     break;
                 case "tattoocolor1":
-                    SetTattooColor1(chat, chatArray);
+                    SetTattooColor1(pc, chatArray);
                     break;
                 case "tattoocolor2":
                     SetTattooColor2(chat, chatArray);
@@ -132,6 +132,20 @@ namespace Source.ChatSystem
                     break;
                 default:
                     break;
+            }
+        }
+
+        private static void SetTattooColor1(uint pc, string[] chatArray)
+        {
+            _ = int.TryParse(chatArray[1], out int n);
+            try
+            {
+                NWScript.SetColor(pc, ColorChannelType.Tattoo1, n);
+            }
+            catch (Exception e)
+            {
+                NWScript.SendMessageToPC(pc, $"Cannot change tattoo 1 color to {chatArray}.");
+                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change change tattoo 1 color to {chatArray}.");
             }
         }
 
