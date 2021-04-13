@@ -101,7 +101,7 @@ namespace Source.ChatSystem
                     SetTail(pc, chatArray);
                     break;
                 case "wings":
-                    SetWings(chat, chatArray);
+                    SetWings(pc, chatArray);
                     break;
                 case "alignment":
                     SetAlignment(chat, chatArray);
@@ -132,6 +132,21 @@ namespace Source.ChatSystem
                     break;
                 default:
                     break;
+            }
+        }
+
+        private static void SetWings(uint pc, string[] chatArray)
+        {
+            switch (chatArray[1])
+            {
+                case "angel": NWScript.SetCreatureWingType(CreatureWingType.Angel, pc); break;
+                case "bat": NWScript.SetCreatureWingType(CreatureWingType.Bat, pc); break;
+                case "bird": NWScript.SetCreatureWingType(CreatureWingType.Bird, pc); break;
+                case "butterfly": NWScript.SetCreatureWingType(CreatureWingType.Butterfly, pc); break;
+                case "demon": NWScript.SetCreatureWingType(CreatureWingType.Demon, pc); break;
+                case "dragon": NWScript.SetCreatureWingType(CreatureWingType.Dragon, pc); break;
+                default:
+                    NWScript.SendMessageToPC(pc, $"Cannot change wings to {chatArray}."); break;
             }
         }
 
