@@ -104,7 +104,7 @@ namespace Source.ChatSystem
                     SetWings(pc, chatArray);
                     break;
                 case "alignment":
-                    SetAlignment(chat, chatArray);
+                    SetAlignment(pc, chatArray);
                     break;
                 case "resetlevel":
                     ResetLevel(chat, chatArray);
@@ -132,6 +132,20 @@ namespace Source.ChatSystem
                     break;
                 default:
                     break;
+            }
+        }
+
+        private static void SetAlignment(uint pc, string[] chatArray)
+        {
+            switch (chatArray[1])
+            {
+                case "chaotic": NWScript.AdjustAlignment(pc, AlignmentType.Chaotic, 100, false); break;
+                case "evil": NWScript.AdjustAlignment(pc, AlignmentType.Evil, 100, false); break;
+                case "good": NWScript.AdjustAlignment(pc, AlignmentType.Good, 100, false); break;
+                case "lawful": NWScript.AdjustAlignment(pc, AlignmentType.Lawful, 100, false); break;
+                case "neutral": NWScript.AdjustAlignment(pc, AlignmentType.Neutral, 100, false); break;
+                default:
+                    NWScript.SendMessageToPC(pc, $"Cannot change alignment to {chatArray}."); break;
             }
         }
 
