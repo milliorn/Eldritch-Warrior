@@ -98,7 +98,7 @@ namespace Source.ChatSystem
                     SetTattooColor2(pc, chatArray);
                     break;
                 case "tail":
-                    SetTail(chat, chatArray);
+                    SetTail(pc, chatArray);
                     break;
                 case "wings":
                     SetWings(chat, chatArray);
@@ -135,6 +135,18 @@ namespace Source.ChatSystem
             }
         }
 
+        private static void SetTail(uint pc, string[] chatArray)
+        {
+            switch (chatArray[1])
+            {
+                case "bone": NWScript.SetCreatureTailType(CreatureTailType.Bone, pc); break;
+                case "devil": NWScript.SetCreatureTailType(CreatureTailType.Bone, pc); break;
+                case "lizard": NWScript.SetCreatureTailType(CreatureTailType.Bone, pc); break;
+                default:
+                    NWScript.SendMessageToPC(pc, $"Cannot change tail to {chatArray}."); break;
+            }
+        }
+
         private static void SetTattooColor2(uint pc, string[] chatArray)
         {
             _ = int.TryParse(chatArray[1], out int n);
@@ -145,7 +157,7 @@ namespace Source.ChatSystem
             catch (Exception e)
             {
                 NWScript.SendMessageToPC(pc, $"Cannot change tattoo 2 color to {chatArray}.");
-                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change change tattoo 2 color to {chatArray}.");
+                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change tattoo 2 color to {chatArray}.");
             }
         }
 
@@ -159,7 +171,7 @@ namespace Source.ChatSystem
             catch (Exception e)
             {
                 NWScript.SendMessageToPC(pc, $"Cannot change tattoo 1 color to {chatArray}.");
-                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change change tattoo 1 color to {chatArray}.");
+                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change tattoo 1 color to {chatArray}.");
             }
         }
 
@@ -173,7 +185,7 @@ namespace Source.ChatSystem
             catch (Exception e)
             {
                 NWScript.SendMessageToPC(pc, $"Cannot change hair color to {chatArray}.");
-                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change change hair color to {chatArray}.");
+                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change hair color to {chatArray}.");
             }
         }
 
@@ -187,7 +199,7 @@ namespace Source.ChatSystem
             catch (Exception e)
             {
                 NWScript.SendMessageToPC(pc, $"Cannot change skin color to {chatArray}.");
-                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change change skin color to {chatArray}.");
+                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change skin color to {chatArray}.");
             }
         }
 
