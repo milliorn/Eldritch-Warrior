@@ -89,7 +89,7 @@ namespace Source.ChatSystem
                     SetSkin(pc, chatArray);
                     break;
                 case "hair":
-                    SetHair(chat, chatArray);
+                    SetHair(pc, chatArray);
                     break;
                 case "tattoocolor1":
                     SetTattooColor1(chat, chatArray);
@@ -132,6 +132,20 @@ namespace Source.ChatSystem
                     break;
                 default:
                     break;
+            }
+        }
+
+        private static void SetHair(uint pc, string[] chatArray)
+        {
+            _ = int.TryParse(chatArray[1], out int n);
+            try
+            {
+                NWScript.SetColor(pc, ColorChannelType.Hair, n);
+            }
+            catch (Exception e)
+            {
+                NWScript.SendMessageToPC(pc, $"Cannot change hair color to {chatArray}.");
+                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change change hair color to {chatArray}.");
             }
         }
 
