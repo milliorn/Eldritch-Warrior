@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System;
 using System.Text;
 using NWN.Framework.Lite;
@@ -7,7 +6,6 @@ using NWN.Framework.Lite.Enum;
 using NWN.Framework.Lite.NWNX;
 using ItemProperty = NWN.Framework.Lite.ItemProperty;
 using System.Globalization;
-using Effect = NWN.Framework.Lite.Effect;
 
 namespace Source.ChatSystem
 {
