@@ -137,32 +137,6 @@ namespace Source.ChatSystem
             }
         }
 
-        private static void SetVisual(uint pc, string[] chatArray)
-        {
-            var item = NWScript.GetItemInSlot(InventorySlotType.RightHand, pc);
-            if (NWScript.GetIsObjectValid(item))
-            {
-                BiowareXP2.IPRemoveMatchingItemProperties(item, ItemPropertyType.Visualeffect, DurationType.Permanent, -1);
-                ItemProperty type;
-
-                switch (chatArray[1])
-                {
-                    case "acid": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Acid); break;
-                    case "cold": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Cold); break;
-                    case "electric": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Electrical); break;
-                    case "evil": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Evil); break;
-                    case "fire": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Fire); break;
-                    case "holy": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Holy); break;
-                    case "sonic": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Sonic); break;
-                    default:
-                        NWScript.SendMessageToPC(pc, $"Cannot set weapon visual to {chatArray}.");
-                        throw new ArgumentException($"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to set weapon visual to {chatArray}.");
-                }
-
-                BiowareXP2.IPSafeAddItemProperty(item, type, 0.0f, AddItemPropertyPolicy.ReplaceExisting, true, true);
-            }
-        }
-
         private static void SetStatus(uint pc, string[] chatArray)
         {
             if (chatArray[1].Equals("like") || chatArray[1].Equals("dislike"))
@@ -208,6 +182,37 @@ namespace Source.ChatSystem
             }
         }
 
+        private static void Emote(uint pc, string[] chatArray)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void SetVisual(uint pc, string[] chatArray)
+        {
+            var item = NWScript.GetItemInSlot(InventorySlotType.RightHand, pc);
+            if (NWScript.GetIsObjectValid(item))
+            {
+                BiowareXP2.IPRemoveMatchingItemProperties(item, ItemPropertyType.Visualeffect, DurationType.Permanent, -1);
+                ItemProperty type;
+
+                switch (chatArray[1])
+                {
+                    case "acid": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Acid); break;
+                    case "cold": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Cold); break;
+                    case "electric": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Electrical); break;
+                    case "evil": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Evil); break;
+                    case "fire": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Fire); break;
+                    case "holy": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Holy); break;
+                    case "sonic": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Sonic); break;
+                    default:
+                        NWScript.SendMessageToPC(pc, $"Cannot set weapon visual to {chatArray}.");
+                        throw new ArgumentException($"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to set weapon visual to {chatArray}.");
+                }
+
+                BiowareXP2.IPSafeAddItemProperty(item, type, 0.0f, AddItemPropertyPolicy.ReplaceExisting, true, true);
+            }
+        }
+        
         private static void SetAlignment(uint pc, string[] chatArray)
         {
             switch (chatArray[1])
