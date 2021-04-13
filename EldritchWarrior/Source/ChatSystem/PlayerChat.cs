@@ -3,6 +3,7 @@ using System.Text;
 using NWN.Framework.Lite;
 using NWN.Framework.Lite.Enum;
 using NWN.Framework.Lite.NWNX;
+using Source.Module;
 
 namespace Source.ChatSystem
 {
@@ -110,7 +111,7 @@ namespace Source.ChatSystem
                     ResetLevel(pc, chatArray);
                     break;
                 case "roll":
-                    RollDice(chat, chatArray);
+                    RollDice(pc, chatArray);
                     break;
                 case "status":
                     SetStatus(chat, chatArray);
@@ -132,6 +133,21 @@ namespace Source.ChatSystem
                     break;
                 default:
                     break;
+            }
+        }
+
+        private static void RollDice(uint pc, string[] chatArray)
+        {
+            _ = int.TryParse(chatArray[1], out int n);
+            try
+            {
+                int dice = Module.Random.Next(1, n);
+                NWScript.SpeakString($"{NWScript.GetName(pc)} rolled a d{n} and got {dice}.", TalkVolumeType.Shout);
+            }
+            catch (Exception e)
+            {
+                NWScript.SendMessageToPC(pc, $"Cannot roll dice with {chatArray}.");
+                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to roll dice with {chatArray}.");
             }
         }
 
