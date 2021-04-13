@@ -114,7 +114,7 @@ namespace Source.ChatSystem
                     RollDice(pc, chatArray);
                     break;
                 case "status":
-                    SetStatus(chat, chatArray);
+                    SetStatus(pc, chatArray);
                     break;
                 case "eyes":
                     SetEyes(chat, chatArray);
@@ -136,18 +136,20 @@ namespace Source.ChatSystem
             }
         }
 
-        private static void RollDice(uint pc, string[] chatArray)
+        private static void SetStatus(uint pc, string[] chatArray)
         {
-            _ = int.TryParse(chatArray[1], out int n);
-            try
+            if (chatArray[1].Equals("like"))
             {
-                int dice = Module.Random.Next(1, n);
-                NWScript.SpeakString($"{NWScript.GetName(pc)} rolled a d{n} and got {dice}.", TalkVolumeType.Shout);
+
             }
-            catch (Exception e)
+            else if (chatArray[1].Equals("dislike"))
             {
-                NWScript.SendMessageToPC(pc, $"Cannot roll dice with {chatArray}.");
-                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to roll dice with {chatArray}.");
+
+            }
+            else
+            {
+                NWScript.SendMessageToPC(pc, $"Cannot reset status to {chatArray}.");
+                throw new ArgumentException($"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to reset status to {chatArray}.");
             }
         }
 
@@ -209,6 +211,21 @@ namespace Source.ChatSystem
                 case "lizard": NWScript.SetCreatureTailType(CreatureTailType.Bone, pc); break;
                 default:
                     NWScript.SendMessageToPC(pc, $"Cannot change tail to {chatArray}."); break;
+            }
+        }
+
+        private static void RollDice(uint pc, string[] chatArray)
+        {
+            _ = int.TryParse(chatArray[1], out int n);
+            try
+            {
+                int dice = Module.Random.Next(1, n);
+                NWScript.SpeakString($"{NWScript.GetName(pc)} rolled a d{n} and got {dice}.", TalkVolumeType.Shout);
+            }
+            catch (Exception e)
+            {
+                NWScript.SendMessageToPC(pc, $"Cannot roll dice with {chatArray}.");
+                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to roll dice with {chatArray}.");
             }
         }
 
