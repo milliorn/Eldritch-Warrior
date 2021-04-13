@@ -80,7 +80,7 @@ namespace Source.ChatSystem
                     SetHead(pc, chatArray);
                     break;
                 case "portrait":
-                    SetPortrait(chat, chatArray);
+                    SetPortrait(pc, chatArray);
                     break;
                 case "voice":
                     SetVoice(chat, chatArray);
@@ -135,6 +135,20 @@ namespace Source.ChatSystem
             }
         }
 
+        private static void SetPortrait(uint pc, string[] chatArray)
+        {
+            _ = int.TryParse(chatArray[1], out int n);
+            try
+            {
+                NWScript.SetPortraitId(pc, n);
+            }
+            catch (Exception e)
+            {
+                NWScript.SendMessageToPC(pc, $"Cannot change portrait to {chatArray}.");
+                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change portrait to {chatArray}.");
+            }
+        }
+
         private static void SetArmNormal(uint pc)
         {
             NWScript.SetCreatureBodyPart(CreaturePartType.LeftBicep, (int)CreatureModelType.Skin, pc);
@@ -151,13 +165,15 @@ namespace Source.ChatSystem
 
         private static void SetHead(uint pc, string[] chatArray)
         {
-            if (int.TryParse(chatArray[1], out int n))
+            _ = int.TryParse(chatArray[1], out int n);
+            try
             {
                 NWScript.SetCreatureBodyPart(CreaturePartType.Head, n, pc);
             }
-            else
+            catch (Exception e)
             {
                 NWScript.SendMessageToPC(pc, $"Cannot change head to {chatArray}.");
+                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change head to {chatArray}.");
             }
         }
     }
