@@ -146,7 +146,7 @@ namespace Source.ChatSystem
             {
                 int xp = NWScript.GetXP(pc);
                 NWScript.SetXP(pc, 0);
-                NWScript.SetXP(pc, xp);
+                NWScript.DelayCommand(1.0f, () => NWScript.SetXP(pc, xp));
             }
             else
             {
