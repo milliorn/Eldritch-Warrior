@@ -149,20 +149,6 @@ namespace Source.ChatSystem
             }
         }
 
-        private static void SetArmNormal(uint pc)
-        {
-            NWScript.SetCreatureBodyPart(CreaturePartType.LeftBicep, (int)CreatureModelType.Skin, pc);
-            NWScript.SetCreatureBodyPart(CreaturePartType.LeftForearm, (int)CreatureModelType.Skin, pc);
-            NWScript.SetCreatureBodyPart(CreaturePartType.LeftHand, (int)CreatureModelType.Skin, pc);
-        }
-
-        private static void SetArmBone(uint pc)
-        {
-            NWScript.SetCreatureBodyPart(CreaturePartType.LeftBicep, (int)CreatureModelType.Undead, pc);
-            NWScript.SetCreatureBodyPart(CreaturePartType.LeftForearm, (int)CreatureModelType.Undead, pc);
-            NWScript.SetCreatureBodyPart(CreaturePartType.LeftHand, (int)CreatureModelType.Undead, pc);
-        }
-
         private static void SetHead(uint pc, string[] chatArray)
         {
             _ = int.TryParse(chatArray[1], out int n);
@@ -175,6 +161,20 @@ namespace Source.ChatSystem
                 NWScript.SendMessageToPC(pc, $"Cannot change head to {chatArray}.");
                 throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change head to {chatArray}.");
             }
+        }
+
+        private static void SetArmNormal(uint pc)
+        {
+            NWScript.SetCreatureBodyPart(CreaturePartType.LeftBicep, (int)CreatureModelType.Skin, pc);
+            NWScript.SetCreatureBodyPart(CreaturePartType.LeftForearm, (int)CreatureModelType.Skin, pc);
+            NWScript.SetCreatureBodyPart(CreaturePartType.LeftHand, (int)CreatureModelType.Skin, pc);
+        }
+
+        private static void SetArmBone(uint pc)
+        {
+            NWScript.SetCreatureBodyPart(CreaturePartType.LeftBicep, (int)CreatureModelType.Undead, pc);
+            NWScript.SetCreatureBodyPart(CreaturePartType.LeftForearm, (int)CreatureModelType.Undead, pc);
+            NWScript.SetCreatureBodyPart(CreaturePartType.LeftHand, (int)CreatureModelType.Undead, pc);
         }
     }
 }
