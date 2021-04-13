@@ -71,7 +71,7 @@ namespace Source.ChatSystem
                     SetArmBone(pc);
                     break;
                 case "armskin":
-                    SetArmNormal(chat);
+                    SetArmNormal(pc);
                     break;
                 case "!":
                     Emote(chat, chatArray);
@@ -135,9 +135,18 @@ namespace Source.ChatSystem
             }
         }
 
+        private static void SetArmNormal(uint pc)
+        {
+            NWScript.SetCreatureBodyPart(CreaturePartType.LeftBicep, (int)CreatureModelType.Skin, pc);
+            NWScript.SetCreatureBodyPart(CreaturePartType.LeftForearm, (int)CreatureModelType.Skin, pc);
+            NWScript.SetCreatureBodyPart(CreaturePartType.LeftHand, (int)CreatureModelType.Skin, pc);
+        }
+
         private static void SetArmBone(uint pc)
         {
             NWScript.SetCreatureBodyPart(CreaturePartType.LeftBicep, (int)CreatureModelType.Undead, pc);
+            NWScript.SetCreatureBodyPart(CreaturePartType.LeftForearm, (int)CreatureModelType.Undead, pc);
+            NWScript.SetCreatureBodyPart(CreaturePartType.LeftHand, (int)CreatureModelType.Undead, pc);
         }
     }
 }
