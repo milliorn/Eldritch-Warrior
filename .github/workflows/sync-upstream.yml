@@ -12,7 +12,7 @@ env:
   # Optional push arguments
   PUSH_ARGS: ""
 
-# This runs every day on 1801 UTC
+# This runs at the end of every day UTC time
 on:
   schedule:
     - cron: '0 0 * * *'
