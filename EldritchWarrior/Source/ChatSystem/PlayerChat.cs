@@ -152,13 +152,7 @@ namespace Source.ChatSystem
                     {
                         switch (NWScript.GetRacialType(pc))
                         {
-                            case RacialType.Dwarf: break;
-                            case RacialType.Elf: break;
-                            case RacialType.Gnome: break;
-                            case RacialType.Halfelf: break;
-                            case RacialType.Halfling: break;
-                            case RacialType.Halforc: break;
-                            case RacialType.Human: break;
+                        
                         }
                     }
                     break;
