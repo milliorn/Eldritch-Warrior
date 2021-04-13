@@ -74,10 +74,10 @@ namespace Source.ChatSystem
                     SetArmNormal(pc);
                     break;
                 case "!":
-                    Emote(chat, chatArray);
+                    Emote(pc, chatArray);
                     break;
                 case "head":
-                    SetHead(chat, chatArray);
+                    SetHead(pc, chatArray);
                     break;
                 case "portrait":
                     SetPortrait(chat, chatArray);
@@ -147,6 +147,18 @@ namespace Source.ChatSystem
             NWScript.SetCreatureBodyPart(CreaturePartType.LeftBicep, (int)CreatureModelType.Undead, pc);
             NWScript.SetCreatureBodyPart(CreaturePartType.LeftForearm, (int)CreatureModelType.Undead, pc);
             NWScript.SetCreatureBodyPart(CreaturePartType.LeftHand, (int)CreatureModelType.Undead, pc);
+        }
+
+        private static void SetHead(uint pc, string[] chatArray)
+        {
+            if (int.TryParse(chatArray[1], out int n))
+            {
+                NWScript.SetCreatureBodyPart(CreaturePartType.Head, n, pc);
+            }
+            else
+            {
+                NWScript.SendMessageToPC(pc, $"Cannot change head to {chatArray}.");
+            }
         }
     }
 }
