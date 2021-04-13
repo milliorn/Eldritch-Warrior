@@ -11,3 +11,5 @@ Future Neverwinter NIghts Module in .NET.
 [![Git Version](https://github.com/milliorn/Eldritch-Warrior/actions/workflows/git-version.yml/badge.svg)](https://github.com/milliorn/Eldritch-Warrior/actions/workflows/git-version.yml)
 
 [![Compress Images](https://github.com/milliorn/Eldritch-Warrior/actions/workflows/compress-images.yml/badge.svg)](https://github.com/milliorn/Eldritch-Warrior/actions/workflows/compress-images.yml)
+
+[![Sync Upstream](https://github.com/milliorn/Eldritch-Warrior/actions/workflows/sync-upstream.yml/badge.svg)](https://github.com/milliorn/Eldritch-Warrior/actions/workflows/sync-upstream.yml)
