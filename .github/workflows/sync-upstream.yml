@@ -30,7 +30,4 @@ jobs:
         with:
           upstream_repo: ${{ env.UPSTREAM_URL }}
           upstream_branch: ${{ env.UPSTREAM_BRANCH }}
-          downstream_branch: ${{ env.DOWNSTREAM_BRANCH }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          merge_args: ${{ env.MERGE_ARGS }}
-          push_args: ${{ env.PUSH_ARGS }}
