@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System;
 using System.Text;
 using NWN.Framework.Lite;
@@ -6,6 +7,7 @@ using NWN.Framework.Lite.Enum;
 using NWN.Framework.Lite.NWNX;
 using ItemProperty = NWN.Framework.Lite.ItemProperty;
 using System.Globalization;
+using Effect = NWN.Framework.Lite.Effect;
 
 namespace Source.ChatSystem
 {
@@ -135,6 +137,38 @@ namespace Source.ChatSystem
                     break;
                 default:
                     break;
+            }
+        }
+
+        private static void SetEyes(uint pc, string[] chatArray)
+        {
+            string color = chatArray[1];
+            VisualEffectType eyeColor;
+            GenderType gender = NWScript.GetGender(pc);
+
+            switch (color)
+            {
+                case "cyan":
+                    {
+                        switch (NWScript.GetRacialType(pc))
+                        {
+                            case RacialType.Dwarf: break;
+                            case RacialType.Elf: break;
+                            case RacialType.Gnome: break;
+                            case RacialType.Halfelf: break;
+                            case RacialType.Halfling: break;
+                            case RacialType.Halforc: break;
+                            case RacialType.Human: break;
+                        }
+                    }
+                    break;
+                case "green": break;
+                case "orange": break;
+                case "purple": break;
+                case "red": break;
+                case "white": break;
+                case "yellow": break;
+                default: break;
             }
         }
 
