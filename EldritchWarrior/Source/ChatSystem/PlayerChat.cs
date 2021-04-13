@@ -1,10 +1,11 @@
 using System;
 using System.Text;
 using NWN.Framework.Lite;
+using NWN.Framework.Lite.Bioware;
 using NWN.Framework.Lite.Enum;
 using NWN.Framework.Lite.NWNX;
-using NWN.Framework.Lite.Bioware;
 using ItemProperty = NWN.Framework.Lite.ItemProperty;
+using System.Globalization;
 
 namespace Source.ChatSystem
 {
@@ -184,7 +185,51 @@ namespace Source.ChatSystem
 
         private static void Emote(uint pc, string[] chatArray)
         {
-            throw new NotImplementedException();
+            if (float.TryParse(chatArray[2].ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out float animSpeed))
+            {
+                switch (chatArray[1])
+                {
+                    case "back": NWScript.PlayAnimation(AnimationType.LoopingDeadBack, animSpeed); break;
+                    case "beg": NWScript.PlayAnimation(AnimationType.LoopingTalkPleading, animSpeed); break;
+                    case "bored": NWScript.PlayAnimation(AnimationType.FireForgetPauseBored, animSpeed); break;
+                    case "bow": NWScript.PlayAnimation(AnimationType.FireForgetBow, animSpeed); break;
+                    case "c1": NWScript.PlayAnimation(AnimationType.LoopingConjure1, animSpeed); break;
+                    case "c2": NWScript.PlayAnimation(AnimationType.LoopingConjure2, animSpeed); break;
+                    case "dodge": NWScript.PlayAnimation(AnimationType.FireForgetDodgeSide, animSpeed); break;
+                    case "drink": NWScript.PlayAnimation(AnimationType.FireForgetDrink, animSpeed); break;
+                    case "drunk": NWScript.PlayAnimation(AnimationType.LoopingPauseDrunk, animSpeed); break;
+                    case "duck": NWScript.PlayAnimation(AnimationType.FireForgetDodgeDuck, animSpeed); break;
+                    case "forceful": NWScript.PlayAnimation(AnimationType.LoopingTalkForceful, animSpeed); break;
+                    case "front": NWScript.PlayAnimation(AnimationType.LoopingDeadFront, animSpeed); break;
+                    case "greet": NWScript.PlayAnimation(AnimationType.FireForgetGreeting, animSpeed); break;
+                    case "left": NWScript.PlayAnimation(AnimationType.FireForgetHeadTurnLeft, animSpeed); break;
+                    case "listen": NWScript.PlayAnimation(AnimationType.LoopingListen, animSpeed); break;
+                    case "lol": NWScript.PlayAnimation(AnimationType.LoopingTalkLaughing, animSpeed); break;
+                    case "look": NWScript.PlayAnimation(AnimationType.LoopingLookFar, animSpeed); break;
+                    case "low": NWScript.PlayAnimation(AnimationType.LoopingGetLow, animSpeed); break;
+                    case "meditate": NWScript.PlayAnimation(AnimationType.LoopingMeditate, animSpeed); break;
+                    case "mid": NWScript.PlayAnimation(AnimationType.LoopingGetMid, animSpeed); break;
+                    case "normal": NWScript.PlayAnimation(AnimationType.LoopingTalkNormal, animSpeed); break;
+                    case "p1": NWScript.PlayAnimation(AnimationType.LoopingPause, animSpeed); break;
+                    case "p2": NWScript.PlayAnimation(AnimationType.LoopingPause2, animSpeed); break;
+                    case "read": NWScript.PlayAnimation(AnimationType.FireForgetRead, animSpeed); break;
+                    case "right": NWScript.PlayAnimation(AnimationType.FireForgetHeadTurnRight, animSpeed); break;
+                    case "salute": NWScript.PlayAnimation(AnimationType.FireForgetSalute, animSpeed); break;
+                    case "scratch": NWScript.PlayAnimation(AnimationType.FireForgetPauseScratchHead, animSpeed); break;
+                    case "shake": NWScript.PlayAnimation(AnimationType.FireForgetSpasm, animSpeed); break;
+                    case "sit": NWScript.PlayAnimation(AnimationType.LoopingSitCross, animSpeed); break;
+                    case "spasm": NWScript.PlayAnimation(AnimationType.LoopingSpasm, animSpeed); break;
+                    case "squat": NWScript.PlayAnimation(AnimationType.LoopingSitChair, animSpeed); break;
+                    case "steal": NWScript.PlayAnimation(AnimationType.FireForgetSteal, animSpeed); break;
+                    case "taunt": NWScript.PlayAnimation(AnimationType.FireForgetTaunt, animSpeed); break;
+                    case "tired": NWScript.PlayAnimation(AnimationType.LoopingPauseTired, animSpeed); break;
+                    case "v1": NWScript.PlayAnimation(AnimationType.FireForgetVictory1, animSpeed); break;
+                    case "v2": NWScript.PlayAnimation(AnimationType.FireForgetVictory2, animSpeed); break;
+                    case "v3": NWScript.PlayAnimation(AnimationType.FireForgetVictory3, animSpeed); break;
+                    case "worship": NWScript.PlayAnimation(AnimationType.LoopingWorship, animSpeed); break;
+                    default: break;
+                }
+            }
         }
 
         private static void SetVisual(uint pc, string[] chatArray)
@@ -212,7 +257,7 @@ namespace Source.ChatSystem
                 BiowareXP2.IPSafeAddItemProperty(item, type, 0.0f, AddItemPropertyPolicy.ReplaceExisting, true, true);
             }
         }
-        
+
         private static void SetAlignment(uint pc, string[] chatArray)
         {
             switch (chatArray[1])
