@@ -1,8 +1,13 @@
+using System.Diagnostics;
 using System;
 using System.Text;
 using NWN.Framework.Lite;
+using NWN.Framework.Lite.Bioware;
 using NWN.Framework.Lite.Enum;
 using NWN.Framework.Lite.NWNX;
+using ItemProperty = NWN.Framework.Lite.ItemProperty;
+using System.Globalization;
+using Effect = NWN.Framework.Lite.Effect;
 
 namespace Source.ChatSystem
 {
@@ -71,55 +76,55 @@ namespace Source.ChatSystem
                     SetArmBone(pc);
                     break;
                 case "armskin":
-                    SetArmNormal(chat);
+                    SetArmNormal(pc);
                     break;
                 case "!":
-                    Emote(chat, chatArray);
+                    Emote(pc, chatArray);
                     break;
                 case "head":
-                    SetHead(chat, chatArray);
+                    SetHead(pc, chatArray);
                     break;
                 case "portrait":
-                    SetPortrait(chat, chatArray);
+                    SetPortrait(pc, chatArray);
                     break;
                 case "voice":
-                    SetVoice(chat, chatArray);
+                    SetVoice(pc, chatArray);
                     break;
                 case "skin":
-                    SetSkin(chat, chatArray);
+                    SetSkin(pc, chatArray);
                     break;
                 case "hair":
-                    SetHair(chat, chatArray);
+                    SetHair(pc, chatArray);
                     break;
                 case "tattoocolor1":
-                    SetTattooColor1(chat, chatArray);
+                    SetTattooColor1(pc, chatArray);
                     break;
                 case "tattoocolor2":
-                    SetTattooColor2(chat, chatArray);
+                    SetTattooColor2(pc, chatArray);
                     break;
                 case "tail":
-                    SetTail(chat, chatArray);
+                    SetTail(pc, chatArray);
                     break;
                 case "wings":
-                    SetWings(chat, chatArray);
+                    SetWings(pc, chatArray);
                     break;
                 case "alignment":
-                    SetAlignment(chat, chatArray);
+                    SetAlignment(pc, chatArray);
                     break;
                 case "resetlevel":
-                    ResetLevel(chat, chatArray);
+                    ResetLevel(pc, chatArray);
                     break;
                 case "roll":
-                    RollDice(chat, chatArray);
+                    RollDice(pc, chatArray);
                     break;
                 case "status":
-                    SetStatus(chat, chatArray);
+                    SetStatus(pc, chatArray);
                     break;
                 case "eyes":
-                    SetEyes(chat, chatArray);
+                    SetEyes(pc, chatArray);
                     break;
                 case "visual":
-                    SetVisual(chat, chatArray);
+                    SetVisual(pc, chatArray);
                     break;
                 case "lfg":
                     NWScript.SpeakString($"{NWScript.GetName(pc)} is looking for a party!", TalkVolumeType.Shout);
@@ -135,9 +140,324 @@ namespace Source.ChatSystem
             }
         }
 
+        private static void SetEyes(uint pc, string[] chatArray)
+        {
+            string color = chatArray[1];
+            VisualEffectType eyeColor;
+            GenderType gender = NWScript.GetGender(pc);
+
+            switch (color)
+            {
+                case "cyan":
+                    {
+                        switch (NWScript.GetRacialType(pc))
+                        {
+                            case RacialType.Dwarf: break;
+                            case RacialType.Elf: break;
+                            case RacialType.Gnome: break;
+                            case RacialType.Halfelf: break;
+                            case RacialType.Halfling: break;
+                            case RacialType.Halforc: break;
+                            case RacialType.Human: break;
+                        }
+                    }
+                    break;
+                case "green": break;
+                case "orange": break;
+                case "purple": break;
+                case "red": break;
+                case "white": break;
+                case "yellow": break;
+                default: break;
+            }
+        }
+
+        private static void SetStatus(uint pc, string[] chatArray)
+        {
+            if (chatArray[1].Equals("like") || chatArray[1].Equals("dislike"))
+            {
+                uint player = NWScript.GetFirstPC();
+
+                while (NWScript.GetIsObjectValid(player))
+                {
+                    if (chatArray[1].Equals("like"))
+                    {
+                        NWScript.SetPCLike(pc, player);
+                    }
+                    else if (chatArray[1].Equals("dislike"))
+                    {
+                        NWScript.SetPCDislike(pc, player);
+                    }
+                }
+            }
+            else
+            {
+                NWScript.SendMessageToPC(pc, $"Cannot reset status to {chatArray}.");
+                throw new ArgumentException($"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to reset status to {chatArray}.");
+            }
+        }
+
+        private static void ResetLevel(uint pc, string[] chatArray)
+        {
+            if (chatArray[1].Equals("one"))
+            {
+                int hd = NWScript.GetHitDice(pc);
+                NWScript.SetXP(pc, (hd * (hd - 1) / 2 * 1000) - 1);
+            }
+            else if (chatArray[1].Equals("all"))
+            {
+                int xp = NWScript.GetXP(pc);
+                NWScript.SetXP(pc, 0);
+                NWScript.DelayCommand(1.0f, () => NWScript.SetXP(pc, xp));
+            }
+            else
+            {
+                NWScript.SendMessageToPC(pc, $"Cannot reset levels to {chatArray}.");
+                throw new ArgumentException($"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed reset levels to {chatArray}.");
+            }
+        }
+
+        private static void Emote(uint pc, string[] chatArray)
+        {
+            if (float.TryParse(chatArray[2].ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out float animSpeed))
+            {
+                switch (chatArray[1])
+                {
+                    case "back": NWScript.PlayAnimation(AnimationType.LoopingDeadBack, animSpeed); break;
+                    case "beg": NWScript.PlayAnimation(AnimationType.LoopingTalkPleading, animSpeed); break;
+                    case "bored": NWScript.PlayAnimation(AnimationType.FireForgetPauseBored, animSpeed); break;
+                    case "bow": NWScript.PlayAnimation(AnimationType.FireForgetBow, animSpeed); break;
+                    case "c1": NWScript.PlayAnimation(AnimationType.LoopingConjure1, animSpeed); break;
+                    case "c2": NWScript.PlayAnimation(AnimationType.LoopingConjure2, animSpeed); break;
+                    case "dodge": NWScript.PlayAnimation(AnimationType.FireForgetDodgeSide, animSpeed); break;
+                    case "drink": NWScript.PlayAnimation(AnimationType.FireForgetDrink, animSpeed); break;
+                    case "drunk": NWScript.PlayAnimation(AnimationType.LoopingPauseDrunk, animSpeed); break;
+                    case "duck": NWScript.PlayAnimation(AnimationType.FireForgetDodgeDuck, animSpeed); break;
+                    case "forceful": NWScript.PlayAnimation(AnimationType.LoopingTalkForceful, animSpeed); break;
+                    case "front": NWScript.PlayAnimation(AnimationType.LoopingDeadFront, animSpeed); break;
+                    case "greet": NWScript.PlayAnimation(AnimationType.FireForgetGreeting, animSpeed); break;
+                    case "left": NWScript.PlayAnimation(AnimationType.FireForgetHeadTurnLeft, animSpeed); break;
+                    case "listen": NWScript.PlayAnimation(AnimationType.LoopingListen, animSpeed); break;
+                    case "lol": NWScript.PlayAnimation(AnimationType.LoopingTalkLaughing, animSpeed); break;
+                    case "look": NWScript.PlayAnimation(AnimationType.LoopingLookFar, animSpeed); break;
+                    case "low": NWScript.PlayAnimation(AnimationType.LoopingGetLow, animSpeed); break;
+                    case "meditate": NWScript.PlayAnimation(AnimationType.LoopingMeditate, animSpeed); break;
+                    case "mid": NWScript.PlayAnimation(AnimationType.LoopingGetMid, animSpeed); break;
+                    case "normal": NWScript.PlayAnimation(AnimationType.LoopingTalkNormal, animSpeed); break;
+                    case "p1": NWScript.PlayAnimation(AnimationType.LoopingPause, animSpeed); break;
+                    case "p2": NWScript.PlayAnimation(AnimationType.LoopingPause2, animSpeed); break;
+                    case "read": NWScript.PlayAnimation(AnimationType.FireForgetRead, animSpeed); break;
+                    case "right": NWScript.PlayAnimation(AnimationType.FireForgetHeadTurnRight, animSpeed); break;
+                    case "salute": NWScript.PlayAnimation(AnimationType.FireForgetSalute, animSpeed); break;
+                    case "scratch": NWScript.PlayAnimation(AnimationType.FireForgetPauseScratchHead, animSpeed); break;
+                    case "shake": NWScript.PlayAnimation(AnimationType.FireForgetSpasm, animSpeed); break;
+                    case "sit": NWScript.PlayAnimation(AnimationType.LoopingSitCross, animSpeed); break;
+                    case "spasm": NWScript.PlayAnimation(AnimationType.LoopingSpasm, animSpeed); break;
+                    case "squat": NWScript.PlayAnimation(AnimationType.LoopingSitChair, animSpeed); break;
+                    case "steal": NWScript.PlayAnimation(AnimationType.FireForgetSteal, animSpeed); break;
+                    case "taunt": NWScript.PlayAnimation(AnimationType.FireForgetTaunt, animSpeed); break;
+                    case "tired": NWScript.PlayAnimation(AnimationType.LoopingPauseTired, animSpeed); break;
+                    case "v1": NWScript.PlayAnimation(AnimationType.FireForgetVictory1, animSpeed); break;
+                    case "v2": NWScript.PlayAnimation(AnimationType.FireForgetVictory2, animSpeed); break;
+                    case "v3": NWScript.PlayAnimation(AnimationType.FireForgetVictory3, animSpeed); break;
+                    case "worship": NWScript.PlayAnimation(AnimationType.LoopingWorship, animSpeed); break;
+                    default: break;
+                }
+            }
+        }
+
+        private static void SetVisual(uint pc, string[] chatArray)
+        {
+            var item = NWScript.GetItemInSlot(InventorySlotType.RightHand, pc);
+            if (NWScript.GetIsObjectValid(item))
+            {
+                BiowareXP2.IPRemoveMatchingItemProperties(item, ItemPropertyType.Visualeffect, DurationType.Permanent, -1);
+                ItemProperty type;
+
+                switch (chatArray[1])
+                {
+                    case "acid": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Acid); break;
+                    case "cold": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Cold); break;
+                    case "electric": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Electrical); break;
+                    case "evil": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Evil); break;
+                    case "fire": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Fire); break;
+                    case "holy": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Holy); break;
+                    case "sonic": type = NWScript.ItemPropertyVisualEffect(ItemVisualType.Sonic); break;
+                    default:
+                        NWScript.SendMessageToPC(pc, $"Cannot set weapon visual to {chatArray}.");
+                        throw new ArgumentException($"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to set weapon visual to {chatArray}.");
+                }
+
+                BiowareXP2.IPSafeAddItemProperty(item, type, 0.0f, AddItemPropertyPolicy.ReplaceExisting, true, true);
+            }
+        }
+
+        private static void SetAlignment(uint pc, string[] chatArray)
+        {
+            switch (chatArray[1])
+            {
+                case "chaotic": NWScript.AdjustAlignment(pc, AlignmentType.Chaotic, 100, false); break;
+                case "evil": NWScript.AdjustAlignment(pc, AlignmentType.Evil, 100, false); break;
+                case "good": NWScript.AdjustAlignment(pc, AlignmentType.Good, 100, false); break;
+                case "lawful": NWScript.AdjustAlignment(pc, AlignmentType.Lawful, 100, false); break;
+                case "neutral": NWScript.AdjustAlignment(pc, AlignmentType.Neutral, 100, false); break;
+                default:
+                    NWScript.SendMessageToPC(pc, $"Cannot change alignment to {chatArray}."); break;
+            }
+        }
+
+        private static void SetWings(uint pc, string[] chatArray)
+        {
+            switch (chatArray[1])
+            {
+                case "angel": NWScript.SetCreatureWingType(CreatureWingType.Angel, pc); break;
+                case "bat": NWScript.SetCreatureWingType(CreatureWingType.Bat, pc); break;
+                case "bird": NWScript.SetCreatureWingType(CreatureWingType.Bird, pc); break;
+                case "butterfly": NWScript.SetCreatureWingType(CreatureWingType.Butterfly, pc); break;
+                case "demon": NWScript.SetCreatureWingType(CreatureWingType.Demon, pc); break;
+                case "dragon": NWScript.SetCreatureWingType(CreatureWingType.Dragon, pc); break;
+                default:
+                    NWScript.SendMessageToPC(pc, $"Cannot change wings to {chatArray}."); break;
+            }
+        }
+
+        private static void SetTail(uint pc, string[] chatArray)
+        {
+            switch (chatArray[1])
+            {
+                case "bone": NWScript.SetCreatureTailType(CreatureTailType.Bone, pc); break;
+                case "devil": NWScript.SetCreatureTailType(CreatureTailType.Bone, pc); break;
+                case "lizard": NWScript.SetCreatureTailType(CreatureTailType.Bone, pc); break;
+                default:
+                    NWScript.SendMessageToPC(pc, $"Cannot change tail to {chatArray}."); break;
+            }
+        }
+
+        private static void RollDice(uint pc, string[] chatArray)
+        {
+            _ = int.TryParse(chatArray[1], out int n);
+            try
+            {
+                int dice = Module.Random.Next(1, n);
+                NWScript.SpeakString($"{NWScript.GetName(pc)} rolled a d{n} and got {dice}.", TalkVolumeType.Shout);
+            }
+            catch (Exception e)
+            {
+                NWScript.SendMessageToPC(pc, $"Cannot roll dice with {chatArray}.");
+                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to roll dice with {chatArray}.");
+            }
+        }
+
+        private static void SetTattooColor2(uint pc, string[] chatArray)
+        {
+            _ = int.TryParse(chatArray[1], out int n);
+            try
+            {
+                NWScript.SetColor(pc, ColorChannelType.Tattoo2, n);
+            }
+            catch (Exception e)
+            {
+                NWScript.SendMessageToPC(pc, $"Cannot change tattoo 2 color to {chatArray}.");
+                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change tattoo 2 color to {chatArray}.");
+            }
+        }
+
+        private static void SetTattooColor1(uint pc, string[] chatArray)
+        {
+            _ = int.TryParse(chatArray[1], out int n);
+            try
+            {
+                NWScript.SetColor(pc, ColorChannelType.Tattoo1, n);
+            }
+            catch (Exception e)
+            {
+                NWScript.SendMessageToPC(pc, $"Cannot change tattoo 1 color to {chatArray}.");
+                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change tattoo 1 color to {chatArray}.");
+            }
+        }
+
+        private static void SetHair(uint pc, string[] chatArray)
+        {
+            _ = int.TryParse(chatArray[1], out int n);
+            try
+            {
+                NWScript.SetColor(pc, ColorChannelType.Hair, n);
+            }
+            catch (Exception e)
+            {
+                NWScript.SendMessageToPC(pc, $"Cannot change hair color to {chatArray}.");
+                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change hair color to {chatArray}.");
+            }
+        }
+
+        private static void SetSkin(uint pc, string[] chatArray)
+        {
+            _ = int.TryParse(chatArray[1], out int n);
+            try
+            {
+                NWScript.SetColor(pc, ColorChannelType.Skin, n);
+            }
+            catch (Exception e)
+            {
+                NWScript.SendMessageToPC(pc, $"Cannot change skin color to {chatArray}.");
+                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change skin color to {chatArray}.");
+            }
+        }
+
+        private static void SetVoice(uint pc, string[] chatArray)
+        {
+            _ = int.TryParse(chatArray[1], out int n);
+            try
+            {
+                Creature.SetSoundset(pc, n);
+            }
+            catch (Exception e)
+            {
+                NWScript.SendMessageToPC(pc, $"Cannot change soundset to {chatArray}.");
+                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change soundset to {chatArray}.");
+            }
+        }
+
+        private static void SetPortrait(uint pc, string[] chatArray)
+        {
+            _ = int.TryParse(chatArray[1], out int n);
+            try
+            {
+                NWScript.SetPortraitId(pc, n);
+            }
+            catch (Exception e)
+            {
+                NWScript.SendMessageToPC(pc, $"Cannot change portrait to {chatArray}.");
+                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change portrait to {chatArray}.");
+            }
+        }
+
+        private static void SetHead(uint pc, string[] chatArray)
+        {
+            _ = int.TryParse(chatArray[1], out int n);
+            try
+            {
+                NWScript.SetCreatureBodyPart(CreaturePartType.Head, n, pc);
+            }
+            catch (Exception e)
+            {
+                NWScript.SendMessageToPC(pc, $"Cannot change head to {chatArray}.");
+                throw new ArgumentException($"Exception:{e.GetType()} | Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change head to {chatArray}.");
+            }
+        }
+
+        private static void SetArmNormal(uint pc)
+        {
+            NWScript.SetCreatureBodyPart(CreaturePartType.LeftBicep, (int)CreatureModelType.Skin, pc);
+            NWScript.SetCreatureBodyPart(CreaturePartType.LeftForearm, (int)CreatureModelType.Skin, pc);
+            NWScript.SetCreatureBodyPart(CreaturePartType.LeftHand, (int)CreatureModelType.Skin, pc);
+        }
+
         private static void SetArmBone(uint pc)
         {
             NWScript.SetCreatureBodyPart(CreaturePartType.LeftBicep, (int)CreatureModelType.Undead, pc);
+            NWScript.SetCreatureBodyPart(CreaturePartType.LeftForearm, (int)CreatureModelType.Undead, pc);
+            NWScript.SetCreatureBodyPart(CreaturePartType.LeftHand, (int)CreatureModelType.Undead, pc);
         }
     }
 }
