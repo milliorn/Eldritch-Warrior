@@ -429,15 +429,13 @@ namespace Source.ChatSystem
 
         private static void SetEyes(uint pc, string[] chatArray)
         {
-            string color = chatArray[1];
-            RacialType race = NWScript.GetRacialType(pc);
-
-            switch (color)
+            switch (chatArray[1])
             {
                 case "cyan": NWScript.ApplyEffectToObject(DurationType.Permanent, SetEyesCyan(pc), pc); break;
                 case "green": NWScript.ApplyEffectToObject(DurationType.Permanent, SetEyesGreen(pc), pc); break;
                 case "orange": NWScript.ApplyEffectToObject(DurationType.Permanent, SetEyesOrange(pc), pc); break;
                 case "purple": NWScript.ApplyEffectToObject(DurationType.Permanent, SetEyesPurple(pc), pc); break;
+                case "red": NWScript.ApplyEffectToObject(DurationType.Permanent, SetEyesRed(pc), pc); break;
                 case "white": NWScript.ApplyEffectToObject(DurationType.Permanent, SetEyesWhite(pc), pc); break;
                 case "yellow": NWScript.ApplyEffectToObject(DurationType.Permanent, SetEyesYellow(pc), pc); break;
                 default: break;
@@ -697,6 +695,49 @@ namespace Source.ChatSystem
             {
                 NWScript.SendMessageToPC(pc, $"Invalid Race {race}. SetEyesGreen.");
                 throw new ArgumentException($"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change SetEyesGreen. Invalid race {race}.");
+            }
+
+            return eyeColor;
+        }
+
+        private static Effect SetEyesRed(uint pc)
+        {
+            Effect eyeColor;
+            GenderType gender = NWScript.GetGender(pc);
+            RacialType race = NWScript.GetRacialType(pc);
+
+            if (race == RacialType.Dwarf)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Red_Flame_Dwarf_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Red_Flame_Dwarf_Male);
+            }
+            else if (race == RacialType.Elf)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Red_Flame_Elf_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Red_Flame_Elf_Male);
+            }
+            else if (race == RacialType.Gnome)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Red_Flame_Gnome_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Red_Flame_Gnome_Male);
+            }
+            else if (race == RacialType.Halfelf)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Red_Flame_Troglodyte) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Red_Flame_Troglodyte);
+            }
+            else if (race == RacialType.Halfling)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Red_Flame_Halfling_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Red_Flame_Halfling_Male);
+            }
+            else if (race == RacialType.Halforc)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Red_Flame_Halforc_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Red_Flame_Halforc_Male);
+            }
+            else if (race == RacialType.Human)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Red_Flame_Human_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Red_Flame_Human_Male);
+            }
+            else
+            {
+                NWScript.SendMessageToPC(pc, $"Invalid Race {race}. SetEyesRed.");
+                throw new ArgumentException($"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change SetEyesRed. Invalid race {race}.");
             }
 
             return eyeColor;
