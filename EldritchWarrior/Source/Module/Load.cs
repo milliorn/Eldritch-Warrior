@@ -5,7 +5,7 @@ using NWN.Framework.Lite.Enum;
 using NWN.Framework.Lite.NWNX;
 using NWN.Framework.Lite.NWNX.Enum;
 
-namespace Source.Module
+namespace EldritchWarrior.Source.Module
 {
     public class Load
     {
@@ -80,50 +80,12 @@ namespace Source.Module
             {
                 if (!NWScript.GetIsAreaInterior(area))
                 {
-                    InitFog(area);
-                    InitSkyboxes(area);
-                    InitSunMoonColors(area);
-                    InitArea(area);
+                    area.InitFog();
+                    area.InitSkyboxes();
+                    area.InitSunMoonColors();
+                    area.InitArea();
                 }
                 area = NWScript.GetNextArea();
-            }
-        }
-
-        private static void InitArea(uint area)
-        {
-            Area.SetWindPower(area, Random.Next(2));
-            Area.SetWeatherChance(area, (WeatherEffectType)Random.Next(2), Random.Next(100));
-            Area.SetShadowOpacity(area, Random.Next(100));
-        }
-
-        private static void InitSunMoonColors(uint area)
-        {
-            Area.SetSunMoonColors(area, ColorType.MoonAmbient, Random.Next(16));
-            Area.SetSunMoonColors(area, ColorType.MoonDiffuse, Random.Next(16));
-            Area.SetSunMoonColors(area, ColorType.SunAmbient, Random.Next(16));
-            Area.SetSunMoonColors(area, ColorType.SunDiffuse, Random.Next(16));
-        }
-
-        private static void InitFog(uint area)
-        {
-            NWScript.SetFogAmount(FogType.All, Random.Next(12), area);
-            NWScript.SetFogColor(FogType.All, (FogColorType)Random.Next(16), area);
-        }
-
-        private static void InitSkyboxes(uint area)
-        {
-            if (NWScript.GetSkyBox(area) == SkyboxType.None)
-            {
-                NWScript.SetSkyBox((SkyboxType)Random.Next(4));
-
-                if (NWScript.GetSkyBox(area) == SkyboxType.GrassStorm)
-                {
-                    NWScript.SetWeather(area, WeatherType.Rain);
-                }
-                if (NWScript.GetSkyBox(area) == SkyboxType.Icy)
-                {
-                    NWScript.SetWeather(area, WeatherType.Snow);
-                }
             }
         }
 
