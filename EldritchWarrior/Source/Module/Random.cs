@@ -1,4 +1,4 @@
-namespace Source.Module
+namespace EldritchWarrior.Source.Module
 {
     public static class Random
     {

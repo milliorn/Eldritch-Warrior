@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Source.Schedule
+namespace EldritchWarrior.Source.Schedule
 {
     internal class ScheduledItem : IDisposable
     {

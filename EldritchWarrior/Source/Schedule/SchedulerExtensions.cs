@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Source.Schedule
+namespace EldritchWarrior.Source.Schedule
 {
     public static class CollectionExtensions
     {

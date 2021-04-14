@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Source.Module
+namespace EldritchWarrior.Source.Module
 {
     public static class Delay
     {

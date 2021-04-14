@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Source.Schedule
+namespace EldritchWarrior.Source.Schedule
 {
     public static class Scheduler
     {
