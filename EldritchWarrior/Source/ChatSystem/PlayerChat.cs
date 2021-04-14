@@ -566,8 +566,8 @@ namespace Source.ChatSystem
             }
             else
             {
-                NWScript.SendMessageToPC(pc, $"Invalid Race {race}. SetEyesOrange.");
-                throw new ArgumentException($"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change SetEyesOrange. Invalid race {race}.");
+                NWScript.SendMessageToPC(pc, $"Invalid Race {race}. SetEyesPurple.");
+                throw new ArgumentException($"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change SetEyesPurple. Invalid race {race}.");
             }
 
             return eyeColor;
@@ -609,8 +609,8 @@ namespace Source.ChatSystem
             }
             else
             {
-                NWScript.SendMessageToPC(pc, $"Invalid Race {race}. SetEyesOrange.");
-                throw new ArgumentException($"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change SetEyesOrange. Invalid race {race}.");
+                NWScript.SendMessageToPC(pc, $"Invalid Race {race}. SetEyesWhite.");
+                throw new ArgumentException($"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change SetEyesWhite. Invalid race {race}.");
             }
 
             return eyeColor;
@@ -652,8 +652,8 @@ namespace Source.ChatSystem
             }
             else
             {
-                NWScript.SendMessageToPC(pc, $"Invalid Race {race}. SetEyesOrange.");
-                throw new ArgumentException($"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change SetEyesOrange. Invalid race {race}.");
+                NWScript.SendMessageToPC(pc, $"Invalid Race {race}. SetEyesYellow.");
+                throw new ArgumentException($"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change SetEyesYellow. Invalid race {race}.");
             }
 
             return eyeColor;
@@ -695,8 +695,8 @@ namespace Source.ChatSystem
             }
             else
             {
-                NWScript.SendMessageToPC(pc, $"Invalid Race {race}. SetEyesOrange.");
-                throw new ArgumentException($"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change SetEyesOrange. Invalid race {race}.");
+                NWScript.SendMessageToPC(pc, $"Invalid Race {race}. SetEyesGreen.");
+                throw new ArgumentException($"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change SetEyesGreen. Invalid race {race}.");
             }
 
             return eyeColor;
