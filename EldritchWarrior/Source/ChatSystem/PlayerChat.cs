@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System;
 using System.Text;
 using NWN.Framework.Lite;
@@ -78,7 +77,7 @@ namespace Source.ChatSystem
                 case "armskin":
                     SetArmNormal(pc);
                     break;
-                case "!":
+                case "*":
                     Emote(pc, chatArray);
                     break;
                 case "head":
@@ -137,64 +136,6 @@ namespace Source.ChatSystem
                     break;
                 default:
                     break;
-            }
-        }
-
-        private static void SetEyes(uint pc, string[] chatArray)
-        {
-            string color = chatArray[1];
-            RacialType race = NWScript.GetRacialType(pc);
-
-            switch (color)
-            {
-                case "cyan":
-                    {
-                        SetEyesCyan(pc);
-                    }
-                    break;
-                case "green": break;
-                case "orange": break;
-                case "purple": break;
-                case "red": break;
-                case "white": break;
-                case "yellow": break;
-                default: break;
-            }
-        }
-
-        private static void SetEyesCyan(uint pc)
-        {
-            Effect eyeColor;
-            GenderType gender = NWScript.GetGender(pc);
-            RacialType race = NWScript.GetRacialType(pc);
-
-            if (race == RacialType.Dwarf)
-            {
-                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Dwarf_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Dwarf_Male);
-            }
-            else if (race == RacialType.Elf)
-            {
-                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Elf_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Elf_Male);
-            }
-            else if (race == RacialType.Gnome)
-            {
-                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Gnome_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Gnome_Male);
-            }
-            else if (race == RacialType.Halfelf)
-            {
-                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Troglodyte) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Troglodyte);
-            }
-            else if (race == RacialType.Halfling)
-            {
-                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Halfling_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Halfling_Male);
-            }
-            else if (race == RacialType.Halforc)
-            {
-                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Halforc_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Halforc_Male);
-            }
-            else if (race == RacialType.Human)
-            {
-                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Human_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Human_Male);
             }
         }
 
@@ -484,6 +425,61 @@ namespace Source.ChatSystem
             NWScript.SetCreatureBodyPart(CreaturePartType.LeftBicep, (int)CreatureModelType.Undead, pc);
             NWScript.SetCreatureBodyPart(CreaturePartType.LeftForearm, (int)CreatureModelType.Undead, pc);
             NWScript.SetCreatureBodyPart(CreaturePartType.LeftHand, (int)CreatureModelType.Undead, pc);
+        }
+
+        private static void SetEyes(uint pc, string[] chatArray)
+        {
+            string color = chatArray[1];
+            RacialType race = NWScript.GetRacialType(pc);
+
+            switch (color)
+            {
+                case "cyan": NWScript.ApplyEffectToObject(DurationType.Permanent, SetEyesCyan(pc), pc); break;
+                default: break;
+            }
+        }
+
+        private static Effect SetEyesCyan(uint pc)
+        {
+            Effect eyeColor;
+            GenderType gender = NWScript.GetGender(pc);
+            RacialType race = NWScript.GetRacialType(pc);
+
+            if (race == RacialType.Dwarf)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Dwarf_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Dwarf_Male);
+            }
+            else if (race == RacialType.Elf)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Elf_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Elf_Male);
+            }
+            else if (race == RacialType.Gnome)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Gnome_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Gnome_Male);
+            }
+            else if (race == RacialType.Halfelf)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Troglodyte) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Troglodyte);
+            }
+            else if (race == RacialType.Halfling)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Halfling_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Halfling_Male);
+            }
+            else if (race == RacialType.Halforc)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Halforc_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Halforc_Male);
+            }
+            else if (race == RacialType.Human)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Human_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Cyn_Human_Male);
+            }
+            else
+            {
+                NWScript.SendMessageToPC(pc, $"Invalid Race {race}. SetEyesCyan.");
+                throw new ArgumentException($"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change SetEyesCyan. Invalid race {race}.");
+            }
+
+            return eyeColor;
         }
     }
 }
