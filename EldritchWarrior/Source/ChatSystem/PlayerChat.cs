@@ -438,7 +438,7 @@ namespace Source.ChatSystem
                 case "orange": NWScript.ApplyEffectToObject(DurationType.Permanent, SetEyesOrange(pc), pc); break;
                 case "purple": NWScript.ApplyEffectToObject(DurationType.Permanent, SetEyesPurple(pc), pc); break;
                 case "white": NWScript.ApplyEffectToObject(DurationType.Permanent, SetEyesWhite(pc), pc); break;
-
+                case "yellow": NWScript.ApplyEffectToObject(DurationType.Permanent, SetEyesYellow(pc), pc); break;
                 default: break;
             }
         }
@@ -605,6 +605,49 @@ namespace Source.ChatSystem
             else if (race == RacialType.Human)
             {
                 eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Wht_Human_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Wht_Human_Male);
+            }
+            else
+            {
+                NWScript.SendMessageToPC(pc, $"Invalid Race {race}. SetEyesOrange.");
+                throw new ArgumentException($"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} failed to change SetEyesOrange. Invalid race {race}.");
+            }
+
+            return eyeColor;
+        }
+
+        private static Effect SetEyesYellow(uint pc)
+        {
+            Effect eyeColor;
+            GenderType gender = NWScript.GetGender(pc);
+            RacialType race = NWScript.GetRacialType(pc);
+
+            if (race == RacialType.Dwarf)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Yel_Dwarf_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Yel_Dwarf_Male);
+            }
+            else if (race == RacialType.Elf)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Yel_Elf_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Yel_Elf_Male);
+            }
+            else if (race == RacialType.Gnome)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Yel_Gnome_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Yel_Gnome_Male);
+            }
+            else if (race == RacialType.Halfelf)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Yel_Troglodyte) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Yel_Troglodyte);
+            }
+            else if (race == RacialType.Halfling)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Yel_Halfling_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Yel_Halfling_Male);
+            }
+            else if (race == RacialType.Halforc)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Yel_Halforc_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Yel_Halforc_Male);
+            }
+            else if (race == RacialType.Human)
+            {
+                eyeColor = gender == GenderType.Female ? NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Yel_Human_Female) : NWScript.EffectVisualEffect(VisualEffectType.Vfx_Eyes_Yel_Human_Male);
             }
             else
             {
