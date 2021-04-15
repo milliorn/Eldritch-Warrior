@@ -1,4 +1,6 @@
 using NWN.Framework.Lite;
+using NWN.Framework.Lite.Bioware;
+using NWN.Framework.Lite.Enum;
 
 namespace EldritchWarrior.Source.Items
 {
@@ -12,6 +14,7 @@ namespace EldritchWarrior.Source.Items
             var acquired = NWScript.GetModuleItemAcquired();
 
             from.PrintGPValue();
+            BiowareXP2.IPRemoveAllItemProperties(acquired, DurationType.Temporary);
         }
     }
 }
