@@ -7,7 +7,11 @@ namespace EldritchWarrior.Source.Items
         [ScriptHandler("x2_mod_def_aqu")]
         public static void OnAcquireItem()
         {
+            var acquiredBy = NWScript.GetModuleItemAcquiredBy();
+            var from = NWScript.GetModuleItemAcquiredFrom();
+            var acquired = NWScript.GetModuleItemAcquired();
 
+            from.PrintGPValue();
         }
     }
 }
