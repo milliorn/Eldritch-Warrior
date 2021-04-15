@@ -9,8 +9,8 @@ namespace EldritchWarrior.Source.Items
         [ScriptHandler("x2_mod_def_unaqu")]
         public static void OnUnAcquireItem()
         {
-            var unAcquired = NWScript.GetModuleItemLost();
-            var unAcquiredBy = NWScript.GetModuleItemLostBy();
+            uint unAcquired = NWScript.GetModuleItemLost();
+            uint unAcquiredBy = NWScript.GetModuleItemLostBy();
 
             unAcquired.PrintGPValue();
             BiowareXP2.IPRemoveAllItemProperties(unAcquired, DurationType.Temporary);
