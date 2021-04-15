@@ -15,6 +15,8 @@ namespace EldritchWarrior.Source.Items
             uint from = NWScript.GetModuleItemAcquiredFrom();
 
             string name = NWScript.GetName(acquired);
+            string byName = NWScript.GetName(by);
+            string fromName = NWScript.GetName(from);
 
             from.PrintGPValue();
             BiowareXP2.IPRemoveAllItemProperties(acquired, DurationType.Temporary);
@@ -25,13 +27,12 @@ namespace EldritchWarrior.Source.Items
 
             if (String.IsNullOrEmpty(name))
             {
-                by.SendMessageToAllPartyWithinDistance($"{name} acquired {NWScript.GetItemStackSize(acquired)} Gold Pieces.", 40.0f);
+                by.SendMessageToAllPartyWithinDistance($"{byName} acquired Gold Pieces.", 40.0f);
+                return;
             }
 
             //Stop spam to combat log upon login
-            if (from == NWScript.OBJECT_INVALID) return;
-
-            by.SendMessageToAllPartyWithinDistance($"{name} acquired {NWScript.GetBaseItemType(acquired)}.", 40.0f);
+            by.SendMessageToAllPartyWithinDistance($"{byName} acquired {name}.", 40.0f);
         }
     }
 }
