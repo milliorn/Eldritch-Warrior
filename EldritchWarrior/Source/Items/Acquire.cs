@@ -15,6 +15,10 @@ namespace EldritchWarrior.Source.Items
 
             from.PrintGPValue();
             BiowareXP2.IPRemoveAllItemProperties(acquired, DurationType.Temporary);
+
+            if (NWScript.GetIsDM(acquiredBy)) return;
+
+            
         }
     }
 }
