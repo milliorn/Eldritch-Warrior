@@ -16,7 +16,6 @@ namespace EldritchWarrior.Source.Items
 
             string name = NWScript.GetName(acquired);
             string byName = NWScript.GetName(by);
-            string fromName = NWScript.GetName(from);
 
             from.PrintGPValue();
             BiowareXP2.IPRemoveAllItemProperties(acquired, DurationType.Temporary);
