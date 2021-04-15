@@ -1,3 +1,4 @@
+using System;
 using NWN.Framework.Lite;
 using NWN.Framework.Lite.Bioware;
 using NWN.Framework.Lite.Enum;
@@ -13,12 +14,19 @@ namespace EldritchWarrior.Source.Items
             uint by = NWScript.GetModuleItemAcquiredBy();
             uint from = NWScript.GetModuleItemAcquiredFrom();
 
+            string name = NWScript.GetName(acquired);
+
             from.PrintGPValue();
             BiowareXP2.IPRemoveAllItemProperties(acquired, DurationType.Temporary);
 
             if (NWScript.GetIsDM(by)) return;
 
             by.BarterFix(from);
+
+            if (String.IsNullOrEmpty(name))
+            {
+                
+            }
         }
     }
 }

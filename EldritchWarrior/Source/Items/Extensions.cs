@@ -20,5 +20,20 @@ namespace EldritchWarrior.Source.Items
                 //Execute Shifter code ws_saveall_sub
             }
         }
+
+        public static void SendMessageToAllPartyWithinDistance(this uint by, string message, float distance)
+        { 
+            uint factionMember = NWScript.GetFirstFactionMember(by);
+            uint area = NWScript.GetArea(by);
+
+            while(NWScript.GetIsObjectValid(factionMember))
+            {
+                if(NWScript.GetArea(factionMember) == area && NWScript.GetDistanceBetween(by, factionMember) <= distance)
+                {
+                    NWScript.FloatingTextStringOnCreature(message, factionMember);
+                }
+                factionMember = NWScript.GetNextFactionMember(by);
+            }
+        }
     }
 }
