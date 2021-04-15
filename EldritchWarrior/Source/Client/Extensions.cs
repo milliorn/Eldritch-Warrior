@@ -32,6 +32,18 @@ namespace EldritchWarrior.Source.Client
             NWScript.SpeakString($"\nLOGIN:{colorString}", TalkVolumeType.Shout);
         }
 
+        public static void VerifyDMLogin(this uint enter)
+        {
+            if (Module.Extensions.DMList.ContainsKey(NWScript.GetPCPublicCDKey(enter)))
+            {
+                NWScript.SendMessageToAllDMs("Entering DM ID VERIFIED.");
+            }
+            else
+            {
+                NWScript.SendMessageToAllDMs("Entering DM ID DENIED.");
+            }
+        }
+
         /* Google list of explicit words */
         public static IList<string> WordFilter => new List<string>
         {
