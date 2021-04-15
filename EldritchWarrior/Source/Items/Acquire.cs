@@ -25,8 +25,11 @@ namespace EldritchWarrior.Source.Items
 
             if (String.IsNullOrEmpty(name))
             {
-                
+                by.SendMessageToAllPartyWithinDistance($"{name} acquired {NWScript.GetItemStackSize(acquired)} Gold Pieces.", 40.0f);
             }
+
+            //Stop spam to combat log upon login
+            if (from == NWScript.OBJECT_INVALID) return;
         }
     }
 }
