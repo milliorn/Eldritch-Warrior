@@ -30,6 +30,8 @@ namespace EldritchWarrior.Source.Items
 
             //Stop spam to combat log upon login
             if (from == NWScript.OBJECT_INVALID) return;
+
+            by.SendMessageToAllPartyWithinDistance($"{name} acquired {NWScript.GetBaseItemType(acquired)}.", 40.0f);
         }
     }
 }
