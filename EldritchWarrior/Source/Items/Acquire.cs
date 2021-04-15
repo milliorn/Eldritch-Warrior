@@ -9,9 +9,9 @@ namespace EldritchWarrior.Source.Items
         [ScriptHandler("x2_mod_def_aqu")]
         public static void OnAcquireItem()
         {
-            var acquiredBy = NWScript.GetModuleItemAcquiredBy();
-            var from = NWScript.GetModuleItemAcquiredFrom();
-            var acquired = NWScript.GetModuleItemAcquired();
+            uint acquiredBy = NWScript.GetModuleItemAcquiredBy();
+            uint from = NWScript.GetModuleItemAcquiredFrom();
+            uint acquired = NWScript.GetModuleItemAcquired();
 
             from.PrintGPValue();
             BiowareXP2.IPRemoveAllItemProperties(acquired, DurationType.Temporary);
