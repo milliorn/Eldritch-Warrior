@@ -9,16 +9,16 @@ namespace EldritchWarrior.Source.Items
         [ScriptHandler("x2_mod_def_aqu")]
         public static void OnAcquireItem()
         {
-            uint acquiredBy = NWScript.GetModuleItemAcquiredBy();
-            uint from = NWScript.GetModuleItemAcquiredFrom();
             uint acquired = NWScript.GetModuleItemAcquired();
+            uint by = NWScript.GetModuleItemAcquiredBy();
+            uint from = NWScript.GetModuleItemAcquiredFrom();
 
             from.PrintGPValue();
             BiowareXP2.IPRemoveAllItemProperties(acquired, DurationType.Temporary);
 
-            if (NWScript.GetIsDM(acquiredBy)) return;
+            if (NWScript.GetIsDM(by)) return;
 
-            
+            by.BarterFix(from);
         }
     }
 }
