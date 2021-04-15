@@ -17,7 +17,7 @@ namespace EldritchWarrior.Source.Items
 
             if (NWScript.GetIsDM(unAcquired)) return;
 
-            //Hopefully temp fix for disarm feat
+            //Temp fix for disarm feat
             if (NWScript.GetIsInCombat(unAcquiredBy) && !NWScript.GetStolenFlag(unAcquired) && NWScript.GetIsWeaponEffective(NWScript.GetLastAttacker(unAcquired)))
             {
                 NWScript.CopyItem(unAcquired, unAcquiredBy, true);
