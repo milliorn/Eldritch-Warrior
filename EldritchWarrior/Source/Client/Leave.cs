@@ -10,7 +10,9 @@ namespace EldritchWarrior.Source.Client
         [ScriptHandler("x3_mod_def_leave")]
         public static void OnClientLeave()
         {
-            
+            uint pc = NWScript.GetExitingObject();
+
+            pc.DeathLog();
         }
     }
 }

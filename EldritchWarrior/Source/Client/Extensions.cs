@@ -44,6 +44,13 @@ namespace EldritchWarrior.Source.Client
             }
         }
 
+        public static void DeathLog(this uint pc)
+        {
+            if (NWScript.GetIsInCombat(pc))
+            {
+                NWScript.SetCurrentHitPoints(pc, -1);
+            }
+        }
         /* Google list of explicit words */
         public static IList<string> WordFilter => new List<string>
         {
