@@ -1,6 +1,5 @@
 using System;
 using NWN.Framework.Lite;
-using NWN.Framework.Lite.Enum;
 
 namespace EldritchWarrior.Source.PC
 {
@@ -9,20 +8,29 @@ namespace EldritchWarrior.Source.PC
         [ScriptHandler("test")]
         public static void OnDying()
         {
-            
+            uint pc = NWScript.GetLastPlayerDying();
+            int stabilize = Module.Random.D10(1);
+
+            NWScript.SendMessageToPC(pc, $"Stabilize roll:{stabilize.ToString()}");
+
+            pc.Scream();
+
+            TryStabilizing(pc, stabilize);
         }
 
-        public static void Scream(uint pc)
+        private static void TryStabilizing(uint pc, int stabilize)
         {
-            Effect damage = NWScript.EffectDamage(1, DamageType.Positive, DamagePowerType.PlusTwenty);
-
-            switch (Module.Random.Next(1, 5))
+            if (NWScript.GetCurrentHitPoints(pc) <= -127)
             {
-                case 1: NWScript.PlayVoiceChat(VoiceChatType.Cuss); break;
-                case 2: NWScript.PlayVoiceChat(VoiceChatType.NearDeath); break;
-                case 3: NWScript.PlayVoiceChat(VoiceChatType.Pain1); break;
-                case 4: NWScript.PlayVoiceChat(VoiceChatType.Pain2); break;
-                case 5: NWScript.PlayVoiceChat(VoiceChatType.Pain3); break;
+                return;
+            }
+            else if (stabilize == 1)
+            {
+
+            }
+            else
+            {
+                NWScript.DelayCommand(1.0f, () => OnDying());
             }
         }
     }
