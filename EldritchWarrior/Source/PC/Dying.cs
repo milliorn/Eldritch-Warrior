@@ -1,5 +1,7 @@
+using System.Linq.Expressions;
 using System;
 using NWN.Framework.Lite;
+using NWN.Framework.Lite.Enum;
 
 namespace EldritchWarrior.Source.PC
 {
@@ -22,6 +24,7 @@ namespace EldritchWarrior.Source.PC
         {
             if (NWScript.GetCurrentHitPoints(pc) <= -127)
             {
+                pc.PlayerHasDied();
                 return;
             }
             else if (stabilize == 1)

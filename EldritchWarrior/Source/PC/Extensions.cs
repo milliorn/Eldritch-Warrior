@@ -18,5 +18,12 @@ namespace EldritchWarrior.Source.PC
                 case 5: NWScript.PlayVoiceChat(VoiceChatType.Pain3); break;
             }
         }
+
+        public static void PlayerHasDied(this uint pc)
+        {
+            NWScript.PlayVoiceChat(VoiceChatType.Death);
+            NWScript.ApplyEffectToObject(DurationType.Instant, NWScript.EffectVisualEffect(VisualEffectType.Vfx_Imp_Healing_S), pc);
+            NWScript.ApplyEffectToObject(DurationType.Instant, NWScript.EffectDeath(), pc);
+        }
     }
 }
