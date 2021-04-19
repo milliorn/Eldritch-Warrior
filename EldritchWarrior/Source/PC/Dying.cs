@@ -4,7 +4,7 @@ namespace EldritchWarrior.Source.PC
 {
     public class Dying
     {
-        [ScriptHandler("test")]
+        [ScriptHandler("nw_o0_dying")]
         public static void OnDying()
         {
             uint pc = NWScript.GetLastPlayerDying();
