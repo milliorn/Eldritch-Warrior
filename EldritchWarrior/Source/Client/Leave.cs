@@ -1,7 +1,4 @@
 using NWN.Framework.Lite;
-using NWN.Framework.Lite.NWNX;
-using NWN.Framework.Lite.Enum;
-using System;
 
 namespace EldritchWarrior.Source.Client
 {
@@ -13,6 +10,7 @@ namespace EldritchWarrior.Source.Client
             uint pc = NWScript.GetExitingObject();
 
             pc.DeathLog();
+            pc.PrintLogout();
         }
     }
 }

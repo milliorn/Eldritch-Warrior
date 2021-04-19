@@ -51,6 +51,21 @@ namespace EldritchWarrior.Source.Client
                 NWScript.SetCurrentHitPoints(pc, -1);
             }
         }
+
+        public static void PrintLogout(this uint pc)
+        {
+            string logout = $"{$"\nNAME:{NWScript.GetName(pc)}"}{$"\nID:{NWScript.GetPCPublicCDKey(pc)}"}{$"\nBIC:{Player.GetBicFileName(pc)}"}";
+
+            if (NWScript.GetIsDM(pc))
+            {
+                NWScript.SendMessageToAllDMs($"\nExiting DM:{logout}");
+            }
+            else
+            {
+                NWScript.SpeakString($"\nLOGOUT:{logout}", TalkVolumeType.Shout);
+            }
+        }
+
         /* Google list of explicit words */
         public static IList<string> WordFilter => new List<string>
         {
