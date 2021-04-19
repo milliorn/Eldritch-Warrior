@@ -65,7 +65,7 @@ namespace EldritchWarrior.Source.Client
                 NWScript.SpeakString($"\nLOGOUT:{logout}", TalkVolumeType.Shout);
             }
         }
-      
+
         /* Google list of explicit words */
         public static IList<string> WordFilter => new List<string>
         {
