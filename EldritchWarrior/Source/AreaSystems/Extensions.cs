@@ -15,24 +15,16 @@ namespace EldritchWarrior.Source.AreaSystems
                 {
                     return true;
                 }
-                objectInArea = NWScript.GetNextObjectInArea(area);
+                objectInArea = NWScript.GetNextObjectInArea();
             }
             return false;
         }
 
-        public static void DestroyAOEInArea(this uint objectInArea)
+        public static void DestroyAOE(this uint objectInArea)
         {
-            uint area = NWScript.GetArea(objectInArea);
-            while (NWScript.GetIsObjectValid(objectInArea))
-            {
-                if (Convert.ToBoolean(NWScript.GetObjectType(objectInArea) == ObjectType.AreaOfEffect))
-                {
-                    NWScript.AssignCommand(objectInArea, () => NWScript.SetIsDestroyable());
-                    NWScript.SetPlotFlag(objectInArea, false);
-                    NWScript.DestroyObject(objectInArea);
-                }
-                objectInArea = NWScript.GetNextObjectInArea(area);
-            }
+            NWScript.AssignCommand(objectInArea, () => NWScript.SetIsDestroyable());
+            NWScript.SetPlotFlag(objectInArea, false);
+            NWScript.DestroyObject(objectInArea);
         }
 
         public static void DestroyCreaturesInArea(this uint objectInArea)
@@ -40,7 +32,7 @@ namespace EldritchWarrior.Source.AreaSystems
             uint area = NWScript.GetArea(objectInArea);
             while (NWScript.GetIsObjectValid(objectInArea))
             {
-                if (Convert.ToBoolean(NWScript.GetObjectType(objectInArea) == ObjectType.Creature) && Convert.ToBoolean(NWScript.GetAssociateType(objectInArea)))
+                if (Convert.ToBoolean(NWScript.GetObjectType(objectInArea) == ObjectType.Creature))
                 {
                     if (NWScript.GetHasInventory(objectInArea))
                     {
@@ -51,7 +43,7 @@ namespace EldritchWarrior.Source.AreaSystems
                     NWScript.SetImmortal(objectInArea, false);
                     NWScript.DestroyObject(objectInArea);
                 }
-                objectInArea = NWScript.GetNextObjectInArea(area);
+                objectInArea = NWScript.GetNextObjectInArea();
             }
         }
 
@@ -85,7 +77,7 @@ namespace EldritchWarrior.Source.AreaSystems
             uint area = NWScript.GetArea(objectInArea);
             while (NWScript.GetIsObjectValid(objectInArea))
             {
-                if (Convert.ToBoolean(NWScript.GetObjectType(objectInArea) == ObjectType.Item))
+                if (NWScript.GetObjectType(objectInArea) == ObjectType.Item)
                 {
                     NWScript.AssignCommand(objectInArea, () => NWScript.SetIsDestroyable());
                     NWScript.SetPlotFlag(objectInArea, false);

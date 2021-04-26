@@ -1,4 +1,5 @@
 using NWN.Framework.Lite;
+using NWN.Framework.Lite.Enum;
 
 namespace EldritchWarrior.Source.AreaSystems
 {
@@ -11,11 +12,13 @@ namespace EldritchWarrior.Source.AreaSystems
 
             if (!objectInArea.PlayersRemainInArea())
             {
-                objectInArea.DestroyCreaturesInArea();
-                objectInArea.DestroyItemsInArea();
-                objectInArea.DestroyAOEInArea();
-                objectInArea.ResetDoors();
-                objectInArea.ResetPlaceable();
+                while (NWScript.GetIsObjectValid(objectInArea))
+                {
+                    switch(NWScript.GetObjectType(objectInArea))
+                    {
+                        case ObjectType.AreaOfEffect: objectInArea.DestroyAOE(); break;
+                    }
+                }
             }
         }
     }
