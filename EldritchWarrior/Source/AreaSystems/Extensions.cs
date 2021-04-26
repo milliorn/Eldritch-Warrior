@@ -29,7 +29,7 @@ namespace EldritchWarrior.Source.AreaSystems
                 {
                     if (NWScript.GetHasInventory(objectInArea))
                     {
-                        DestroyCreatureInventory(objectInArea);
+                        objectInArea.DestroyCreatureInventory();
                     }
                     NWScript.AssignCommand(objectInArea, () => NWScript.SetIsDestroyable());
                     NWScript.SetPlotFlag(objectInArea, false);
@@ -40,10 +40,9 @@ namespace EldritchWarrior.Source.AreaSystems
             }
         }
 
-        private static void DestroyCreatureInventory(uint objectInArea)
+        public static void DestroyCreatureInventory(this uint objectInArea)
         {
-            var itemInInventory = NWScript.GetFirstItemInInventory(objectInArea);
-
+            uint itemInInventory = NWScript.GetFirstItemInInventory(objectInArea);
             while (NWScript.GetIsObjectValid(itemInInventory))
             {
                 NWScript.AssignCommand(itemInInventory, () => NWScript.SetIsDestroyable());
@@ -59,6 +58,21 @@ namespace EldritchWarrior.Source.AreaSystems
             while (NWScript.GetIsObjectValid(objectInArea))
             {
                 if (Convert.ToBoolean(NWScript.GetObjectType(objectInArea) == ObjectType.Item))
+                {
+                    NWScript.AssignCommand(objectInArea, () => NWScript.SetIsDestroyable());
+                    NWScript.SetPlotFlag(objectInArea, false);
+                    NWScript.DestroyObject(objectInArea);
+                }
+                objectInArea = NWScript.GetNextObjectInArea(area);
+            }
+        }
+
+        public static void DestroyAOEInArea(this uint objectInArea)
+        {
+            uint area = NWScript.GetArea(objectInArea);
+            while (NWScript.GetIsObjectValid(objectInArea))
+            {
+                if (Convert.ToBoolean(NWScript.GetObjectType(objectInArea) == ObjectType.AreaOfEffect))
                 {
                     NWScript.AssignCommand(objectInArea, () => NWScript.SetIsDestroyable());
                     NWScript.SetPlotFlag(objectInArea, false);
