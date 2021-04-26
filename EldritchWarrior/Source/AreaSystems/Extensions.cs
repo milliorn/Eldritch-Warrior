@@ -6,7 +6,7 @@ namespace EldritchWarrior.Source.AreaSystems
 {
     public static class Extensions
     {
-        public static bool PlayersRemain(this uint objectInArea)
+        public static bool PlayersRemainInArea(this uint objectInArea)
         {
             uint area = NWScript.GetArea(objectInArea);
             while (NWScript.GetIsObjectValid(objectInArea))

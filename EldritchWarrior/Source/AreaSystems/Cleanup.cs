@@ -9,7 +9,7 @@ namespace EldritchWarrior.Source.AreaSystems
         {
             uint objectInArea = NWScript.GetFirstObjectInArea();
 
-            if (!objectInArea.PlayersRemain())
+            if (!objectInArea.PlayersRemainInArea())
             {
                 objectInArea.DestroyCreaturesInArea();
             }
