@@ -20,6 +20,21 @@ namespace EldritchWarrior.Source.AreaSystems
             return false;
         }
 
+        public static void DestroyAOEInArea(this uint objectInArea)
+        {
+            uint area = NWScript.GetArea(objectInArea);
+            while (NWScript.GetIsObjectValid(objectInArea))
+            {
+                if (Convert.ToBoolean(NWScript.GetObjectType(objectInArea) == ObjectType.AreaOfEffect))
+                {
+                    NWScript.AssignCommand(objectInArea, () => NWScript.SetIsDestroyable());
+                    NWScript.SetPlotFlag(objectInArea, false);
+                    NWScript.DestroyObject(objectInArea);
+                }
+                objectInArea = NWScript.GetNextObjectInArea(area);
+            }
+        }
+
         public static void DestroyCreaturesInArea(this uint objectInArea)
         {
             uint area = NWScript.GetArea(objectInArea);
@@ -67,16 +82,14 @@ namespace EldritchWarrior.Source.AreaSystems
             }
         }
 
-        public static void DestroyAOEInArea(this uint objectInArea)
+        public static void ResetDoors(this uint objectInArea)
         {
             uint area = NWScript.GetArea(objectInArea);
             while (NWScript.GetIsObjectValid(objectInArea))
             {
-                if (Convert.ToBoolean(NWScript.GetObjectType(objectInArea) == ObjectType.AreaOfEffect))
+                if (Convert.ToBoolean(NWScript.GetObjectType(objectInArea) == ObjectType.Door))
                 {
-                    NWScript.AssignCommand(objectInArea, () => NWScript.SetIsDestroyable());
-                    NWScript.SetPlotFlag(objectInArea, false);
-                    NWScript.DestroyObject(objectInArea);
+                    NWScript.AssignCommand(objectInArea, () => NWScript.ActionCloseDoor(objectInArea));
                 }
                 objectInArea = NWScript.GetNextObjectInArea(area);
             }
