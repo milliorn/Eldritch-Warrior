@@ -4,9 +4,9 @@ namespace EldritchWarrior.Source.AreaSystems
 {
     public static class Extensions
     {
-        public static bool PlayersRemainInArea(this uint objectInArea)
+        public static bool PlayersRemainInArea(this uint area)
         {
-            uint area = NWScript.GetArea(objectInArea);
+            var objectInArea = NWScript.GetFirstObjectInArea();
             while (NWScript.GetIsObjectValid(objectInArea))
             {
                 if (NWScript.GetIsPC(objectInArea))
@@ -54,6 +54,7 @@ namespace EldritchWarrior.Source.AreaSystems
 
         public static void DestroyItem(this uint objectInArea)
         {
+            System.Console.WriteLine("DestroyItem");
             NWScript.AssignCommand(objectInArea, () => NWScript.SetIsDestroyable());
             NWScript.SetPlotFlag(objectInArea, false);
             NWScript.DestroyObject(objectInArea);
