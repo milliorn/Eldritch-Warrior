@@ -7,7 +7,12 @@ namespace EldritchWarrior.Source.AreaSystems
         [ScriptHandler("are_exit_cleanup")]
         public static void Map()
         {
+            uint objectInArea = NWScript.GetFirstObjectInArea();
 
+            if (!objectInArea.PlayersRemain())
+            {
+                objectInArea.DestroyCreatures();
+            }
         }
     }
 }
