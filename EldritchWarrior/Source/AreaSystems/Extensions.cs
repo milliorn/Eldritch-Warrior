@@ -27,12 +27,29 @@ namespace EldritchWarrior.Source.AreaSystems
             {
                 if (Convert.ToBoolean(NWScript.GetObjectType(objectInArea) == ObjectType.Creature) && Convert.ToBoolean(NWScript.GetAssociateType(objectInArea)))
                 {
+                    if (NWScript.GetHasInventory(objectInArea))
+                    {
+                        DestroyCreatureInventory(objectInArea);
+                    }
                     NWScript.AssignCommand(objectInArea, () => NWScript.SetIsDestroyable());
                     NWScript.SetPlotFlag(objectInArea, false);
                     NWScript.SetImmortal(objectInArea, false);
                     NWScript.DestroyObject(objectInArea);
                 }
                 objectInArea = NWScript.GetNextObjectInArea(area);
+            }
+        }
+
+        private static void DestroyCreatureInventory(uint objectInArea)
+        {
+            var itemInInventory = NWScript.GetFirstItemInInventory(objectInArea);
+
+            while (NWScript.GetIsObjectValid(itemInInventory))
+            {
+                NWScript.AssignCommand(itemInInventory, () => NWScript.SetIsDestroyable());
+                NWScript.SetPlotFlag(itemInInventory, false);
+                NWScript.DestroyObject(itemInInventory);
+                itemInInventory = NWScript.GetNextItemInInventory(objectInArea);
             }
         }
 
