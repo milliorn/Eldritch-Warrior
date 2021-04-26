@@ -18,10 +18,11 @@ namespace EldritchWarrior.Source.AreaSystems
                         //case ObjectType.AreaOfEffect: objectInArea.DestroyAOE(); break;
                         //case ObjectType.Creature: objectInArea.DestroyCreatureInArea(); break;
                         //case ObjectType.Door: NWScript.AssignCommand(objectInArea, () => NWScript.ActionCloseDoor(objectInArea)); break;
-                        //case ObjectType.Item: objectInArea.DestroyItem(); break;
+                        case ObjectType.Item: objectInArea.DestroyItem(); break;
                         //case ObjectType.Placeable: objectInArea.DestroyInventory(); break;
                         default: break;
                     }
+                    objectInArea = NWScript.GetNextObjectInArea();
                 }
             }
         }

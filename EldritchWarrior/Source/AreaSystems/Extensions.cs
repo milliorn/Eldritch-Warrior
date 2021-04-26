@@ -11,10 +11,12 @@ namespace EldritchWarrior.Source.AreaSystems
             {
                 if (NWScript.GetIsPC(objectInArea))
                 {
+                    System.Console.WriteLine("true");
                     return true;
                 }
                 objectInArea = NWScript.GetNextObjectInArea();
             }
+            System.Console.WriteLine("false");
             return false;
         }
 
