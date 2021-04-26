@@ -1,5 +1,6 @@
 using System;
 using NWN.Framework.Lite;
+using NWN.Framework.Lite.Enum;
 
 namespace EldritchWarrior.Source.AreaSystems
 {
@@ -19,14 +20,29 @@ namespace EldritchWarrior.Source.AreaSystems
             return false;
         }
 
-        public static void DestroyCreatures(this uint objectInArea)
+        public static void DestroyCreaturesInArea(this uint objectInArea)
         {
+            uint area = NWScript.GetArea(objectInArea);
             while (NWScript.GetIsObjectValid(objectInArea))
             {
-                if (Convert.ToBoolean(NWScript.GetIsEncounterCreature(objectInArea)))
+                if (Convert.ToBoolean(NWScript.GetObjectType(objectInArea) == ObjectType.Creature))
                 {
                     NWScript.DestroyObject(objectInArea);
                 }
+                objectInArea = NWScript.GetNextObjectInArea(area);
+            }
+        }
+
+        public static void DestroyItemsInArea(this uint objectInArea)
+        {
+            uint area = NWScript.GetArea(objectInArea);
+            while (NWScript.GetIsObjectValid(objectInArea))
+            {
+                if (Convert.ToBoolean(NWScript.GetObjectType(objectInArea) == ObjectType.Creature))
+                {
+                    NWScript.DestroyObject(objectInArea);
+                }
+                objectInArea = NWScript.GetNextObjectInArea(area);
             }
         }
     }

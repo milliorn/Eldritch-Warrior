@@ -11,7 +11,7 @@ namespace EldritchWarrior.Source.AreaSystems
 
             if (!objectInArea.PlayersRemain())
             {
-                objectInArea.DestroyCreatures();
+                objectInArea.DestroyCreaturesInArea();
             }
         }
     }
