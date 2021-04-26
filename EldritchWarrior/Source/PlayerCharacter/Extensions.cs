@@ -1,7 +1,7 @@
 using NWN.Framework.Lite;
 using NWN.Framework.Lite.Enum;
 
-namespace EldritchWarrior.Source.PC
+namespace EldritchWarrior.Source.PlayerCharacter
 {
     public static class Extensions
     {

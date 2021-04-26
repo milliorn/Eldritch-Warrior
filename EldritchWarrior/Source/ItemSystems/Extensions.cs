@@ -1,7 +1,7 @@
 using System;
 using NWN.Framework.Lite;
 
-namespace EldritchWarrior.Source.Items
+namespace EldritchWarrior.Source.ItemSystems
 {
     public static class Extensions
     {
