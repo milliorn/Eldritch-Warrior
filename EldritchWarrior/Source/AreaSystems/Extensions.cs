@@ -27,6 +27,9 @@ namespace EldritchWarrior.Source.AreaSystems
             {
                 if (Convert.ToBoolean(NWScript.GetObjectType(objectInArea) == ObjectType.Creature))
                 {
+                    NWScript.AssignCommand(objectInArea, () => NWScript.SetIsDestroyable());
+                    NWScript.SetPlotFlag(objectInArea, false);
+                    NWScript.SetImmortal(objectInArea, false);
                     NWScript.DestroyObject(objectInArea);
                 }
                 objectInArea = NWScript.GetNextObjectInArea(area);
@@ -38,8 +41,10 @@ namespace EldritchWarrior.Source.AreaSystems
             uint area = NWScript.GetArea(objectInArea);
             while (NWScript.GetIsObjectValid(objectInArea))
             {
-                if (Convert.ToBoolean(NWScript.GetObjectType(objectInArea) == ObjectType.Creature))
+                if (Convert.ToBoolean(NWScript.GetObjectType(objectInArea) == ObjectType.Item))
                 {
+                    NWScript.AssignCommand(objectInArea, () => NWScript.SetIsDestroyable());
+                    NWScript.SetPlotFlag(objectInArea, false);
                     NWScript.DestroyObject(objectInArea);
                 }
                 objectInArea = NWScript.GetNextObjectInArea(area);
