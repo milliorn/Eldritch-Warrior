@@ -67,6 +67,19 @@ namespace EldritchWarrior.Source.AreaSystems
             }
         }
 
+        public static void ResetDoors(this uint objectInArea)
+        {
+            uint area = NWScript.GetArea(objectInArea);
+            while (NWScript.GetIsObjectValid(objectInArea))
+            {
+                if (Convert.ToBoolean(NWScript.GetObjectType(objectInArea) == ObjectType.Door))
+                {
+                    NWScript.AssignCommand(objectInArea, () => NWScript.ActionCloseDoor(objectInArea));
+                }
+                objectInArea = NWScript.GetNextObjectInArea(area);
+            }
+        }
+
         public static void DestroyItemsInArea(this uint objectInArea)
         {
             uint area = NWScript.GetArea(objectInArea);
@@ -82,14 +95,21 @@ namespace EldritchWarrior.Source.AreaSystems
             }
         }
 
-        public static void ResetDoors(this uint objectInArea)
+        public static void ResetPlaceable(this uint objectInArea)
         {
             uint area = NWScript.GetArea(objectInArea);
             while (NWScript.GetIsObjectValid(objectInArea))
             {
-                if (Convert.ToBoolean(NWScript.GetObjectType(objectInArea) == ObjectType.Door))
+                if (Convert.ToBoolean(NWScript.GetObjectType(objectInArea) == ObjectType.Placeable))
                 {
-                    NWScript.AssignCommand(objectInArea, () => NWScript.ActionCloseDoor(objectInArea));
+                    uint itemInInventory = NWScript.GetFirstItemInInventory(objectInArea);
+                    while (NWScript.GetIsObjectValid(itemInInventory))
+                    {
+                        NWScript.AssignCommand(itemInInventory, () => NWScript.SetIsDestroyable());
+                        NWScript.SetPlotFlag(itemInInventory, false);
+                        NWScript.DestroyObject(itemInInventory);
+                        itemInInventory = NWScript.GetNextItemInInventory(objectInArea);
+                    }
                 }
                 objectInArea = NWScript.GetNextObjectInArea(area);
             }

@@ -15,6 +15,7 @@ namespace EldritchWarrior.Source.AreaSystems
                 objectInArea.DestroyItemsInArea();
                 objectInArea.DestroyAOEInArea();
                 objectInArea.ResetDoors();
+                objectInArea.ResetPlaceable();
             }
         }
     }
