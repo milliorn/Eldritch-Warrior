@@ -25,7 +25,7 @@ namespace EldritchWarrior.Source.AreaSystems
             uint area = NWScript.GetArea(objectInArea);
             while (NWScript.GetIsObjectValid(objectInArea))
             {
-                if (Convert.ToBoolean(NWScript.GetObjectType(objectInArea) == ObjectType.Creature))
+                if (Convert.ToBoolean(NWScript.GetObjectType(objectInArea) == ObjectType.Creature) && Convert.ToBoolean(NWScript.GetAssociateType(objectInArea)))
                 {
                     NWScript.AssignCommand(objectInArea, () => NWScript.SetIsDestroyable());
                     NWScript.SetPlotFlag(objectInArea, false);
