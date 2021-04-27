@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NWN.Framework.Lite;
 using NWN.Framework.Lite.Enum;
 
@@ -9,8 +10,10 @@ namespace EldritchWarrior.Source.AreaSystems
         public static void Map()
         {
             uint pc = NWScript.GetExitingObject();
-            uint area = NWScript.GetArea(pc);
+            uint area = NWScript.GetArea(NWScript.OBJECT_SELF);
             uint objectInArea = NWScript.GetFirstObjectInArea(area);
+
+            if (!Module.Extensions.GetIsClient(pc)) return;
 
             System.Console.WriteLine("before PlayersRemainInArea");
             if (area.PlayersRemainInArea()) return;
@@ -18,17 +21,7 @@ namespace EldritchWarrior.Source.AreaSystems
 
             while (NWScript.GetIsObjectValid(objectInArea))
             {
-                System.Console.WriteLine($"{NWScript.GetObjectType(objectInArea).ToString()}");
-                
-                if (NWScript.GetObjectType(objectInArea) == ObjectType.Creature)
-                {
-                    System.Console.WriteLine("ObjectType.Creature");
-                }
-
-                if (NWScript.GetObjectType(objectInArea) == ObjectType.Item)
-                {
-                    System.Console.WriteLine("ObjectType.Item");
-                }
+                System.Console.WriteLine($"{NWScript.GetObjectType(objectInArea).ToString()}: {NWScript.GetName(objectInArea)}");
                 objectInArea = NWScript.GetNextObjectInArea(area);
             }
         }
