@@ -1,4 +1,6 @@
+using System;
 using NWN.Framework.Lite;
+using NWN.Framework.Lite.Enum;
 
 namespace EldritchWarrior.Source.AreaSystems
 {
@@ -10,16 +12,29 @@ namespace EldritchWarrior.Source.AreaSystems
             uint pc = NWScript.GetExitingObject();
             uint area = NWScript.GetArea(pc);
             uint objectInArea = NWScript.GetFirstObjectInArea(area);
-/*
-            if (!Module.Extensions.GetIsClient(NWScript.GetExitingObject())) return;
 
-            if (area.PlayersRemainInArea()) return;
-*/
+            //Uncomment below to trigger bug
+            /*while (NWScript.GetIsObjectValid(objectInArea))
+            {
+                if (NWScript.GetIsPC(objectInArea))
+                {
+                    // Found a player exit script
+                    Console.WriteLine($"PC FOUND {NWScript.GetName(pc)}");
+                }
+                objectInArea = NWScript.GetNextObjectInArea(area);
+            }*/
+          
             while (NWScript.GetIsObjectValid(objectInArea))
             {
-                System.Console.WriteLine($"{NWScript.GetObjectType(objectInArea).ToString()}: {NWScript.GetName(objectInArea)}");
-                NWScript.DestroyObject(objectInArea);
-                objectInArea = NWScript.GetNextObjectInArea(area);
+                switch (NWScript.GetObjectType(objectInArea))
+                {
+                    case ObjectType.AreaOfEffect:
+                    case ObjectType.Creature:
+                    case ObjectType.Item:
+                        Console.WriteLine($"{NWScript.GetObjectType(objectInArea).ToString()}: {NWScript.GetName(objectInArea)}");
+                        NWScript.DestroyObject(objectInArea);
+                        break;
+                }
             }
         }
     }
