@@ -8,9 +8,12 @@ namespace EldritchWarrior.Source.Examine
         [ScriptHandler("on_exam_obj_befo")]
         public static void OnBefore()
         {
-            if (Events.GetCurrentEvent() != "NWNX_ON_EXAMINE_OBJECT_BEFORE") return;
-
             uint pc = NWScript.OBJECT_SELF;
+            uint npc = NWScript.StringToObject(Events.GetEventData("EXAMINEE_OBJECT_ID"));
+
+            if (Events.GetCurrentEvent() != "NWNX_ON_EXAMINE_OBJECT_BEFORE") return; /*|| !NWScript.GetIsObjectValid(npc) || !NWScript.GetIsReactionTypeHostile(npc) || NWScript.GetObjectType(npc) != ObjectType.Creature) return;*/
+            npc.PrintCRValue();
+
         }
     }
 }
