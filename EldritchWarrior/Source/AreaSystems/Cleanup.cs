@@ -23,6 +23,7 @@ namespace EldritchWarrior.Source.AreaSystems
                 }
                 objectInArea = NWScript.GetNextObjectInArea(area);
             }*/
+          
             while (NWScript.GetIsObjectValid(objectInArea))
             {
                 switch (NWScript.GetObjectType(objectInArea))
@@ -34,7 +35,6 @@ namespace EldritchWarrior.Source.AreaSystems
                         NWScript.DestroyObject(objectInArea);
                         break;
                 }
-                objectInArea = NWScript.GetNextObjectInArea(area);
             }
         }
     }
