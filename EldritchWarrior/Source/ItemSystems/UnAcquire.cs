@@ -2,7 +2,7 @@ using NWN.Framework.Lite;
 using NWN.Framework.Lite.Bioware;
 using NWN.Framework.Lite.Enum;
 
-namespace EldritchWarrior.Source.Items
+namespace EldritchWarrior.Source.ItemSystems
 {
     public class UnAcquire
     {

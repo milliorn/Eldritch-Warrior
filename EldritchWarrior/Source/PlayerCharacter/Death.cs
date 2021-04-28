@@ -1,6 +1,6 @@
 using NWN.Framework.Lite;
 
-namespace EldritchWarrior.Source.PC
+namespace EldritchWarrior.Source.PlayerCharacter
 {
     public class Death
     {
