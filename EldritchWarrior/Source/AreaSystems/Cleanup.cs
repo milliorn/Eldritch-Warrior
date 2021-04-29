@@ -13,27 +13,21 @@ namespace EldritchWarrior.Source.AreaSystems
             uint area = NWScript.GetArea(pc);
             uint objectInArea = NWScript.GetFirstObjectInArea(area);
 
-            //Uncomment below to trigger bug
-            /*while (NWScript.GetIsObjectValid(objectInArea))
+            if (!area.PlayersRemainInArea())
             {
-                if (NWScript.GetIsPC(objectInArea))
+                while (NWScript.GetIsObjectValid(objectInArea))
                 {
-                    // Found a player exit script
-                    Console.WriteLine($"PC FOUND {NWScript.GetName(pc)}");
-                }
-                objectInArea = NWScript.GetNextObjectInArea(area);
-            }*/
-          
-            while (NWScript.GetIsObjectValid(objectInArea))
-            {
-                switch (NWScript.GetObjectType(objectInArea))
-                {
-                    case ObjectType.AreaOfEffect:
-                    case ObjectType.Creature:
-                    case ObjectType.Item:
-                        Console.WriteLine($"{NWScript.GetObjectType(objectInArea).ToString()}: {NWScript.GetName(objectInArea)}");
-                        NWScript.DestroyObject(objectInArea);
-                        break;
+                    switch (NWScript.GetObjectType(objectInArea))
+                    {
+                        case ObjectType.AreaOfEffect:
+                        case ObjectType.Creature:
+                        case ObjectType.Item:
+                            Console.WriteLine($"{NWScript.GetObjectType(objectInArea).ToString()}: {NWScript.GetName(objectInArea)}");
+                            NWScript.DestroyObject(objectInArea);
+                            break;
+                        case ObjectType.Door: NWScript.PlayAnimation(AnimationType.DoorClose); break;
+                    }
+                    objectInArea = NWScript.GetNextObjectInArea(area);
                 }
             }
         }
