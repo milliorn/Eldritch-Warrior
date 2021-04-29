@@ -1,3 +1,4 @@
+using System;
 using NWN.Framework.Lite;
 
 namespace EldritchWarrior.Source.AreaSystems
@@ -18,7 +19,13 @@ namespace EldritchWarrior.Source.AreaSystems
 
         public static void DestroyInventory(this uint objectInArea)
         {
+            var oItem = NWScript.GetFirstItemInInventory(objectInArea);
 
+            while (oItem != NWScript.OBJECT_INVALID)
+            {
+                NWScript.DestroyObject((uint)oItem);
+                oItem = NWScript.GetNextItemInInventory(objectInArea);
+            }
         }
     }
 }
