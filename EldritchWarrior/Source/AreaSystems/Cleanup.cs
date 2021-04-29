@@ -25,6 +25,7 @@ namespace EldritchWarrior.Source.AreaSystems
                             Console.WriteLine($"{NWScript.GetObjectType(objectInArea).ToString()}: {NWScript.GetName(objectInArea)}");
                             NWScript.DestroyObject(objectInArea);
                             break;
+                        case ObjectType.Door: NWScript.PlayAnimation(AnimationType.DoorClose); break;
                     }
                     objectInArea = NWScript.GetNextObjectInArea(area);
                 }
