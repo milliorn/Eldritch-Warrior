@@ -1,6 +1,6 @@
 using static NWN.Framework.Lite.NWScript;
 
-namespace EldritchWarrior.Source.Items
+namespace EldritchWarrior.Source.ItemSystems
 {
     public static class Extensions
     {

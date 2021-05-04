@@ -14,7 +14,9 @@ namespace EldritchWarrior.Source.Module
             { "QR4JFL9A", "milliorn" },
             { "QRMXQ6GM", "milliorn" },
         };
-        
+
+        public static bool GetIsClient(this uint pc) => NWScript.GetIsPC(pc) || NWScript.GetIsPC(pc);
+
         public static void InitArea(this uint area)
         {
             Area.SetWindPower(area, Random.Next(2));

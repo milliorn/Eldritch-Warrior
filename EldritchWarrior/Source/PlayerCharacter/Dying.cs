@@ -1,7 +1,7 @@
 using NWN.Framework.Lite;
 using static NWN.Framework.Lite.NWScript;
 
-namespace EldritchWarrior.Source.PC
+namespace EldritchWarrior.Source.PlayerCharacter
 {
     public class Dying
     {
