@@ -1,6 +1,7 @@
 using NWN.Framework.Lite;
 using NWN.Framework.Lite.Bioware;
 using NWN.Framework.Lite.Enum;
+using static NWN.Framework.Lite.NWScript;
 
 namespace EldritchWarrior.Source.Items
 {
@@ -9,19 +10,19 @@ namespace EldritchWarrior.Source.Items
         [ScriptHandler("x2_mod_def_unaqu")]
         public static void OnUnAcquireItem()
         {
-            uint unAcquired = NWScript.GetModuleItemLost();
-            uint unAcquiredBy = NWScript.GetModuleItemLostBy();
+            uint unAcquired = GetModuleItemLost();
+            uint unAcquiredBy = GetModuleItemLostBy();
 
             unAcquired.PrintGPValue();
             BiowareXP2.IPRemoveAllItemProperties(unAcquired, DurationType.Temporary);
 
-            if (NWScript.GetIsDM(unAcquired)) return;
+            if (GetIsDM(unAcquired)) return;
 
             //Temp fix for disarm feat
-            if (NWScript.GetIsInCombat(unAcquiredBy) && !NWScript.GetStolenFlag(unAcquired) && NWScript.GetIsWeaponEffective(NWScript.GetLastAttacker(unAcquired)))
+            if (GetIsInCombat(unAcquiredBy) && !GetStolenFlag(unAcquired) && GetIsWeaponEffective(GetLastAttacker(unAcquired)))
             {
-                NWScript.CopyItem(unAcquired, unAcquiredBy, true);
-                NWScript.DestroyObject(unAcquired, 0.2f);
+                CopyItem(unAcquired, unAcquiredBy, true);
+                DestroyObject(unAcquired, 0.2f);
                 return;
             }
         }

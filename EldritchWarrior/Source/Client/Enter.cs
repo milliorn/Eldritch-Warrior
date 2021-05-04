@@ -1,4 +1,5 @@
 using NWN.Framework.Lite;
+using static NWN.Framework.Lite.NWScript;
 
 namespace EldritchWarrior.Source.Client
 {
@@ -7,12 +8,12 @@ namespace EldritchWarrior.Source.Client
         [ScriptHandler("x3_mod_def_enter")]
         public static void OnClientEnter()
         {
-            uint enter = NWScript.GetEnteringObject();
-            string name = NWScript.GetName(enter);
+            uint enter = GetEnteringObject();
+            string name = GetName(enter);
 
             if (enter.CheckName(name)) return;
 
-            if (NWScript.GetIsDM(enter))
+            if (GetIsDM(enter))
             {
                 enter.VerifyDMLogin();
                 return;

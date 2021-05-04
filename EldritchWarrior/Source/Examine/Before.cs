@@ -1,7 +1,6 @@
-using System.IO.Pipes;
 using NWN.Framework.Lite;
-using NWN.Framework.Lite.NWNX;
 using NWN.Framework.Lite.Enum;
+using NWN.Framework.Lite.NWNX;
 using static NWN.Framework.Lite.NWScript;
 
 namespace EldritchWarrior.Source.Examine

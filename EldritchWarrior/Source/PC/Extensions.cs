@@ -1,5 +1,5 @@
-using NWN.Framework.Lite;
 using NWN.Framework.Lite.Enum;
+using static NWN.Framework.Lite.NWScript;
 
 namespace EldritchWarrior.Source.PC
 {
@@ -7,38 +7,38 @@ namespace EldritchWarrior.Source.PC
     {
         public static void Scream(this uint pc)
         {
-            NWScript.ApplyEffectToObject(DurationType.Instant, NWScript.EffectDamage(1, DamageType.Positive, DamagePowerType.PlusTwenty), pc);
+            ApplyEffectToObject(DurationType.Instant, EffectDamage(1, DamageType.Positive, DamagePowerType.PlusTwenty), pc);
 
             switch (Module.Random.Next(1, 5))
             {
-                case 1: NWScript.PlayVoiceChat(VoiceChatType.Cuss); break;
-                case 2: NWScript.PlayVoiceChat(VoiceChatType.NearDeath); break;
-                case 3: NWScript.PlayVoiceChat(VoiceChatType.Pain1); break;
-                case 4: NWScript.PlayVoiceChat(VoiceChatType.Pain2); break;
-                case 5: NWScript.PlayVoiceChat(VoiceChatType.Pain3); break;
+                case 1: PlayVoiceChat(VoiceChatType.Cuss); break;
+                case 2: PlayVoiceChat(VoiceChatType.NearDeath); break;
+                case 3: PlayVoiceChat(VoiceChatType.Pain1); break;
+                case 4: PlayVoiceChat(VoiceChatType.Pain2); break;
+                case 5: PlayVoiceChat(VoiceChatType.Pain3); break;
             }
         }
 
         public static void PlayerHasDied(this uint pc)
         {
-            NWScript.PlayVoiceChat(VoiceChatType.Death);
-            NWScript.ApplyEffectToObject(DurationType.Instant, NWScript.EffectVisualEffect(VisualEffectType.Vfx_Imp_Death), pc);
-            NWScript.ApplyEffectToObject(DurationType.Instant, NWScript.EffectDeath(), pc);
+            PlayVoiceChat(VoiceChatType.Death);
+            ApplyEffectToObject(DurationType.Instant, EffectVisualEffect(VisualEffectType.Vfx_Imp_Death), pc);
+            ApplyEffectToObject(DurationType.Instant, EffectDeath(), pc);
         }
         public static void PlayerHasStabilized(this uint pc)
         {
-            NWScript.PlayVoiceChat(VoiceChatType.GuardMe);
-            NWScript.ApplyEffectToObject(DurationType.Instant, NWScript.EffectVisualEffect(VisualEffectType.Vfx_Imp_Healing_S), pc);
-            NWScript.ApplyEffectToObject(DurationType.Instant, NWScript.EffectResurrection(), pc);
-            NWScript.SendMessageToPC(pc, $"You have stabilized.");
+            PlayVoiceChat(VoiceChatType.GuardMe);
+            ApplyEffectToObject(DurationType.Instant, EffectVisualEffect(VisualEffectType.Vfx_Imp_Healing_S), pc);
+            ApplyEffectToObject(DurationType.Instant, EffectResurrection(), pc);
+            SendMessageToPC(pc, $"You have stabilized.");
         }
 
         public static void TryStabilizing(this uint pc)
         {
             int stabilize = Module.Random.D10(1);
-            NWScript.SendMessageToPC(pc, $"Stabilize roll:{stabilize.ToString()}");
+            SendMessageToPC(pc, $"Stabilize roll:{stabilize.ToString()}");
 
-            if (NWScript.GetCurrentHitPoints(pc) <= -127)
+            if (GetCurrentHitPoints(pc) <= -127)
             {
                 pc.PlayerHasDied();
             }
@@ -48,7 +48,7 @@ namespace EldritchWarrior.Source.PC
             }
             else
             {
-                NWScript.DelayCommand(1.0f, () => Dying.OnDying());
+                DelayCommand(1.0f, () => Dying.OnDying());
             }
         }
     }

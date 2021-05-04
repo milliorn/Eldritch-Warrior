@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using NWN.Framework.Lite;
 using NWN.Framework.Lite.Enum;
 using NWN.Framework.Lite.NWNX;
+using static NWN.Framework.Lite.NWScript;
 
 namespace EldritchWarrior.Source.Client
 {
@@ -25,44 +25,44 @@ namespace EldritchWarrior.Source.Client
 
         public static void WelcomeMessage(this uint enter)
         {
-            string colorString = $"\nNAME:{NWScript.GetName(enter)}\nID:{NWScript.GetPCPublicCDKey(enter)}\nBIC:{Player.GetBicFileName(enter)}";
-            string cdKey = NWScript.GetPCPublicCDKey(enter);
+            string colorString = $"\nNAME:{GetName(enter)}\nID:{GetPCPublicCDKey(enter)}\nBIC:{Player.GetBicFileName(enter)}";
+            string cdKey = GetPCPublicCDKey(enter);
 
-            NWScript.SendMessageToPC(enter, "Welcome to the server!");
-            NWScript.SpeakString($"\nLOGIN:{colorString}", TalkVolumeType.Shout);
+            SendMessageToPC(enter, "Welcome to the server!");
+            SpeakString($"\nLOGIN:{colorString}", TalkVolumeType.Shout);
         }
 
         public static void VerifyDMLogin(this uint enter)
         {
-            if (Module.Extensions.DMList.ContainsKey(NWScript.GetPCPublicCDKey(enter)))
+            if (Module.Extensions.DMList.ContainsKey(GetPCPublicCDKey(enter)))
             {
-                NWScript.SendMessageToAllDMs("Entering DM ID VERIFIED.");
+                SendMessageToAllDMs("Entering DM ID VERIFIED.");
             }
             else
             {
-                NWScript.SendMessageToAllDMs("Entering DM ID DENIED.");
+                SendMessageToAllDMs("Entering DM ID DENIED.");
             }
         }
 
         public static void DeathLog(this uint pc)
         {
-            if (NWScript.GetIsInCombat(pc))
+            if (GetIsInCombat(pc))
             {
-                NWScript.SetCurrentHitPoints(pc, -1);
+                SetCurrentHitPoints(pc, -1);
             }
         }
 
         public static void PrintLogout(this uint pc)
         {
-            string logout = $"{$"\nNAME:{NWScript.GetName(pc)}"}{$"\nID:{NWScript.GetPCPublicCDKey(pc)}"}{$"\nBIC:{Player.GetBicFileName(pc)}"}";
+            string logout = $"{$"\nNAME:{GetName(pc)}"}{$"\nID:{GetPCPublicCDKey(pc)}"}{$"\nBIC:{Player.GetBicFileName(pc)}"}";
 
-            if (NWScript.GetIsDM(pc))
+            if (GetIsDM(pc))
             {
-                NWScript.SendMessageToAllDMs($"\nExiting DM:{logout}");
+                SendMessageToAllDMs($"\nExiting DM:{logout}");
             }
             else
             {
-                NWScript.SpeakString($"\nLOGOUT:{logout}", TalkVolumeType.Shout);
+                SpeakString($"\nLOGOUT:{logout}", TalkVolumeType.Shout);
             }
         }
 
