@@ -1,4 +1,6 @@
+using System;
 using NWN.Framework.Lite;
+using NWN.Framework.Lite.Enum;
 
 namespace EldritchWarrior.Source.AreaSystems
 {
@@ -10,16 +12,23 @@ namespace EldritchWarrior.Source.AreaSystems
             uint pc = NWScript.GetExitingObject();
             uint area = NWScript.GetArea(pc);
             uint objectInArea = NWScript.GetFirstObjectInArea(area);
-/*
-            if (!Module.Extensions.GetIsClient(NWScript.GetExitingObject())) return;
 
-            if (area.PlayersRemainInArea()) return;
-*/
-            while (NWScript.GetIsObjectValid(objectInArea))
+            if (!area.PlayersRemainInArea())
             {
-                System.Console.WriteLine($"{NWScript.GetObjectType(objectInArea).ToString()}: {NWScript.GetName(objectInArea)}");
-                NWScript.DestroyObject(objectInArea);
-                objectInArea = NWScript.GetNextObjectInArea(area);
+                while (NWScript.GetIsObjectValid(objectInArea))
+                {
+                    switch (NWScript.GetObjectType(objectInArea))
+                    {
+                        case ObjectType.AreaOfEffect:
+                        case ObjectType.Creature:
+                        case ObjectType.Item:
+                            Console.WriteLine($"{NWScript.GetObjectType(objectInArea).ToString()}: {NWScript.GetName(objectInArea)}");
+                            NWScript.DestroyObject(objectInArea);
+                            break;
+                        case ObjectType.Door: NWScript.PlayAnimation(AnimationType.DoorClose); break;
+                    }
+                    objectInArea = NWScript.GetNextObjectInArea(area);
+                }
             }
         }
     }
