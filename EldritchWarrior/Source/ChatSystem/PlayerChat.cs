@@ -1,6 +1,7 @@
 using NWN.Framework.Lite;
 using NWN.Framework.Lite.Enum;
 using NWN.Framework.Lite.NWNX;
+using static NWN.Framework.Lite.NWScript;
 
 namespace EldritchWarrior.Source.ChatSystem
 {
@@ -13,8 +14,8 @@ namespace EldritchWarrior.Source.ChatSystem
         [ScriptHandler("on_player_chat")]
         public static void OnPlayerChat()
         {
-            string message = NWScript.GetPCChatMessage();
-            uint pc = NWScript.GetPCChatSpeaker();
+            string message = GetPCChatMessage();
+            uint pc = GetPCChatSpeaker();
 
             if (TriggerChatTools(message))
             {
@@ -29,13 +30,13 @@ namespace EldritchWarrior.Source.ChatSystem
             {
                 case "xp":
                     _ = int.TryParse(chatArray[1], out int x);
-                    NWScript.SetXP(pc, x);
+                    SetXP(pc, x);
                     break;
                 case "live":
-                    NWScript.ApplyEffectToObject(DurationType.Instant, NWScript.EffectHeal(NWScript.GetMaxHitPoints()), pc);
+                    ApplyEffectToObject(DurationType.Instant, EffectHeal(GetMaxHitPoints()), pc);
                     break;
                 case "dead":
-                    NWScript.ApplyEffectToObject(DurationType.Instant, NWScript.EffectDamage(NWScript.GetMaxHitPoints() + 1, DamageType.Positive, DamagePowerType.PlusTwenty), pc);
+                    ApplyEffectToObject(DurationType.Instant, EffectDamage(GetMaxHitPoints() + 1, DamageType.Positive, DamagePowerType.PlusTwenty), pc);
                     break;
                 case "roster":
                     pc.Roster();
@@ -95,13 +96,13 @@ namespace EldritchWarrior.Source.ChatSystem
                     pc.SetVisual(chatArray);
                     break;
                 case "lfg":
-                    NWScript.SpeakString($"{NWScript.GetName(pc)} is looking for a party!", TalkVolumeType.Shout);
+                    SpeakString($"{GetName(pc)} is looking for a party!", TalkVolumeType.Shout);
                     break;
                 case "save":
-                    NWScript.ExportSingleCharacter(pc);
+                    ExportSingleCharacter(pc);
                     break;
                 case "delete":
-                    Administration.DeletePlayerCharacter(pc, true, $"Name:{NWScript.GetName(pc)} | BIC:{Player.GetBicFileName(pc)} deleted.");
+                    Administration.DeletePlayerCharacter(pc, true, $"Name:{GetName(pc)} | BIC:{Player.GetBicFileName(pc)} deleted.");
                     break;
                 default:
                     break;

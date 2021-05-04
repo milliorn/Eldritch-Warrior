@@ -2,6 +2,7 @@ using System;
 using NWN.Framework.Lite;
 using NWN.Framework.Lite.Bioware;
 using NWN.Framework.Lite.Enum;
+using static NWN.Framework.Lite.NWScript;
 
 namespace EldritchWarrior.Source.ItemSystems
 {
@@ -10,17 +11,17 @@ namespace EldritchWarrior.Source.ItemSystems
         [ScriptHandler("x2_mod_def_aqu")]
         public static void OnAcquireItem()
         {
-            uint acquired = NWScript.GetModuleItemAcquired();
-            uint by = NWScript.GetModuleItemAcquiredBy();
-            uint from = NWScript.GetModuleItemAcquiredFrom();
+            uint acquired = GetModuleItemAcquired();
+            uint by = GetModuleItemAcquiredBy();
+            uint from = GetModuleItemAcquiredFrom();
 
-            string name = NWScript.GetName(acquired);
-            string byName = NWScript.GetName(by);
+            string name = GetName(acquired);
+            string byName = GetName(by);
 
             from.PrintGPValue();
             BiowareXP2.IPRemoveAllItemProperties(acquired, DurationType.Temporary);
 
-            if (NWScript.GetIsDM(by)) return;
+            if (GetIsDM(by)) return;
 
             by.BarterFix(from);
 

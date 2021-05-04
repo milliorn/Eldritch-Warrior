@@ -1,4 +1,5 @@
 using NWN.Framework.Lite;
+using static NWN.Framework.Lite.NWScript;
 
 namespace EldritchWarrior.Source.PlayerCharacter
 {
@@ -7,7 +8,7 @@ namespace EldritchWarrior.Source.PlayerCharacter
         [ScriptHandler("nw_o0_dying")]
         public static void OnDying()
         {
-            uint pc = NWScript.GetLastPlayerDying();
+            uint pc = GetLastPlayerDying();
 
             pc.Scream();
 
