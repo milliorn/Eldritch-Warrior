@@ -23,7 +23,8 @@ namespace EldritchWarrior.Source.Module
             InitWeatherSystem();
             InitAdministration();
             InitServerCalender();
-
+            
+            NWN.Framework.Lite.NWNX.Events.SubscribeEvent("NWNX_ON_EXAMINE_OBJECT_BEFORE", "on_exam_obj_befo");
             PrintBootTime();
         }
 
