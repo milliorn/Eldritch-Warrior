@@ -1,9 +1,9 @@
 using System;
 using System.Text;
 
-using NWN.Framework.Lite;
 using NWN.Framework.Lite.Bioware;
 using NWN.Framework.Lite.Enum;
+
 using NWN.Framework.Lite.NWNX;
 using ItemProperty = NWN.Framework.Lite.ItemProperty;
 using System.Globalization;
