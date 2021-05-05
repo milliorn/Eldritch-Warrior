@@ -26,6 +26,8 @@ namespace EldritchWarrior.Source.Module
             InitServerCalender();
             
             NWN.Framework.Lite.NWNX.Events.SubscribeEvent("NWNX_ON_EXAMINE_OBJECT_BEFORE", "on_exam_obj_befo");
+            NWN.Framework.Lite.NWNX.Events.SubscribeEvent("NWNX_ON_EXIT_STEALTH_AFTER", "on_exit_stlth_af");
+
             PrintBootTime();
         }
 
