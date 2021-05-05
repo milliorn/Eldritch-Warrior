@@ -27,6 +27,7 @@ namespace EldritchWarrior.Source.AreaSystems
                             DestroyObject(objectInArea);
                             break;
                         case ObjectType.Door: PlayAnimation(AnimationType.DoorClose); break;
+                        case ObjectType.Placeable: objectInArea.DestroyInventory(); break;
                     }
                     objectInArea = GetNextObjectInArea(area);
                 }
