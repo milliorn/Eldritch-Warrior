@@ -1,5 +1,4 @@
-using System;
-using NWN.Framework.Lite;
+using static NWN.Framework.Lite.NWScript;
 
 namespace EldritchWarrior.Source.AreaSystems
 {
@@ -7,9 +6,9 @@ namespace EldritchWarrior.Source.AreaSystems
     {
         public static bool PlayersRemainInArea(this uint area)
         {
-            for (uint obj = NWScript.GetFirstObjectInArea(); NWScript.GetIsObjectValid(area); area = NWScript.GetNextObjectInArea())
+            for (uint obj = GetFirstObjectInArea(); GetIsObjectValid(area); area = GetNextObjectInArea())
             {
-                if (NWScript.GetIsPC(obj))
+                if (GetIsPC(obj))
                 {
                     return true;
                 }
@@ -19,12 +18,12 @@ namespace EldritchWarrior.Source.AreaSystems
 
         public static void DestroyInventory(this uint objectInArea)
         {
-            var oItem = NWScript.GetFirstItemInInventory(objectInArea);
+            var oItem = GetFirstItemInInventory(objectInArea);
 
-            while (oItem != NWScript.OBJECT_INVALID)
+            while (oItem != OBJECT_INVALID)
             {
-                NWScript.DestroyObject((uint)oItem);
-                oItem = NWScript.GetNextItemInInventory(objectInArea);
+                DestroyObject((uint)oItem);
+                oItem = GetNextItemInInventory(objectInArea);
             }
         }
     }
