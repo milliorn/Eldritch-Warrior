@@ -4,9 +4,9 @@ namespace EldritchWarrior.Source.AreaSystems
 {
     public static class Extensions
     {
-        public static bool PlayersRemainInArea(this uint area)
+        public static bool PlayersRemainInArea(this uint objectInArea)
         {
-            for (uint obj = GetFirstObjectInArea(); GetIsObjectValid(area); area = GetNextObjectInArea())
+            for (uint obj = GetFirstObjectInArea(); GetIsObjectValid(objectInArea); objectInArea = GetNextObjectInArea())
             {
                 if (GetIsPC(obj))
                 {
@@ -18,12 +18,9 @@ namespace EldritchWarrior.Source.AreaSystems
 
         public static void DestroyInventory(this uint objectInArea)
         {
-            var oItem = GetFirstItemInInventory(objectInArea);
-
-            while (oItem != OBJECT_INVALID)
+            for (uint obj = GetFirstItemInInventory(objectInArea); GetIsObjectValid(obj); obj = GetNextItemInInventory(objectInArea))
             {
-                DestroyObject((uint)oItem);
-                oItem = GetNextItemInInventory(objectInArea);
+                DestroyObject(obj);
             }
         }
     }
