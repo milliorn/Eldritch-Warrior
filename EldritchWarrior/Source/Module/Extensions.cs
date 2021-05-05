@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using NWN.Framework.Lite;
 using NWN.Framework.Lite.Enum;
 using NWN.Framework.Lite.NWNX;
+using static NWN.Framework.Lite.NWScript;
 
 namespace EldritchWarrior.Source.Module
 {
@@ -33,23 +34,23 @@ namespace EldritchWarrior.Source.Module
 
         public static void InitFog(this uint area)
         {
-            NWScript.SetFogAmount(FogType.All, Random.Next(12), area);
-            NWScript.SetFogColor(FogType.All, (FogColorType)Random.Next(16), area);
+            SetFogAmount(FogType.All, Random.Next(12), area);
+            SetFogColor(FogType.All, (FogColorType)Random.Next(16), area);
         }
 
         public static void InitSkyboxes(this uint area)
         {
-            if (NWScript.GetSkyBox(area) == SkyboxType.None)
+            if (GetSkyBox(area) == SkyboxType.None)
             {
-                NWScript.SetSkyBox((SkyboxType)Random.Next(4));
+                SetSkyBox((SkyboxType)Random.Next(4));
 
-                if (NWScript.GetSkyBox(area) == SkyboxType.GrassStorm)
+                if (GetSkyBox(area) == SkyboxType.GrassStorm)
                 {
-                    NWScript.SetWeather(area, WeatherType.Rain);
+                    SetWeather(area, WeatherType.Rain);
                 }
-                if (NWScript.GetSkyBox(area) == SkyboxType.Icy)
+                if (GetSkyBox(area) == SkyboxType.Icy)
                 {
-                    NWScript.SetWeather(area, WeatherType.Snow);
+                    SetWeather(area, WeatherType.Snow);
                 }
             }
         }

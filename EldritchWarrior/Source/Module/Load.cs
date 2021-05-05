@@ -4,6 +4,7 @@ using NWN.Framework.Lite;
 using NWN.Framework.Lite.Enum;
 using NWN.Framework.Lite.NWNX;
 using NWN.Framework.Lite.NWNX.Enum;
+using static NWN.Framework.Lite.NWScript;
 
 namespace EldritchWarrior.Source.Module
 {
@@ -23,13 +24,14 @@ namespace EldritchWarrior.Source.Module
             InitWeatherSystem();
             InitAdministration();
             InitServerCalender();
-
+            
+            NWN.Framework.Lite.NWNX.Events.SubscribeEvent("NWNX_ON_EXAMINE_OBJECT_BEFORE", "on_exam_obj_befo");
             PrintBootTime();
         }
 
         private static void InitScheduler() => Entrypoints.MainLoopEvent += (sender, args) => Schedule.Scheduler.Process();
         private static void PrintBootTime() => Console.WriteLine($"SERVER LOADED:{DateTime.Now.ToString(@"yyyy/MM/dd hh:mm:ss tt", new CultureInfo("en-US"))}");
-        private static void ServerMessage1439() => NWScript.SpeakString($"Server reset in one minute.", TalkVolumeType.Shout);
+        private static void ServerMessage1439() => SpeakString($"Server reset in one minute.", TalkVolumeType.Shout);
 
 
         public static void InitServerCalender()
@@ -69,28 +71,28 @@ namespace EldritchWarrior.Source.Module
 
         private static void InitWeatherSystem()
         {
-            uint area = NWScript.GetFirstArea();
-            while (NWScript.GetIsObjectValid(area))
+            uint area = GetFirstArea();
+            while (GetIsObjectValid(area))
             {
-                if (!NWScript.GetIsAreaInterior(area))
+                if (!GetIsAreaInterior(area))
                 {
                     area.InitFog();
                     area.InitSkyboxes();
                     area.InitSunMoonColors();
                     area.InitArea();
                 }
-                area = NWScript.GetNextArea();
+                area = GetNextArea();
             }
         }
 
         private static void InitModuleVariables()
         {
-            NWScript.SetLocalString(NWScript.GetModule(), NWScript.GetModule().ToString(), "X2_SWITCH_ENABLE_TAGBASED_SCRIPTS");
-            NWScript.SetLocalString(NWScript.GetModule(), NWScript.GetModule().ToString(), "X2_L_STOP_EXPERTISE_ABUSE");
-            NWScript.SetLocalString(NWScript.GetModule(), NWScript.GetModule().ToString(), "X2_L_NOTREASURE");
-            NWScript.SetLocalString(NWScript.GetModule(), NWScript.GetModule().ToString(), "X3_MOUNTS_EXTERNAL_ONLY");
-            NWScript.SetLocalString(NWScript.GetModule(), NWScript.GetModule().ToString(), "X3_MOUNTS_NO_UNDERGROUND");
-            NWScript.SetLocalString(NWScript.GetModule(), NWScript.GetModule().ToString(), "X2_S_UD_SPELLSCRIPT");
+            SetLocalString(GetModule(), GetModule().ToString(), "X2_SWITCH_ENABLE_TAGBASED_SCRIPTS");
+            SetLocalString(GetModule(), GetModule().ToString(), "X2_L_STOP_EXPERTISE_ABUSE");
+            SetLocalString(GetModule(), GetModule().ToString(), "X2_L_NOTREASURE");
+            SetLocalString(GetModule(), GetModule().ToString(), "X3_MOUNTS_EXTERNAL_ONLY");
+            SetLocalString(GetModule(), GetModule().ToString(), "X3_MOUNTS_NO_UNDERGROUND");
+            SetLocalString(GetModule(), GetModule().ToString(), "X2_S_UD_SPELLSCRIPT");
         }
 
         private static void ServerMessageEveryHour()
@@ -98,13 +100,13 @@ namespace EldritchWarrior.Source.Module
             switch (hours)
             {
                 case >= 2:
-                    NWScript.SpeakString($"Server reset in {hours} hours.", TalkVolumeType.Shout);
+                    SpeakString($"Server reset in {hours} hours.", TalkVolumeType.Shout);
                     break;
                 case 1:
-                    NWScript.SpeakString($"Server reset in {hours} hour.", TalkVolumeType.Shout);
+                    SpeakString($"Server reset in {hours} hour.", TalkVolumeType.Shout);
                     break;
                 default:
-                    NWScript.ExportAllCharacters();
+                    ExportAllCharacters();
                     Console.WriteLine($"*** SERVER RESET ***");
                     Administration.ShutdownServer();
                     break;
