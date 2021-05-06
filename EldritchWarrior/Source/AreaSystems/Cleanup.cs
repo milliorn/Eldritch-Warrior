@@ -23,7 +23,6 @@ namespace EldritchWarrior.Source.AreaSystems
                         case ObjectType.AreaOfEffect:
                         case ObjectType.Creature:
                         case ObjectType.Item:
-                            Console.WriteLine($"{GetObjectType(objectInArea).ToString()}: {GetName(objectInArea)}");
                             DestroyObject(objectInArea);
                             break;
                         case ObjectType.Door: PlayAnimation(AnimationType.DoorClose); break;
