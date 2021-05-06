@@ -1,4 +1,3 @@
-using System;
 using NWN.Framework.Lite;
 using NWN.Framework.Lite.Enum;
 using static NWN.Framework.Lite.NWScript;
@@ -22,10 +21,7 @@ namespace EldritchWarrior.Source.AreaSystems
                     {
                         case ObjectType.AreaOfEffect:
                         case ObjectType.Creature:
-                        case ObjectType.Item:
-                            Console.WriteLine($"{GetObjectType(objectInArea).ToString()}: {GetName(objectInArea)}");
-                            DestroyObject(objectInArea);
-                            break;
+                        case ObjectType.Item: DestroyObject(objectInArea); break;
                         case ObjectType.Door: PlayAnimation(AnimationType.DoorClose); break;
                         case ObjectType.Placeable: objectInArea.DestroyInventory(); break;
                     }
