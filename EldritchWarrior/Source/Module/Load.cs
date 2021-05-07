@@ -26,6 +26,8 @@ namespace EldritchWarrior.Source.Module
             InitServerCalender();
             
             Events.SubscribeEvent("NWNX_ON_EXAMINE_OBJECT_BEFORE", "on_exam_obj_befo");
+
+            Events.SubscribeEvent("NWNX_ON_USE_FEAT_BEFORE", "on_use_feat_befo");
             Events.SubscribeEvent("NWNX_ON_USE_FEAT_AFTER", "on_use_feat_afte");
 
             PrintBootTime();
