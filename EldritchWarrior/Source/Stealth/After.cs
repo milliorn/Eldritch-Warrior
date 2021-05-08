@@ -1,5 +1,4 @@
 using NWN.Framework.Lite;
-using NWN.Framework.Lite.NWNX;
 using NWN.Framework.Lite.Enum;
 using static NWN.Framework.Lite.NWScript;
 

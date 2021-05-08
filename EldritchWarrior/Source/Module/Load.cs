@@ -50,7 +50,6 @@ namespace EldritchWarrior.Source.Module
 
         private static void InitAdministration()
         {
-            
             Administration.SetPlayOption(AdministrationOption.EnforceLegalCharacters, 1);
             Administration.SetPlayOption(AdministrationOption.ExamineChallengeRating, 1);
             Administration.SetPlayOption(AdministrationOption.ExamineEffects, 1);

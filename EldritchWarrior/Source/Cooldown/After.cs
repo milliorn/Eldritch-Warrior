@@ -9,7 +9,7 @@ namespace EldritchWarrior.Source.Cooldown
         [ScriptHandler("on_use_feat_afte")]
         public static void CombatFeat()
         {
-            var feat = Events.GetEventData("FEAT_ID");
+            string feat = Events.GetEventData("FEAT_ID");
             System.Console.WriteLine($"{feat}");
 
             switch (feat)
