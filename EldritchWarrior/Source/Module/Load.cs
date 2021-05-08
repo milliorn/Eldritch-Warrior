@@ -24,18 +24,22 @@ namespace EldritchWarrior.Source.Module
             InitWeatherSystem();
             InitAdministration();
             InitServerCalender();
-            
-            Events.SubscribeEvent("NWNX_ON_EXAMINE_OBJECT_BEFORE", "on_exam_obj_befo");
-            Events.SubscribeEvent("NWNX_ON_EXIT_STEALTH_AFTER", "on_exit_stlth_af");
-            Events.SubscribeEvent("NWNX_ON_ENTER_STEALTH_BEFORE", "on_ent_stlth_be");
+
+            SubscribeNWNXEvents();
 
             PrintBootTime();
+        }
+
+        private static void SubscribeNWNXEvents()
+        {
+            Events.SubscribeEvent("NWNX_ON_EXAMINE_OBJECT_BEFORE", "on_exam_obj_befo");
+            Events.SubscribeEvent("NWNX_ON_STEALTH_ENTER_BEFORE", "on_en_stealth_be");
+            Events.SubscribeEvent("NWNX_ON_STEALTH_EXIT_AFTER", "on_ex_stealth_af");
         }
 
         private static void InitScheduler() => Entrypoints.MainLoopEvent += (sender, args) => Schedule.Scheduler.Process();
         private static void PrintBootTime() => Console.WriteLine($"SERVER LOADED:{DateTime.Now.ToString(@"yyyy/MM/dd hh:mm:ss tt", new CultureInfo("en-US"))}");
         private static void ServerMessage1439() => SpeakString($"Server reset in one minute.", TalkVolumeType.Shout);
-
 
         public static void InitServerCalender()
         {
