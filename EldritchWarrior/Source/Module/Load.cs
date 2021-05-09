@@ -35,7 +35,8 @@ namespace EldritchWarrior.Source.Module
             Events.SubscribeEvent("NWNX_ON_STEALTH_EXIT_AFTER", "on_ex_stealth_af");
             Events.SubscribeEvent("NWNX_ON_USE_FEAT_BEFORE", "on_use_feat_befo");
             Events.SubscribeEvent("NWNX_ON_USE_FEAT_AFTER", "on_use_feat_afte");
-            
+
+            Events.SubscribeEvent("NWNX_ON_USE_SKILL_BEFORE", "on_use_skill_bef");
             Events.SubscribeEvent("NWNX_ON_USE_SKILL_AFTER", "on_use_skill_aft");
 
         }
