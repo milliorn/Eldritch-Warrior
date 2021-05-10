@@ -5,7 +5,7 @@ namespace EldritchWarrior.Source.Client
 {
     public class Enter
     {
-        [ScriptHandler("x3_mod_def_enter")]
+        [ScriptHandler("mod_enter")]
         public static void OnClientEnter()
         {
             uint enter = GetEnteringObject();

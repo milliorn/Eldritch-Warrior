@@ -11,7 +11,7 @@ namespace EldritchWarrior.Source.ChatSystem
         private static bool TriggerChatTools(string message) => message.StartsWith(wildcard);
 
 
-        [ScriptHandler("on_player_chat")]
+        [ScriptHandler("mod_chat")]
         public static void OnPlayerChat()
         {
             string message = GetPCChatMessage();

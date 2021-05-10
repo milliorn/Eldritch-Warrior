@@ -5,7 +5,7 @@ namespace EldritchWarrior.Source.Client
 {
     public class Leave
     {
-        [ScriptHandler("x3_mod_def_leave")]
+        [ScriptHandler("mod_exit")]
         public static void OnClientLeave()
         {
             uint pc = GetExitingObject();

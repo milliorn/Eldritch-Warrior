@@ -4,8 +4,8 @@ namespace EldritchWarrior.Source.PlayerCharacter
 {
     public class Death
     {
-        [ScriptHandler("nw_o0_death")]
-        public static void OnDying()
+        [ScriptHandler("mod_death")]
+        public static void OnDeath()
         {
 
         }
