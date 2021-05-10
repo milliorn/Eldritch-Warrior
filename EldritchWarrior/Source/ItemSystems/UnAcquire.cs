@@ -1,12 +1,13 @@
+using EldritchWarrior.Source.ItemSystems;
 using NWN.Framework.Lite;
 using NWN.Framework.Lite.Bioware;
 using NWN.Framework.Lite.Enum;
 
-namespace EldritchWarrior.Source.Items
+namespace EldritchWarrior.Source.ItemSystems
 {
     public class UnAcquire
     {
-        [ScriptHandler("x2_mod_def_unaqu")]
+        [ScriptHandler("mod_unacquire")]
         public static void OnUnAcquireItem()
         {
             var unAcquired = NWScript.GetModuleItemLost();

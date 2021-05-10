@@ -7,7 +7,7 @@ namespace EldritchWarrior.Source.Stealth
 {
     public class Before
     {
-        [ScriptHandler("on_en_stealth_be")]
+        [ScriptHandler("stlent_add_bef")]
         public static void Enter()
         {
             string name = GetName(OBJECT_SELF);

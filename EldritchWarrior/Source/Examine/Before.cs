@@ -7,7 +7,7 @@ namespace EldritchWarrior.Source.Examine
 {
     public class Before
     {
-        [ScriptHandler("on_exam_obj_befo")]
+        [ScriptHandler("examine_reset")]
         public static void OnBefore()
         {
             uint examinedObject = StringToObject(Events.GetEventData("EXAMINEE_OBJECT_ID"));

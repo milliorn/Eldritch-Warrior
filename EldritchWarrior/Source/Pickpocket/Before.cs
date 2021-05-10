@@ -6,7 +6,7 @@ namespace EldritchWarrior.Source.Pickpocket
 {
     public class Before
     {
-        [ScriptHandler("on_use_skill_bef")]
+        [ScriptHandler("use_skill_bef")]
         public static void OnSkillUsed()
         {
             string eventData = Events.GetEventData("SKILL_ID");
