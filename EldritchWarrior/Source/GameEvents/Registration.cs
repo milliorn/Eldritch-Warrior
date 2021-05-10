@@ -24,9 +24,6 @@ namespace EldritchWarrior.Source.Module
 
             Console.WriteLine("Hooking all NWNX events");
             HookNWNXEvents();
-
-            Console.WriteLine("Hooking all application-specific events");
-            HookApplicationEvents();
         }
 
         [ScriptHandler("mod_heartbeat")]
@@ -499,44 +496,6 @@ namespace EldritchWarrior.Source.Module
             Events.SubscribeEvent("NWNX_ON_STORE_REQUEST_BUY_AFTER", "store_buy_aft");
             Events.SubscribeEvent("NWNX_ON_STORE_REQUEST_SELL_BEFORE", "store_sell_bef");
             Events.SubscribeEvent("NWNX_ON_STORE_REQUEST_SELL_AFTER", "store_sell_aft");
-        }
-
-        /// <summary>
-        /// Hooks all application-specific scripts.
-        /// </summary>
-        private static void HookApplicationEvents()
-        {
-            // Application Shutdown events
-            Events.SubscribeEvent("APPLICATION_SHUTDOWN", "app_shutdown");
-            AppDomain.CurrentDomain.ProcessExit += (sender, args) =>
-            {
-                Events.SignalEvent("APPLICATION_SHUTDOWN", GetModule());
-            };
-
-            Events.SubscribeEvent("SWLOR_ITEM_EQUIP_VALID_BEFORE", "item_eqp_bef");
-            Events.SubscribeEvent("SWLOR_BUY_PERK", "swlor_buy_perk");
-            Events.SubscribeEvent("SWLOR_GAIN_SKILL_POINT", "swlor_gain_skill");
-            Events.SubscribeEvent("SWLOR_COMPLETE_QUEST", "swlor_comp_qst");
-            Events.SubscribeEvent("SWLOR_CACHE_SKILLS_LOADED", "swlor_skl_cache");
-            Events.SubscribeEvent("SWLOR_EXAMINE_OBJECT_BEFORE", "examine_bef");
-        }
-
-        /// <summary>
-        /// When an object is examined, reset the description back to its original text.
-        /// This ensures examine events hooked with the 'examine_bef' event will be able
-        /// to modify the text without respect to the order in which they are called.
-        /// </summary>
-        [ScriptHandler("examine_reset")]
-        public static void ResetExamineDescription()
-        {
-            var objectId = Events.GetEventData("EXAMINEE_OBJECT_ID");
-            var obj = StringToObject(objectId);
-
-            var description = GetDescription(obj, true) + "\n\n";
-            SetDescription(obj, description);
-
-            Events.PushEventData("EXAMINEE_OBJECT_ID", objectId);
-            Events.SignalEvent("SWLOR_EXAMINE_OBJECT_BEFORE", OBJECT_SELF);
         }
 
         /// <summary>
