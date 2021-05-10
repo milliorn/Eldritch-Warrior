@@ -8,7 +8,7 @@ namespace EldritchWarrior.Source.ItemSystems
 {
     public class Acquire
     {
-        [ScriptHandler("x2_mod_def_aqu")]
+        [ScriptHandler("mod_acquire")]
         public static void OnAcquireItem()
         {
             uint acquired = GetModuleItemAcquired();

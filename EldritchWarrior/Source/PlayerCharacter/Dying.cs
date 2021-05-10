@@ -5,7 +5,7 @@ namespace EldritchWarrior.Source.PlayerCharacter
 {
     public class Dying
     {
-        [ScriptHandler("nw_o0_dying")]
+        [ScriptHandler("mod_dying")]
         public static void OnDying()
         {
             uint pc = GetLastPlayerDying();

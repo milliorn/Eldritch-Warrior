@@ -12,7 +12,7 @@ namespace EldritchWarrior.Source.Module
     {
         private static readonly int hours = 24;
 
-        [ScriptHandler("x2_mod_def_load")]
+        [ScriptHandler("mod_load")]
         public static void OnModuleLoad()
         {
             Chat.RegisterChatScript("");
