@@ -51,5 +51,11 @@ namespace EldritchWarrior.Source.PlayerCharacter
                 DelayCommand(1.0f, () => Dying.OnDying());
             }
         }
+
+        public static void Save(this uint pc)
+        {
+            ExportSingleCharacter(pc);
+            SendMessageToPC(pc, "Character Saved");
+        }
     }
 }
