@@ -48,11 +48,11 @@
 			max-files = 1000
 			max-megabytes = 3
 [ruleset]
-	always-roll-max-hitpoints-on-levelup = false
+	always-roll-max-hitpoints-on-levelup = true
 	difficulty = 1
 	enforce-legal-characters = true
 	hide-hitpoints-gained-on-levelup = false
-	item-level-restrictions = false
+	item-level-restrictions = true
 	max-character-level = 40
 	min-character-level = 1
 	natural-ones-fail-saving-throws = true
@@ -72,10 +72,10 @@
 [server]
 	allow-player-pausing = false
 	disallow-shouting = false
-	one-party-only = true
+	one-party-only = false
 	pvp-mode = 1
 	reload-when-empty = true
-	restore-spell-uses-on-login = false
+	restore-spell-uses-on-login = true
 	savegames-store-characters = true
 	savegames-vault-characters-only = false
 	show-dm-join-messages = true
@@ -101,7 +101,7 @@
 	[server.login]
 		admin-password = ""
 		dm-password = ""
-		max-players = 6
+		max-players = 64
 		player-password = ""
 		[server.login.player-dm]
 			enabled = true
