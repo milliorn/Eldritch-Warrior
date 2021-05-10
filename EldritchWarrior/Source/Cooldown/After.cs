@@ -6,7 +6,7 @@ namespace EldritchWarrior.Source.Cooldown
 {
     public class After
     {
-        [ScriptHandler("on_use_feat_afte")]
+        [ScriptHandler("feat_use_aft")]
         public static void CombatFeat()
         {
             string feat = Events.GetEventData("FEAT_ID");

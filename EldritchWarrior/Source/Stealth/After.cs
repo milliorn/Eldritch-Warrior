@@ -6,7 +6,7 @@ namespace EldritchWarrior.Source.Stealth
 {
     public class After
     {
-        [ScriptHandler("on_ex_stealth_af")]
+        [ScriptHandler("stlex_add_aft")]
         public static void Exit()
         {
             string name = GetName(OBJECT_SELF);
