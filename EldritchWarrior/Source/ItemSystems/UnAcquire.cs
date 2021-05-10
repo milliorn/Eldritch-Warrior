@@ -14,6 +14,7 @@ namespace EldritchWarrior.Source.ItemSystems
             var unAcquiredBy = NWScript.GetModuleItemLostBy();
 
             unAcquired.PrintGPValue();
+            PlayerCharacter.Extensions.Save(unAcquiredBy);
             BiowareXP2.IPRemoveAllItemProperties(unAcquired, DurationType.Temporary);
 
             if (NWScript.GetIsDM(unAcquired)) return;
