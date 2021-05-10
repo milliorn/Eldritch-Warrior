@@ -1,4 +1,5 @@
 using NWN.Framework.Lite;
+using static NWN.Framework.Lite.NWScript;
 
 namespace EldritchWarrior.Source.PlayerCharacter
 {
@@ -7,7 +8,8 @@ namespace EldritchWarrior.Source.PlayerCharacter
         [ScriptHandler("mod_death")]
         public static void OnDeath()
         {
-
+            uint pc = GetLastPlayerDied();
+            pc.Save();
         }
     }
 }

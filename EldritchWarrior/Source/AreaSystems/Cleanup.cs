@@ -14,7 +14,9 @@ namespace EldritchWarrior.Source.AreaSystems
 			uint area = GetArea(pc);
 			uint objectInArea = GetFirstObjectInArea(area);
 
-			if (!area.PlayersRemainInArea())
+            PlayerCharacter.Extensions.Save(pc);
+			
+            if (!area.PlayersRemainInArea())
 			{
 				while (GetIsObjectValid(objectInArea))
 				{
