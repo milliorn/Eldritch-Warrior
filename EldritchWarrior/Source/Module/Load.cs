@@ -16,10 +16,6 @@ namespace EldritchWarrior.Source.Module
         [ScriptHandler("mod_load")]
         public static void OnModuleLoad()
         {
-            Chat.RegisterChatScript("");
-            Entrypoints.MainLoopEvent += (sender, args) => Schedule.Scheduler.Process();
-
-            InitScheduler();
             InitMonkWeapons();
             InitModuleVariables();
             InitWeatherSystem();
@@ -28,7 +24,6 @@ namespace EldritchWarrior.Source.Module
             PrintBootTime();
         }
 
-        private static void InitScheduler() => Entrypoints.MainLoopEvent += (sender, args) => Schedule.Scheduler.Process();
         private static void PrintBootTime() => Console.WriteLine($"SERVER LOADED:{DateTime.Now.ToString(@"yyyy/MM/dd hh:mm:ss tt", new CultureInfo("en-US"))}");
         private static void ServerMessage1439() => SpeakString($"Server reset in one minute.", TalkVolumeType.Shout);
 
