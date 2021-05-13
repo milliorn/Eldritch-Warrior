@@ -9,13 +9,6 @@ namespace EldritchWarrior.Source.ItemBank
 
         public static string DBLocationCDKEY(this string cdkey) => $"{GetModuleName()}:{cdkey}";
 
-        public static uint CreateBankObject(uint pc, string chestTag)
-        {
-            uint bank = CreateObject(ObjectType.Placeable, "_bank_", GetLocation(pc));
-            SetLocalString(bank, "CHEST_TAG", chestTag);
-            return bank;
-        }
-
         public static bool ItemDepositSuccessful(this uint chest, uint pc)
         {
             //iterate over all items in the inventory
@@ -53,6 +46,22 @@ namespace EldritchWarrior.Source.ItemBank
         {
             DestroyObject(item, 0.2f);
             CopyItem(NWN.Framework.Lite.NWNX.Object.Deserialize(NWN.Framework.Lite.NWNX.Object.Serialize(item)));
+        }
+
+        public static uint CreateBankObject(uint pc, string chestTag)
+        {
+            uint bank = CreateObject(ObjectType.Placeable, "_bank_", GetLocation(pc));
+            SetLocalString(bank, "CHEST_TAG", chestTag);
+            return bank;
+        }
+
+        public static uint GetBankObject(this uint pc, string chestTag)
+        {
+            string path = DBLocationCDKEY(GetPCPublicCDKey(pc));
+
+            uint bank = CreateBankObject(pc, chestTag);
+
+            return bank;
         }
     }
 }
