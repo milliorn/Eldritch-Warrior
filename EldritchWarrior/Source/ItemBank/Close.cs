@@ -1,6 +1,5 @@
 using NWN.Framework.Lite;
 using static NWN.Framework.Lite.NWScript;
-using NWN.Framework.Lite.Enum;
 
 namespace EldritchWarrior.Source.ItemBank
 {

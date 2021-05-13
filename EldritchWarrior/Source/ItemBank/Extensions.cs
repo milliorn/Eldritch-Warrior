@@ -1,4 +1,3 @@
-using System;
 using static NWN.Framework.Lite.NWScript;
 using NWN.Framework.Lite.Enum;
 
@@ -38,7 +37,7 @@ namespace EldritchWarrior.Source.ItemBank
                 //repeated above
                 else if (count > maxItems)
                 {
-                    RefuseItem(pc, item);
+                    pc.RefuseItem(item);
                     FloatingTextStringOnCreature("Maximum Item Count Exceeded!", pc, false);
                     return false;
                 }
@@ -50,7 +49,7 @@ namespace EldritchWarrior.Source.ItemBank
             return true;
         }
 
-        public static void RefuseItem(uint pc, uint item)
+        public static void RefuseItem(this uint pc, uint item)
         {
             DestroyObject(item, 0.2f);
             CopyItem(NWN.Framework.Lite.NWNX.Object.Deserialize(NWN.Framework.Lite.NWNX.Object.Serialize(item)));
