@@ -1,6 +1,6 @@
 using NWN.Framework.Lite;
 
-namespace EldritchWarrior.Source.Bank
+namespace EldritchWarrior.Source.ItemBank
 {
     public class Disturb
     {
