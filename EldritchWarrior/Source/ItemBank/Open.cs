@@ -41,17 +41,17 @@ namespace EldritchWarrior.Source.ItemBank
 
             // loop through the NPC storers inventory and copy the items
             // into the chest.
-            uint oItem = GetFirstItemInInventory(bank);
-            while (GetIsObjectValid(oItem))
+            uint item = GetFirstItemInInventory(bank);
+            while (GetIsObjectValid(item))
             {
                 // Copy the item into the chest
-                CopyItem(oItem, chest, true);
+                CopyItem(item, chest, true);
 
                 // Destroy the original
-                DestroyObject(oItem);
+                DestroyObject(item);
 
                 // Next item
-                oItem = GetNextItemInInventory(bank);
+                item = GetNextItemInInventory(bank);
             }
 
             // Destroy the NPC storer
