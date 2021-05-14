@@ -46,7 +46,6 @@ namespace EldritchWarrior.Source.ItemBank
                     itemAdded = GetNextItemInInventory(chest);
                 }
             }
-
             else if (GetInventoryDisturbType() == DisturbType.Removed)
             {
                 FloatingTextStringOnCreature($"{GetName(pc)} REMOVED {GetName(disturbedItem)} from the Persistant Chest  CD KEY = {GetPCPublicCDKey(pc)}", pc, true);
@@ -60,7 +59,7 @@ namespace EldritchWarrior.Source.ItemBank
                     if (GetHasInventory(itemRemoved))
                     {
                         // Send a message to the player
-                        FloatingTextStringOnCreature($"Containers/bags are NOT allowed to{Extensions.maxItems} be stored!!!\nPlease remove the container/bag.", pc);
+                        FloatingTextStringOnCreature($"Containers/bags are NOT allowed to be stored!!!\nPlease remove the container/bag.", pc);
                         return;
                     }
                     else if (count > Extensions.maxItems)
@@ -75,7 +74,6 @@ namespace EldritchWarrior.Source.ItemBank
                     itemRemoved = GetNextItemInInventory(chest);
                 }
             }
-
             else
             {
                 SpeakString($"ERROR! Transfer Chest. {name} {GetPCPublicCDKey(pc, true)}.", TalkVolumeType.Party);

@@ -9,7 +9,6 @@ namespace EldritchWarrior.Source.ItemBank
         [ScriptHandler("bank_item_open")]
         public static void Chest()
         {
-            // Vars
             uint pc = GetLastOpenedBy();
             uint chest = OBJECT_SELF;
 
