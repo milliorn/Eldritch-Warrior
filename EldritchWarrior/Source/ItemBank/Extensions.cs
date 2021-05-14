@@ -6,7 +6,7 @@ namespace EldritchWarrior.Source.ItemBank
     public static class Extensions
     {
         public static readonly int maxItems = 30;
-
+        public static readonly string itemBankName = "BANK_ITEM";
         public static string DBLocationCDKEY(this string cdkey) => $"{GetModuleName()}:{cdkey}";
 
         public static bool ItemDepositSuccessful(this uint chest, uint pc)
@@ -55,13 +55,6 @@ namespace EldritchWarrior.Source.ItemBank
             return bank;
         }
 
-        public static uint GetBankObject(this uint pc, string chestTag)
-        {
-            string path = DBLocationCDKEY(GetPCPublicCDKey(pc));
-
-            uint bank = CreateBankObject(pc, chestTag);
-
-            return bank;
-        }
+        public static uint GetBankObject(this uint pc, string chestTag) => CreateBankObject(pc, chestTag);
     }
 }
