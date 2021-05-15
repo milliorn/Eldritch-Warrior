@@ -9,53 +9,51 @@ namespace EldritchWarrior.Source.ItemBank
         [ScriptHandler("bank_item_open")]
         public static void Chest()
         {
-            uint pc = GetLastOpenedBy();
-            uint chest = OBJECT_SELF;
+            // Vars
+            var pc = GetLastOpenedBy();
+            var chest = OBJECT_SELF;
+            var pcLocation = GetLocation(pc);
+            var chestLocation = GetLocation(OBJECT_SELF);
 
-            Location pcLocation = GetLocation(pc);
-            Location chestLocation = GetLocation(OBJECT_SELF);
-
+            string id = GetPCPublicCDKey(pc);
             string userID = GetLocalString(chest, "USER_ID");
-            string id = GetPCPublicCDKey(pc, true);
-            string pcName = GetName(pc);
+            string modName = GetName(GetModule());
+            string name = GetName(pc);
 
             // End script if any of these conditions are met
             if (!GetIsPC(pc) || GetIsDM(pc) || GetIsDMPossessed(pc) || GetIsPossessedFamiliar(pc)) return;
 
             // If the chest is already in use then this must be a thief
-            if (userID != "" && userID != id)
-            {
-                AssignCommand(pc, () => ActionMoveAwayFromObject(chest));
-                return;
-            }
+            if (userID != "" && userID != id) return;
 
-            FloatingTextStringOnCreature($"Reminder that only a maximum of {Extensions.maxItems} items are allowed to be stored.", pc);
+            FloatingTextStringOnCreature("<cþf >Reminder that only a maximum of " +
+            IntToString(Extensions.maxItems) + " items are allowed to be stored.</c>", pc);
 
             // Set the players ID as a local string onto the chest
             // for anti theft purposes
             SetLocalString(chest, "USER_ID", id);
 
             // Get the player's storer NPC from the database
-            uint bank = RetrieveCampaignObject($"{Extensions.itemBankName}", $"{Extensions.itemBankName}{userID}", pcLocation);
-            DeleteCampaignVariable($"{Extensions.itemBankName}", $"{Extensions.itemBankName}{userID}");
+            var storer = RetrieveCampaignObject(modName, Extensions.itemBankName + id, pcLocation);
+            DeleteCampaignVariable(modName, Extensions.itemBankName + id);
 
             // loop through the NPC storers inventory and copy the items
             // into the chest.
-            uint item = GetFirstItemInInventory(bank);
-            while (GetIsObjectValid(item))
+            var inventoryItem = GetFirstItemInInventory(storer);
+            while (GetIsObjectValid(inventoryItem))
             {
                 // Copy the item into the chest
-                CopyItem(item, chest, true);
+                CopyItem(inventoryItem, chest, true);
 
                 // Destroy the original
-                DestroyObject(item);
+                DestroyObject(inventoryItem);
 
                 // Next item
-                item = GetNextItemInInventory(bank);
+                inventoryItem = GetNextItemInInventory(storer);
             }
 
             // Destroy the NPC storer
-            DestroyObject(bank);
+            DestroyObject(storer);
 
             //Visual FX
             ApplyEffectAtLocation(DurationType.Instant, EffectVisualEffect(VisualEffectType.Vfx_Fnf_Deck), chestLocation);
