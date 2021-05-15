@@ -27,7 +27,7 @@ def copy_folder_content(src, dst):
 def remove_readonly_recursive(path):
     os.system("attrib -r \"" + path +"\\*.*\" /s /d")
 
-# Find registery entry that has current user Document folder path
+# Find registry entry that has current user Document folder path
 registry = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
 registry_key = winreg.OpenKey(registry, r"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders", 0, winreg.KEY_READ)
 document_folder, regtype = winreg.QueryValueEx(registry_key, "Personal")

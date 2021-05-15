@@ -1,5 +1,6 @@
 {
         "cSpell.words": [
+                "HKEY",
                 "UNPOLYMORPH",
                 "asso",
                 "befo",
@@ -10,12 +11,14 @@
                 "invuln",
                 "jumppt",
                 "jumptarg",
+                "sfpb",
                 "splt",
                 "spwnobj",
                 "spwntrap",
                 "stlent",
                 "stlex",
                 "stlth",
+                "storer",
                 "unacquire",
                 "unaqu",
                 "upauto",
