@@ -20,8 +20,6 @@ namespace EldritchWarrior.Source.ItemBank
 
             if (GetInventoryDisturbType() == DisturbType.Added)
             {
-                FloatingTextStringOnCreature($"{GetName(pc)} ADDED " + GetName(disturbedItem) + " to the Transfer Chest " + " CD KEY = " + GetPCPublicCDKey(pc, true), pc, true);
-
                 uint itemAdded = GetFirstItemInInventory(chest);
                 while (GetIsObjectValid(itemAdded))
                 {
@@ -45,11 +43,10 @@ namespace EldritchWarrior.Source.ItemBank
                     // Next item
                     itemAdded = GetNextItemInInventory(chest);
                 }
+                FloatingTextStringOnCreature($"{GetName(pc)} added " + GetName(disturbedItem) + " to the Transfer Chest\n" + " CD KEY = " + GetPCPublicCDKey(pc, true) + "\n" + count + " items left in chest.", pc, true);
             }
             else if (GetInventoryDisturbType() == DisturbType.Removed)
             {
-                FloatingTextStringOnCreature($"{GetName(pc)} REMOVED {GetName(disturbedItem)} from the Persistant Chest  CD KEY = {GetPCPublicCDKey(pc)}", pc, true);
-
                 uint itemRemoved = GetFirstItemInInventory(chest);
                 while (GetIsObjectValid(itemRemoved))
                 {
@@ -73,7 +70,9 @@ namespace EldritchWarrior.Source.ItemBank
                     // Next item
                     itemRemoved = GetNextItemInInventory(chest);
                 }
+                FloatingTextStringOnCreature($"{GetName(pc)} removed " + GetName(disturbedItem) + " from the Transfer Chest\n" + " CD KEY = " + GetPCPublicCDKey(pc, true) + "\n" + count + " items left in chest.", pc, true);
             }
+            
             else
             {
                 SpeakString($"ERROR! Transfer Chest. {name} {GetPCPublicCDKey(pc, true)}.", TalkVolumeType.Party);
