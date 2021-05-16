@@ -7,7 +7,7 @@ namespace EldritchWarrior.Source.AreaSystems
 {
     public class Cleanup
     {
-        [ScriptHandler("are_exit_cleanup")]
+        [ScriptHandler("area_exit")]
         public static void Map()
         {
             uint pc = GetExitingObject();
