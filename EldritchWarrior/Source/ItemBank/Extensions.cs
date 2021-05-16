@@ -32,7 +32,6 @@ namespace EldritchWarrior.Source.ItemBank
                 {
                     // Send a message to the player
                     FloatingTextStringOnCreature("Containers/bags are NOT allowed to be stored!!!\nPlease remove the container/bag.", pc);
-
                     // Unlock chest and end script
                     SetLocked(chest, false);
                     return false;
@@ -41,14 +40,11 @@ namespace EldritchWarrior.Source.ItemBank
                 {
                     // Send a message to the player
                     FloatingTextStringOnCreature("Only a maximum of " + IntToString(maxItems) + " items are allowed to be stored!!!" + "\nPlease remove the excess items.", pc);
-
                     AssignCommand(pc, () => ActionSpeakString(GetName(pc) + $" has more than {maxItems} items in a bank chest and will lose " + $" all items if that player doesn't reduce the amount to under {maxItems} items", TalkVolumeType.Party));
-
                     // End script
                     SetLocked(chest, false);
                     return false;
                 }
-
                 // Next item
                 inventoryItem = GetNextItemInInventory(chest);
             }

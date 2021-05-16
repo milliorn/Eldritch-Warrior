@@ -8,7 +8,6 @@ namespace EldritchWarrior.Source.ItemBank
         [ScriptHandler("bank_item_used")]
         public static void Chest()
         {
-            // Vars
             uint pc = GetLastUsedBy();
 
             // End script if any of these conditions are met
@@ -16,6 +15,7 @@ namespace EldritchWarrior.Source.ItemBank
 
             uint chest = OBJECT_SELF;
             string userID = GetLocalString(chest, "USER_ID");
+            
             // If the chest is already in use then this must be a thief
             if (userID != "" && userID != GetPCPublicCDKey(pc))
             {

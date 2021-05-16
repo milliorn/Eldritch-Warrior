@@ -9,7 +9,6 @@ namespace EldritchWarrior.Source.ItemBank
         [ScriptHandler("bank_item_open")]
         public static void Chest()
         {
-            // Vars
             uint pc = GetLastOpenedBy();
 
             // End script if any of these conditions are met
@@ -18,6 +17,7 @@ namespace EldritchWarrior.Source.ItemBank
             string id = GetPCPublicCDKey(pc);
             uint chest = OBJECT_SELF;
             string userID = GetLocalString(chest, "USER_ID");
+
             // If the chest is already in use then this must be a thief
             if (userID != "" && userID != id) return;
 
@@ -42,14 +42,10 @@ namespace EldritchWarrior.Source.ItemBank
                 // Destroy the original
                 DestroyObject(inventoryItem);
 
-                // Next item
                 inventoryItem = GetNextItemInInventory(storer);
             }
 
-            // Destroy the NPC storer
             DestroyObject(storer);
-
-            //Visual FX
             ApplyEffectAtLocation(DurationType.Instant, EffectVisualEffect(VisualEffectType.Vfx_Fnf_Deck), GetLocation(OBJECT_SELF));
         }
     }
