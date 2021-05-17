@@ -1,3 +1,8 @@
+using System;
+using NWN.Framework.Lite;
+using NWN.Framework.Lite.Enum;
+using static NWN.Framework.Lite.NWScript;
+
 namespace EldritchWarrior.Source.Shifter
 {
     public class Extensions
@@ -48,7 +53,7 @@ namespace EldritchWarrior.Source.Shifter
         // - Set this to 3 to copy over from either weapon or gloves depending on whether a
         //   weapon was worn at the time of shifting.
         // - Set this to any other value ( eg 0 ) to not copy over anything to claw/bite attacks.
-        public static readonly bool GW_COPY_WEAPON_PROPS_TO_UNARMED = 3;
+        public static readonly int GW_COPY_WEAPON_PROPS_TO_UNARMED = 3;
 
 
         //***************** FOR DRUID SHAPES ********************
@@ -74,72 +79,35 @@ namespace EldritchWarrior.Source.Shifter
         //******** End Options ***********
 
         // Includes for various shifter and item related functions
-# include "x2_inc_itemprop"
-# include "x2_inc_shifter"
+        //# include "x2_inc_itemprop"
+        //# include "x2_inc_shifter"
 
-        // **** Begin Function prototypes ****
-        // Copies oOld's Properties to oNew, but only properties that do not stack
-        // with properties of the same type. If oOld is a weapon, then bWeapon must be true.
-        void WildshapeCopyNonStackProperties(object oOld, object oNew, int bWeapon = false);
-        // Returns true if ip is an item property that will stack with other properties
-        // of the same type: Ability, AC, Saves, Skills.
-        int GetIsStackingProperty(itemproperty ip);
-        // Returns the AC bonus type of oItem: AC_*_BONUS
-        int GetItemACType(object oItem);
-        // Looks for Stackable Properties on oItem, and sets local variables to count the total bonus.
-        // Also links any found AC bonuses/penalties to ePoly.
-        effect ExamineStackableProperties(object oPC, effect ePoly, object oItem);
-        // if bItems is true, Adds the stackable properties on all the objects given to ePoly.
-        // if bArmor is true, Adds the stackable properties on armor and helmet to ePoly.
-        effect AddStackablePropertiesToPoly(object oPC, effect ePoly, int bWeapon, int bItems, int bArmor, object oArmorOld, object oRing1Old,
-                                              object oRing2Old, object oAmuletOld, object oCloakOld, object oBracerOld,
-                                              object oBootsOld, object oBeltOld, object oHelmetOld, object oShield, object oWeapon, object oHideOld);
-        // Returns the spell that applied a Polymorph Effect currently on the player.
-        // -1 if it was no spell, -2 if no polymorph effect found.
-        int ScanForPolymorphEffect(object oPC);
-
-        // Converts a number from iprp_damagetype.2da to the corresponding
-        // DAMAGE_TYPE_* constants.
-        int ConvertNumToDamTypeConstant(int iItemDamType);
-
-        // Converts a number from iprp_immuncost.2da to the corresponding percentage of immunity
-        int ConvertNumToImmunePercentage(int iImmuneCost);
-
-        // Special function to copy over weapon properties, which deals with copying
-        // over ranged weapons correctly.
-        void WildshapeCopyWeaponProperties(object oPC, object oOld, object oNew);
-
-        // Returns true if oItem is a creature claw or bite.
-        int GetIsCreatureWeapon(object oItem);
-
-        // **** End Function prototypes ****
-
-        // **** Begin Functions, added by Iznoghoud ****
-        // Copies oOld's Properties to oNew, but only properties that do not stack
-        // with properties of the same type. If oOld is a weapon, then bWeapon must be true.
-        void WildshapeCopyNonStackProperties(object oOld, object oNew, int bWeapon = false)
+        ///<summary>
+        // Copies oldWeapon's Properties to newWeapon, but only properties that do not stack
+        // with properties of the same type. If oldWeapon is a weapon, then weapon must be true.
+        ///</summary>        
+        void WildshapeCopyNonStackProperties(uint oldWeapon, uint newWeapon, bool weapon = false)
         {
-
-            if (GetIsObjectValid(oOld) && GetIsObjectValid(oNew))
+            if (GetIsObjectValid(oldWeapon) && GetIsObjectValid(newWeapon))
             {
-                itemproperty ip = GetFirstItemProperty(oOld);
+                ItemProperty ip = GetFirstItemProperty(oldWeapon);
                 while (GetIsItemPropertyValid(ip)) // Loop through all the item properties.
                 {
-                    if (bWeapon) // If a weapon, then we must make sure not to transfer between ranged and non-ranged weapons!
+                    if (weapon) // If a weapon, then we must make sure not to transfer between ranged and non-ranged weapons!
                     {
-                        if (GetWeaponRanged(oOld) == GetWeaponRanged(oNew))
+                        if (GetWeaponRanged(oldWeapon) == GetWeaponRanged(newWeapon))
                         {
-                            AddItemProperty(DURATION_TYPE_PERMANENT, ip, oNew);
+                            AddItemProperty(DurationType.Instant, ip, newWeapon);
                         }
                     }
                     else
                     {
-                        // If not a stacking property, copy over the property.
-                        // Dont copy on hit cast spell property unless the target is a claw/bite.
-                        if (!GetIsStackingProperty(ip) && (!(GetItemPropertyType(ip) == ITEM_PROPERTY_ONHITCASTSPELL) || GetIsCreatureWeapon(oNew)))
-                            AddItemProperty(DURATION_TYPE_PERMANENT, ip, oNew);
+
+                        // If not a stacking property, copy over the property and don't copy on hit cast spell property unless the target is a claw/bite.
+                        if (!Convert.ToBoolean(GetIsStackingProperty(ip)) && Convert.ToBoolean(GetIsCreatureWeapon(newWeapon))) (!(GetItemPropertyType(ip) == ItemPropertyType.OnHitCastSpell))
+                            AddItemProperty(DurationType.Permanent, ip, newWeapon);
                     }
-                    ip = GetNextItemProperty(oOld); // Get next property
+                    ip = GetNextItemProperty(oldWeapon); // Get next property
                 }
             }
         }
@@ -265,7 +233,7 @@ namespace EldritchWarrior.Source.Shifter
         }
         // if bItems is true, Adds all the stackable properties on all the objects given to ePoly.
         // if bItems is false, Adds only the stackable properties on armor and helmet to ePoly.
-        effect AddStackablePropertiesToPoly(object oPC, effect ePoly, int bWeapon, int bItems, int bArmor, object oArmorOld, object oRing1Old,
+        effect AddStackablePropertiesToPoly(object oPC, effect ePoly, int weapon, int bItems, int bArmor, object oArmorOld, object oRing1Old,
                                               object oRing2Old, object oAmuletOld, object oCloakOld, object oBracerOld,
                                               object oBootsOld, object oBeltOld, object oHelmetOld, object oShield, object oWeapon, object oHideOld)
         {
@@ -448,23 +416,23 @@ namespace EldritchWarrior.Source.Shifter
             return 0;
         }
 
-        void WildshapeCopyWeaponProperties(object oPC, object oOld, object oNew)
+        void WildshapeCopyWeaponProperties(object oPC, object oldWeapon, object newWeapon)
         {
-            if (GetIsObjectValid(oOld) && GetIsObjectValid(oNew))
+            if (GetIsObjectValid(oldWeapon) && GetIsObjectValid(newWeapon))
             {
-                itemproperty ip = GetFirstItemProperty(oOld);
+                itemproperty ip = GetFirstItemProperty(oldWeapon);
                 // If both are Melee Weapons
-                if (!GetWeaponRanged(oOld) && !GetWeaponRanged(oNew))
+                if (!GetWeaponRanged(oldWeapon) && !GetWeaponRanged(newWeapon))
                 {
                     while (GetIsItemPropertyValid(ip))
                     {
-                        AddItemProperty(DURATION_TYPE_PERMANENT, ip, oNew);
-                        ip = GetNextItemProperty(oOld);
+                        AddItemProperty(DURATION_TYPE_PERMANENT, ip, newWeapon);
+                        ip = GetNextItemProperty(oldWeapon);
                     }// while
                 }
 
                 // If both are Ranged Weapons
-                else if (GetWeaponRanged(oOld) && GetWeaponRanged(oNew))
+                else if (GetWeaponRanged(oldWeapon) && GetWeaponRanged(newWeapon))
                 {
                     int bUnlimitedAmmoFound = false;
                     itemproperty ipNew;
@@ -484,13 +452,13 @@ namespace EldritchWarrior.Source.Shifter
                                 oAmmo = GetItemInSlot(INVENTORY_SLOT_BOLTS, oPC);
                             if (!GetIsObjectValid(oAmmo))
                                 oAmmo = GetItemInSlot(INVENTORY_SLOT_BULLETS, oPC);
-                            IPRemoveMatchingItemProperties(oNew, ITEM_PROPERTY_UNLIMITED_AMMUNITION, DURATION_TYPE_PERMANENT);
-                            AddItemProperty(DURATION_TYPE_PERMANENT, ip, oNew);
+                            IPRemoveMatchingItemProperties(newWeapon, ITEM_PROPERTY_UNLIMITED_AMMUNITION, DURATION_TYPE_PERMANENT);
+                            AddItemProperty(DURATION_TYPE_PERMANENT, ip, newWeapon);
                             DestroyObject(oAmmo);
                         }
                         else if (GetItemPropertyType(ip) == 45) // 45 = Mighty
                         {
-                            ipNew = GetFirstItemProperty(oNew);
+                            ipNew = GetFirstItemProperty(newWeapon);
                             // Find the mighty value of the Polymorph's weapon
                             while (GetIsItemPropertyValid(ipNew))
                             {
@@ -499,30 +467,30 @@ namespace EldritchWarrior.Source.Shifter
                                     iOldMightyValue = GetItemPropertyCostTableValue(ipNew);
                                     break;
                                 }
-                                ipNew = GetNextItemProperty(oNew);
+                                ipNew = GetNextItemProperty(newWeapon);
                             } // while
                               // If new mighty value bigger, remove old one and add new one.
                             if (GetItemPropertyCostTableValue(ip) > iOldMightyValue)
                             {
-                                RemoveItemProperty(oNew, ipNew);
-                                AddItemProperty(DURATION_TYPE_PERMANENT, ip, oNew);
+                                RemoveItemProperty(newWeapon, ipNew);
+                                AddItemProperty(DURATION_TYPE_PERMANENT, ip, newWeapon);
                             }
                         }
                         else
-                            AddItemProperty(DURATION_TYPE_PERMANENT, ip, oNew);
+                            AddItemProperty(DURATION_TYPE_PERMANENT, ip, newWeapon);
 
-                        ip = GetNextItemProperty(oOld);
+                        ip = GetNextItemProperty(oldWeapon);
                     } // while
                       // Add basic unlimited ammo if neccesary
-                    if (bUnlimitedAmmoFound == false && !GetItemHasItemProperty(oNew, ITEM_PROPERTY_UNLIMITED_AMMUNITION))
-                        AddItemProperty(DURATION_TYPE_PERMANENT, ItemPropertyUnlimitedAmmo(), oNew);
+                    if (bUnlimitedAmmoFound == false && !GetItemHasItemProperty(newWeapon, ITEM_PROPERTY_UNLIMITED_AMMUNITION))
+                        AddItemProperty(DURATION_TYPE_PERMANENT, ItemPropertyUnlimitedAmmo(), newWeapon);
                 }
             }
-            else if (GetWeaponRanged(oNew))
+            else if (GetWeaponRanged(newWeapon))
             {
                 // Add basic unlimited ammo if neccesary
-                if (!GetItemHasItemProperty(oNew, ITEM_PROPERTY_UNLIMITED_AMMUNITION))
-                    AddItemProperty(DURATION_TYPE_PERMANENT, ItemPropertyUnlimitedAmmo(), oNew);
+                if (!GetItemHasItemProperty(newWeapon, ITEM_PROPERTY_UNLIMITED_AMMUNITION))
+                    AddItemProperty(DURATION_TYPE_PERMANENT, ItemPropertyUnlimitedAmmo(), newWeapon);
             }
         }
 
