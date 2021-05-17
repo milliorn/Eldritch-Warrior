@@ -7,7 +7,6 @@ namespace EldritchWarrior.Source.ItemBank
     {
         public static readonly int maxItems = 30;
         public static readonly string itemBankName = "BANK_ITEM";
-        public static readonly string modName = GetName(GetModule());
 
         public static int GetChestItemCount(this uint chest)
         {
@@ -39,8 +38,8 @@ namespace EldritchWarrior.Source.ItemBank
                 else if (chest.GetChestItemCount() > maxItems)
                 {
                     // Send a message to the player
-                    FloatingTextStringOnCreature("Only a maximum of " + IntToString(maxItems) + " items are allowed to be stored!!!" + "\nPlease remove the excess items.", pc);
-                    AssignCommand(pc, () => ActionSpeakString(GetName(pc) + $" has more than {maxItems} items in a bank chest and will lose " + $" all items if that player doesn't reduce the amount to under {maxItems} items", TalkVolumeType.Party));
+                    FloatingTextStringOnCreature($"Only a maximum of {IntToString(maxItems)} items are allowed to be stored!!!\nPlease remove the excess items.", pc);
+                    AssignCommand(pc, () => ActionSpeakString($"{GetName(pc)} has more than {maxItems} items in a bank chest and will lose  all items if that player doesn't reduce the amount to under {maxItems} items", TalkVolumeType.Party));
                     // End script
                     SetLocked(chest, false);
                     return false;

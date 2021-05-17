@@ -28,8 +28,8 @@ namespace EldritchWarrior.Source.ItemBank
             SetLocalString(chest, "USER_ID", id);
 
             // Get the player's storer NPC from the database
-            var storer = RetrieveCampaignObject(Extensions.modName, Extensions.itemBankName + id, GetLocation(pc));
-            DeleteCampaignVariable(Extensions.modName, Extensions.itemBankName + id);
+            var storer = RetrieveCampaignObject(Extensions.itemBankName, id, GetLocation(pc));
+            DeleteCampaignVariable(Extensions.itemBankName, id);
 
             // loop through the NPC storers inventory and copy the items
             // into the chest.

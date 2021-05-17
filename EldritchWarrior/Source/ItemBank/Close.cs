@@ -48,7 +48,7 @@ namespace EldritchWarrior.Source.ItemBank
             }
 
             // Save the NPC storer into the database
-            StoreCampaignObject(Extensions.modName, Extensions.itemBankName + userID, bankObject);
+            StoreCampaignObject(Extensions.itemBankName, userID, bankObject);
 
             // Destroy NPC storer
             DestroyObject(bankObject);
