@@ -103,8 +103,8 @@ namespace EldritchWarrior.Source.Shifter
 					else
 					{
 
-                        // If not a stacking property, copy over the property and don't copy on hit cast spell property unless the target is a claw/bite.
-                        if (!GetIsStackingProperty(ip) &&  Convert.ToBoolean(GetIsCreatureWeapon(newWeapon)) || GetItemPropertyType(ip) != ItemPropertyType.OnHitCastSpell)
+						// If not a stacking property, copy over the property and don't copy on hit cast spell property unless the target is a claw/bite.
+                        if (!GetIsStackingProperty(ip) && Convert.ToBoolean(GetIsCreatureWeapon(newWeapon)) || GetItemPropertyType(ip) != ItemPropertyType.OnHitCastSpell)
                         {
                             AddItemProperty(DurationType.Permanent, ip, newWeapon);
                         }
@@ -113,26 +113,21 @@ namespace EldritchWarrior.Source.Shifter
                 }
             }
         }
+
         // Returns true if ip is an item property that will stack with other properties
         // of the same type: Ability, AC, Saves, Skills.
-        bool GetIsStackingProperty(ItemProperty ip)
-        {
-            ItemPropertyType itemPropertyType = GetItemPropertyType(ip);
+        bool GetIsStackingProperty(ItemProperty ip) => GetItemPropertyType(ip) == ItemPropertyType.AbilityBonus || (GW_ALLOW_AC_STACKING && (GetItemPropertyType(ip) == ItemPropertyType.ACBonus)) ||
+                    GetItemPropertyType(ip) == ItemPropertyType.DecreasedAbilityScore || (GW_ALLOW_AC_STACKING && (GetItemPropertyType(ip) == ItemPropertyType.DecreasedAC)) ||
+                    GetItemPropertyType(ip) == ItemPropertyType.SavingThrowBonus ||
+                    GetItemPropertyType(ip) == ItemPropertyType.SavingThrowBonusSpecific ||
+                    GetItemPropertyType(ip) == ItemPropertyType.DecreasedSavingThrows ||
+                    GetItemPropertyType(ip) == ItemPropertyType.DecreasedSavingThrows ||
+                    GetItemPropertyType(ip) == ItemPropertyType.SkillBonus ||
+                    GetItemPropertyType(ip) == ItemPropertyType.DecreasedSkillModifier ||
+                    GetItemPropertyType(ip) == ItemPropertyType.Regeneration ||
+                    GetItemPropertyType(ip) == ItemPropertyType.ImmunityDamageType || 
+                    GetItemPropertyType(ip) == ItemPropertyType.DamageVulnerability;
 
-            if (itemPropertyType == ItemPropertyType.AbilityBonus || 
-            (GW_ALLOW_AC_STACKING && (itemPropertyType == ItemPropertyType.ACBonus)) ||
-            itemPropertyType == ItemPropertyType.DecreasedAbilityScore || 
-            (GW_ALLOW_AC_STACKING && (itemPropertyType == ItemPropertyType.DecreasedAC)) ||
-                   itemPropertyType == 40 || itemPropertyType == 41 || // Bonus to saves (against element/universal, or fort/reflex/will)
-                   itemPropertyType == 49 || itemPropertyType == 50 || // Penalty to saves (against element/universal, or fort/reflex/will)
-                   itemPropertyType == 52 || itemPropertyType == 29 || // Skill Bonus, Penalty
-                   itemPropertyType == 51 ||                // Regeneration
-                   itemPropertyType == 20 || itemPropertyType == 24    // Damage Immunity and Vulnerability
-               )
-                return true;
-            else
-                return false;
-        }
         // Returns the AC bonus type of oItem: AC_*_BONUS
         int GetItemACType(object oItem)
         {
