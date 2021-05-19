@@ -340,38 +340,37 @@ namespace EldritchWarrior.Source.Shifter
 
         // Converts a number from iprp_damagetype.2da to the corresponding
         // DAMAGE_TYPE_* constants.
-        int ConvertNumToDamTypeConstant(int iItemDamType)
+        DamageType ConvertNumToDamTypeConstant(int itemDamType)
         {
-            switch (iItemDamType)
+            switch (itemDamType)
             {
                 case 0:
-                    return DAMAGE_TYPE_BLUDGEONING;
+                    return DamageType.Bludgeoning;
                 case 1:
-                    return DAMAGE_TYPE_PIERCING;
+                    return DamageType.Piercing;
                 case 2:
-                    return DAMAGE_TYPE_SLASHING;
+                    return DamageType.Slashing;
                 case 5:
-                    return DAMAGE_TYPE_MAGICAL;
+                    return DamageType.Magical;
                 case 6:
-                    return DAMAGE_TYPE_ACID;
+                    return DamageType.Acid;
                 case 7:
-                    return DAMAGE_TYPE_COLD;
+                    return DamageType.Cold;
                 case 8:
-                    return DAMAGE_TYPE_DIVINE;
+                    return DamageType.Divine;
                 case 9:
-                    return DAMAGE_TYPE_ELECTRICAL;
+                    return DamageType.Electrical;
                 case 10:
-                    return DAMAGE_TYPE_FIRE;
+                    return DamageType.Fire;
                 case 11:
-                    return DAMAGE_TYPE_NEGATIVE;
+                    return DamageType.Negative;
                 case 12:
-                    return DAMAGE_TYPE_POSITIVE;
+                    return DamageType.Positive;
                 case 13:
-                    return DAMAGE_TYPE_SONIC;
+                    return DamageType.Sonic;
                 default:
-                    return DAMAGE_TYPE_POSITIVE;
+                    return DamageType.Positive;
             };
-            // This one might seem unnecessary but it wont compile otherwise
         }
 
         // Converts a number from iprp_immuncost.2da to the corresponding percentage of immunity
