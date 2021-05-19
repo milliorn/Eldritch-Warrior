@@ -191,11 +191,11 @@ namespace EldritchWarrior.Source.Shifter
                         // variables here because there are no arrays in NWScript, and
                         // declaring a variable for every skill, ability type and saving
                         // throw type in here is a little overboard.
-                        case 0: // Ability Bonus
+                        case  : // Ability Bonus
                             SetLocalInt(pc, "ws_ability_" + IntToString(iSubType), GetLocalInt(pc, "ws_ability_" + IntToString(iSubType)) + GetItemPropertyCostTableValue(ip));
                             break;
                         case 1: // AC Bonus
-                            poly = EffectLinkEffects(EffectACIncrease(GetItemPropertyCostTableValue(ip), (GetItemACType(item)), poly);
+                            poly = EffectLinkEffects(EffectACIncrease(GetItemPropertyCostTableValue(ip), GetItemACType(item), poly);
                             break;
                         case 27: // Ability Penalty
                             SetLocalInt(pc, "ws_ability_" + IntToString(iSubType), GetLocalInt(pc, "ws_ability_" + IntToString(iSubType)) - GetItemPropertyCostTableValue(ip));
@@ -346,46 +346,32 @@ namespace EldritchWarrior.Source.Shifter
             {
                 case 0:
                     return DAMAGE_TYPE_BLUDGEONING;
-                    break;
                 case 1:
                     return DAMAGE_TYPE_PIERCING;
-                    break;
                 case 2:
                     return DAMAGE_TYPE_SLASHING;
-                    break;
                 case 5:
                     return DAMAGE_TYPE_MAGICAL;
-                    break;
                 case 6:
                     return DAMAGE_TYPE_ACID;
-                    break;
                 case 7:
                     return DAMAGE_TYPE_COLD;
-                    break;
                 case 8:
                     return DAMAGE_TYPE_DIVINE;
-                    break;
                 case 9:
                     return DAMAGE_TYPE_ELECTRICAL;
-                    break;
                 case 10:
                     return DAMAGE_TYPE_FIRE;
-                    break;
                 case 11:
                     return DAMAGE_TYPE_NEGATIVE;
-                    break;
                 case 12:
                     return DAMAGE_TYPE_POSITIVE;
-                    break;
                 case 13:
                     return DAMAGE_TYPE_SONIC;
-                    break;
                 default:
                     return DAMAGE_TYPE_POSITIVE;
-                    break;
             };
-            // This one might seem unneccesary but it wont compile otherwise
-            return DAMAGE_TYPE_POSITIVE;
+            // This one might seem unnecessary but it wont compile otherwise
         }
 
         // Converts a number from iprp_immuncost.2da to the corresponding percentage of immunity
@@ -395,30 +381,21 @@ namespace EldritchWarrior.Source.Shifter
             {
                 case 1:
                     return 5;
-                    break;
                 case 2:
                     return 10;
-                    break;
                 case 3:
                     return 25;
-                    break;
                 case 4:
                     return 50;
-                    break;
                 case 5:
                     return 75;
-                    break;
                 case 6:
                     return 90;
-                    break;
                 case 7:
                     return 100;
-                    break;
                 default:
                     return 0;
-                    break;
             };
-            return 0;
         }
 
         void WildshapeCopyWeaponProperties(object pc, object oldWeapon, object newWeapon)
@@ -486,36 +463,25 @@ namespace EldritchWarrior.Source.Shifter
 
                         ip = GetNextItemProperty(oldWeapon);
                     } // while
-                      // Add basic unlimited ammo if neccesary
+                      // Add basic unlimited ammo if necessary
                     if (bUnlimitedAmmoFound == false && !GetItemHasItemProperty(newWeapon, ITEM_PROPERTY_UNLIMITED_AMMUNITION))
                         AddItemProperty(DURATION_TYPE_PERMANENT, ItemPropertyUnlimitedAmmo(), newWeapon);
                 }
             }
             else if (GetWeaponRanged(newWeapon))
             {
-                // Add basic unlimited ammo if neccesary
+                // Add basic unlimited ammo if necessary
                 if (!GetItemHasItemProperty(newWeapon, ITEM_PROPERTY_UNLIMITED_AMMUNITION))
                     AddItemProperty(DURATION_TYPE_PERMANENT, ItemPropertyUnlimitedAmmo(), newWeapon);
             }
         }
 
         // Returns true if item is a creature claw or bite.
-        int GetIsCreatureWeapon(object item)
-        {
-            int iBaseItemType = GetBaseItemType(item);
-            switch (iBaseItemType)
-            {
-                case BASE_ITEM_CBLUDGWEAPON:
-                case BASE_ITEM_CPIERCWEAPON:
-                case BASE_ITEM_CSLASHWEAPON:
-                case BASE_ITEM_CSLSHPRCWEAP:
-                    return true;
-                default:
-                    return false;
-            };
-            return false;
-        }
-
+        bool GetIsCreatureWeapon(uint item) => GetBaseItemType(item) == BaseItemType.CreatureBludgeWeapon ||
+            GetBaseItemType(item) == BaseItemType.CreaturePierceWeapon ||
+            GetBaseItemType(item) == BaseItemType.CreatureSlashPierceWeapon ||
+            GetBaseItemType(item) == BaseItemType.CreatureSlashWeapon;
+            
         // **** End Functions, added by Iznoghoud **** 
     }
 }
