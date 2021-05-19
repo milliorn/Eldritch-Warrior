@@ -324,12 +324,12 @@ namespace EldritchWarrior.Source.Shifter
 
         // Returns the spell that applied a Polymorph Effect currently on the player.
         // -1 if it was no spell, -2 if no polymorph effect found.
-        int ScanForPolymorphEffect(object pc)
+        int ScanForPolymorphEffect(uint pc)
         {
-            effect eEffect = GetFirstEffect(pc);
+            Effect eEffect = GetFirstEffect(pc);
             while (GetIsEffectValid(eEffect))
             {
-                if (GetEffectType(eEffect) == EFFECT_TYPE_POLYMORPH)
+                if (GetEffectType(eEffect) == EffectScriptType.Polymorph)
                 {
                     return GetEffectSpellId(eEffect);
                 }
