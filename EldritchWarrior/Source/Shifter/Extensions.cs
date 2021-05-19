@@ -375,9 +375,9 @@ namespace EldritchWarrior.Source.Shifter
         }
 
         // Converts a number from iprp_immuncost.2da to the corresponding percentage of immunity
-        int ConvertNumToImmunePercentage(int iImmuneCost)
+        int ConvertNumToImmunePercentage(int immuneCost)
         {
-            switch (iImmuneCost)
+            switch (immuneCost)
             {
                 case 1:
                     return 5;
@@ -481,7 +481,7 @@ namespace EldritchWarrior.Source.Shifter
             GetBaseItemType(item) == BaseItemType.CreaturePierceWeapon ||
             GetBaseItemType(item) == BaseItemType.CreatureSlashPierceWeapon ||
             GetBaseItemType(item) == BaseItemType.CreatureSlashWeapon;
-            
+
         // **** End Functions, added by Iznoghoud **** 
     }
 }
