@@ -10,19 +10,18 @@ namespace EldritchWarrior.Source.Shifter
 {
     public class Extensions
     {
-        //:://////////////////////////////
-        //:: Created By: Iznoghoud
-        //:: Last modified: January 19 2004
         /*
-    What this script changes:
-    - Melee Weapon properties now carry over to the unarmed forms' claws and bite
-        attacks.
+        What this script changes:
+        
+        - Melee Weapon properties now carry over to the unarmed forms' claws and bite attacks
+        .
         1) Now, items with an AC bonus (or penalty) carry over to the shifted form as
         the correct type. This means if you wear an amulet of natural armor +4, and a
         cloak of protection +5, and you shift to a form that gets all item properties
         carried over, you will have the +4 natural armor bonus from the ammy, as well as
         the +5 deflection bonus from the cloak. No longer will the highest one override
         all the other AC bonuses even if they are a different type.
+        
         2) Other "stackable" item properties, like ability bonuses, skill bonuses and
         saving throw bonuses, now correctly add up in shifted form. This means if you
         have a ring that gives +2 strength, and a ring with +3 strength, and you shift
@@ -78,12 +77,6 @@ namespace EldritchWarrior.Source.Shifter
         //   weapon was worn at the time of shifting.
         // - Set this to any other value ( eg 0 ) to not copy over anything to claw/bite attacks.
         public static readonly int WS_COPY_WEAPON_PROPS_TO_UNARMED = 3;
-
-        //******** End Options ***********
-
-        // Includes for various shifter and item related functions
-        //# include "x2_inc_itemprop"
-        //# include "x2_inc_shifter"
 
         ///<summary>
         // Copies oldWeapon's Properties to newWeapon, but only properties that do not stack
@@ -242,11 +235,11 @@ namespace EldritchWarrior.Source.Shifter
             }
             return poly;
         }
+
         // if isItem is true, Adds all the stackable properties on all the objects given to poly.
         // if isItem is false, Adds only the stackable properties on armor and helmet to poly.
-        Effect AddStackablePropertiesToPoly(uint pc, Effect poly, bool isWeapon, bool isItem, bool isArmor, uint oldArmor, uint oldRing1,
-            uint oldRing2, uint oldAmulet, uint cloakOld, uint oldBracer,
-            uint oldBoots, uint oldBelt, uint oldHelmet, uint oShield, uint oWeapon, uint oHideOld)
+        Effect AddStackablePropertiesToPoly(uint pc, Effect poly, bool isWeapon, bool isItem, bool isArmor,
+        uint oldArmor, uint oldRing1, uint oldRing2, uint oldAmulet, uint cloakOld, uint oldBracer, uint oldBoots, uint oldBelt, uint oldHelmet, uint oShield, uint oWeapon, uint oHideOld)
         {
             if (isArmor) // Armor properties get carried over
             {
@@ -465,12 +458,10 @@ namespace EldritchWarrior.Source.Shifter
         }
 
         // Returns true if item is a creature claw or bite.
-        public static bool GetIsCreatureWeapon(uint item) => 
+        public static bool GetIsCreatureWeapon(uint item) =>
             GetBaseItemType(item) == BaseItemType.CreatureBludgeWeapon ||
             GetBaseItemType(item) == BaseItemType.CreaturePierceWeapon ||
             GetBaseItemType(item) == BaseItemType.CreatureSlashPierceWeapon ||
             GetBaseItemType(item) == BaseItemType.CreatureSlashWeapon;
-
-        // **** End Functions, added by Iznoghoud ****
     }
 }
