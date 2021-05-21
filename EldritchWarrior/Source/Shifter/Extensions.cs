@@ -155,7 +155,7 @@ namespace EldritchWarrior.Source.Shifter
 
         // Looks for Stackable Properties on item, and sets local variables to count the total bonus.
         // Also links any found AC bonuses/penalties to poly.
-        Effect ExamineStackableProperties(uint pc, Effect poly, uint item)
+        public static Effect ExamineStackableProperties(uint pc, Effect poly, uint item)
         {
             if (!GetIsObjectValid(item)) return poly; // If not valid, don't do any unnecessary work.
 
@@ -238,7 +238,7 @@ namespace EldritchWarrior.Source.Shifter
 
         // if isItem is true, Adds all the stackable properties on all the objects given to poly.
         // if isItem is false, Adds only the stackable properties on armor and helmet to poly.
-        Effect AddStackablePropertiesToPoly(uint pc, Effect poly, bool isWeapon, bool isItem, bool isArmor,
+        public static Effect AddStackablePropertiesToPoly(uint pc, Effect poly, bool isWeapon, bool isItem, bool isArmor,
         uint oldArmor, uint oldRing1, uint oldRing2, uint oldAmulet, uint cloakOld, uint oldBracer, uint oldBoots, uint oldBelt, uint oldHelmet, uint oShield, uint oWeapon, uint oHideOld)
         {
             if (isArmor) // Armor properties get carried over
