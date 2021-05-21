@@ -8,7 +8,7 @@ using NWN.Framework.Lite.Bioware;
 
 namespace EldritchWarrior.Source.Shifter
 {
-    public class Extensions
+    public static class Extensions
     {
         /*
         What this script changes:
@@ -82,7 +82,7 @@ namespace EldritchWarrior.Source.Shifter
         // Copies oldWeapon's Properties to newWeapon, but only properties that do not stack
         // with properties of the same type. If oldWeapon is a weapon, then weapon must be true.
         ///</summary>
-        void WildshapeCopyNonStackProperties(uint oldWeapon, uint newWeapon, bool weapon = false)
+        public static void WildshapeCopyNonStackProperties(uint oldWeapon, uint newWeapon, bool weapon = false)
         {
             if (GetIsObjectValid(oldWeapon) && GetIsObjectValid(newWeapon))
             {
@@ -111,7 +111,7 @@ namespace EldritchWarrior.Source.Shifter
 
         // Returns true if ip is an item property that will stack with other properties
         // of the same type: Ability, AC, Saves, Skills.
-        bool GetIsStackingProperty(ItemProperty ip) => GetItemPropertyType(ip) == ItemPropertyType.AbilityBonus || (GW_ALLOW_AC_STACKING && (GetItemPropertyType(ip) == ItemPropertyType.ACBonus)) ||
+        public static bool GetIsStackingProperty(ItemProperty ip) => GetItemPropertyType(ip) == ItemPropertyType.AbilityBonus || (GW_ALLOW_AC_STACKING && (GetItemPropertyType(ip) == ItemPropertyType.ACBonus)) ||
                     GetItemPropertyType(ip) == ItemPropertyType.DecreasedAbilityScore || (GW_ALLOW_AC_STACKING && (GetItemPropertyType(ip) == ItemPropertyType.DecreasedAC)) ||
                     GetItemPropertyType(ip) == ItemPropertyType.SavingThrowBonus ||
                     GetItemPropertyType(ip) == ItemPropertyType.SavingThrowBonusSpecific ||
@@ -124,7 +124,7 @@ namespace EldritchWarrior.Source.Shifter
                     GetItemPropertyType(ip) == ItemPropertyType.DamageVulnerability;
 
         // Returns the AC bonus type of item: AC_*_BONUS
-        ItemPropertyArmorClassModifierType GetItemACType(uint item)
+        public static ItemPropertyArmorClassModifierType GetItemACType(uint item)
         {
             if (GetBaseItemType(item) == BaseItemType.Armor || GetBaseItemType(item) == BaseItemType.Bracer)
             {
@@ -323,7 +323,7 @@ namespace EldritchWarrior.Source.Shifter
 
         // Returns the spell that applied a Polymorph Effect currently on the player.
         // -1 if it was no spell, -2 if no polymorph effect found.
-        int ScanForPolymorphEffect(uint pc)
+        public static int ScanForPolymorphEffect(uint pc)
         {
             Effect eEffect = GetFirstEffect(pc);
             while (GetIsEffectValid(eEffect))
@@ -339,7 +339,7 @@ namespace EldritchWarrior.Source.Shifter
 
         // Converts a number from iprp_damagetype.2da to the corresponding
         // DAMAGE_TYPE_* constants.
-        DamageType ConvertNumToDamTypeConstant(int itemDamType)
+        public static DamageType ConvertNumToDamTypeConstant(int itemDamType)
         {
             switch (itemDamType)
             {
@@ -360,7 +360,7 @@ namespace EldritchWarrior.Source.Shifter
         }
 
         // Converts a number from iprp_immuncost.2da to the corresponding percentage of immunity
-        int ConvertNumToImmunePercentage(int immuneCost)
+        public static int ConvertNumToImmunePercentage(int immuneCost)
         {
             switch (immuneCost)
             {
@@ -375,7 +375,7 @@ namespace EldritchWarrior.Source.Shifter
             }
         }
 
-        void WildshapeCopyWeaponProperties(uint pc, uint oldWeapon, uint newWeapon)
+        public static void WildshapeCopyWeaponProperties(uint pc, uint oldWeapon, uint newWeapon)
         {
             if (GetIsObjectValid(oldWeapon) && GetIsObjectValid(newWeapon))
             {
@@ -463,5 +463,33 @@ namespace EldritchWarrior.Source.Shifter
             GetBaseItemType(item) == BaseItemType.CreaturePierceWeapon ||
             GetBaseItemType(item) == BaseItemType.CreatureSlashPierceWeapon ||
             GetBaseItemType(item) == BaseItemType.CreatureSlashWeapon;
+
+        public static void ReFireSpell(this uint pc, int spell)
+        {
+            // This is necessary so the spell can be re-fired on the player.
+            // Otherwise, if the shifter was in combat, it would wait in the action
+            // queue until the player stopped fighting. When in combat, it will make
+            // the shifter start attacking again.
+            uint attackee = GetAttackTarget(pc);
+
+            // We clear all actions if the player is not resting.
+            if (!GetIsResting(pc))
+            {
+                AssignCommand(pc, () => ClearAllActions());
+            }
+
+            // Re-fire the spell on the shifter.
+            SetLocalInt(pc, "GW_ServerSave", 1);
+
+            //ActionCastSpellAtObject(spell, pc, METAMAGIC_ANY, TRUE, 0, PROJECTILE_PATH_TYPE_DEFAULT, TRUE);
+            AssignCommand(pc, () => ActionCastSpellAtObject((SpellType)spell, pc, MetaMagicType.Any, true, 0, ProjectilePathType.Default, true));
+
+            // Start attacking our target again if we had one.
+            if (GetIsObjectValid(attackee))
+            {
+                // If we do not delaycommand here again, the stackable properties won't be re-applied.
+                AssignCommand(pc, () => DelayCommand(0.0f, () => ActionAttack(attackee)));
+            }
+        }
     }
 }
