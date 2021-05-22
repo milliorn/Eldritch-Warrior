@@ -56,6 +56,7 @@ namespace EldritchWarrior.Source.PlayerCharacter
         {
             ExportSingleCharacter(pc);
             SendMessageToPC(pc, "Character Saved");
+            Shifter.Save.Character(pc);
         }
     }
 }

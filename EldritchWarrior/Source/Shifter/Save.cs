@@ -3,11 +3,11 @@ using static NWN.Framework.Lite.NWScript;
 
 namespace EldritchWarrior.Source.Shifter
 {
-    public class Save
+    public static class Save
     {
-        public static void Character()
+        public static void Character(this uint pc)
         {
-            int spell = Extensions.ScanForPolymorphEffect(OBJECT_SELF);
+            int spell = pc.ScanForPolymorphEffect();
             if (spell < 0) return; // If not applied by a spell, return
 
             // Note: Druid wildshapes will have their duration renewed!
@@ -17,7 +17,7 @@ namespace EldritchWarrior.Source.Shifter
                     || spell == (int)SpellType.TensersTransformation) return;
             else
             {
-                DelayCommand(0.01f, () => OBJECT_SELF.ReFireSpell(spell));
+                DelayCommand(0.01f, () => pc.ReFireSpell(spell));
             }
         }
     }
