@@ -1,9 +1,6 @@
 using System;
-using System.ComponentModel.Design;
 using NWN.Framework.Lite;
 using NWN.Framework.Lite.Enum;
-using NWN.Framework.Lite.Bioware;
-using NWN.Framework.Lite.NWNX.Enum;
 
 using static NWN.Framework.Lite.NWScript;
 
@@ -28,49 +25,48 @@ namespace EldritchWarrior.Source.Shifter
             {
                 if (spellID == 397)
                 {
-                    polyID = 0;
+                    polyID = (int)PolymorphType.HugeFireElemental;
                 }
                 else if (spellID == 398)
                 {
-                    polyID = POLYMORPH_TYPE_HUGE_WATER_ELEMENTAL;
+                    polyID = (int)PolymorphType.HugeWaterElemental;
                 }
                 else if (spellID == 399)
                 {
-                    polyID = POLYMORPH_TYPE_HUGE_EARTH_ELEMENTAL;
+                    polyID = (int)PolymorphType.HugeEarthElemental;
                 }
                 else if (spellID == 400)
                 {
-                    polyID = POLYMORPH_TYPE_HUGE_AIR_ELEMENTAL;
+                    polyID = (int)PolymorphType.HugeAirElemental;
                 }
             }
             else
             {
                 if (spellID == 397)
                 {
-                    polyID = POLYMORPH_TYPE_ELDER_FIRE_ELEMENTAL;
+                    polyID = (int)PolymorphType.ElderFireElemental;
                 }
                 else if (spellID == 398)
                 {
-                    polyID = POLYMORPH_TYPE_ELDER_WATER_ELEMENTAL;
+                    polyID = (int)PolymorphType.ElderWaterElemental;
                 }
                 else if (spellID == 399)
                 {
-                    polyID = POLYMORPH_TYPE_ELDER_EARTH_ELEMENTAL;
+                    polyID = (int)PolymorphType.ElderEarthElemental;
                 }
                 else if (spellID == 400)
                 {
-                    polyID = POLYMORPH_TYPE_ELDER_AIR_ELEMENTAL;
+                    polyID = (int)PolymorphType.ElderAirElemental;
                 }
             }
 
-            int armor = 0;
+            bool armor = false;
             if (!Extensions.WS_ALWAYS_COPY_ARMOR_PROPS)
-                armor = StringToInt(Get2DAString("polymorph", "MergeA", polyID)) == 1;
+                armor = Convert.ToBoolean(StringToInt(Get2DAString("polymorph", "MergeA", polyID)) == 1);
 
-
-            int items = 0;
+            bool items = false;
             if (!Extensions.WS_ALWAYS_COPY_ITEM_PROPS)
-                items = StringToInt(Get2DAString("polymorph", "MergeI", polyID)) == 1;
+                items = Convert.ToBoolean(StringToInt(Get2DAString("polymorph", "MergeI", polyID)) == 1);
             //--------------------------------------------------------------------------
             // Send message to PC about which items get merged to this form
             //--------------------------------------------------------------------------
@@ -82,8 +78,8 @@ namespace EldritchWarrior.Source.Shifter
             // Determine which items get their item properties merged onto the shifters
             // new form.
             //--------------------------------------------------------------------------
-            int weapon = StringToInt(Get2DAString("polymorph", "MergeW", polyID)) == 1;
-            if (Convert.ToBoolean(weapon) || Extensions.WS_COPY_WEAPON_PROPS_TO_UNARMED == 1)
+            bool weapon = Convert.ToBoolean(StringToInt(Get2DAString("polymorph", "MergeW", polyID)) == 1);
+            if (weapon || Extensions.WS_COPY_WEAPON_PROPS_TO_UNARMED == 1)
                 merge += ",</c> <cþAA>Weapon";
             else if (Extensions.WS_COPY_WEAPON_PROPS_TO_UNARMED == 2)
                 merge += ",</c> <cþAA>Gloves to unarmed attacks";
@@ -91,6 +87,7 @@ namespace EldritchWarrior.Source.Shifter
                 merge += ",</c> <cþAA>Weapon (if you had one equipped) or gloves to unarmed attacks";
             else
                 merge += ",</c> <cþAA>No weapon or gloves to unarmed attacks";
+
             uint spellTargetObject = GetSpellTargetObject();
             SendMessageToPC(spellTargetObject, merge + ".</c>");
 
@@ -174,8 +171,8 @@ namespace EldritchWarrior.Source.Shifter
             //--------------------------------------------------------------------------
 
             effectPolymorph = ExtraordinaryEffect(effectPolymorph);
-            //Fire cast spell at event for the specified target
-            SignalEvent(spellTargetObject, EventSpellCastAt(OBJECT_SELF, SPELLABILITY_ELEMENTAL_SHAPE, false));
+            //Fire cast spell at event for the specified target SPELLABILITY_ELEMENTAL_SHAPE
+            SignalEvent(spellTargetObject, EventSpellCastAt(OBJECT_SELF, (SpellType)319, false));
 
             //Apply the VFX impact and effects
             ClearAllActions(); // prevents an exploit
