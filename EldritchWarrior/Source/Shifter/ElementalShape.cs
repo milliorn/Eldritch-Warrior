@@ -8,6 +8,7 @@ namespace EldritchWarrior.Source.Shifter
 {
     public class ElementalShape
     {
+        [ScriptHandler("nw_s2_elemshape")]
         public static void Shift()
         {
             bool elder = false;
