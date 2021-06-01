@@ -18,7 +18,7 @@ namespace EldritchWarrior.Source.Shifter
             //Enter Metamagic conditions
             if (GetMetaMagicFeat() == (int)MetaMagicType.Extend)
             {
-                duration = duration * 2; //Duration is +100%
+                duration = duration * 2;
             }
 
             //Determine Polymorph subradial type
@@ -271,7 +271,6 @@ namespace EldritchWarrior.Source.Shifter
                 Extensions.WildshapeCopyNonStackProperties(beltOld, armorNew);
                 Extensions.WildshapeCopyNonStackProperties(bracerOld, armorNew);
             }
-
         }
     }
 }

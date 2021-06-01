@@ -1,4 +1,5 @@
 using System;
+
 using NWN.Framework.Lite;
 using NWN.Framework.Lite.Enum;
 
@@ -68,17 +69,13 @@ namespace EldritchWarrior.Source.Shifter
             bool items = false;
             if (!Extensions.WS_ALWAYS_COPY_ITEM_PROPS)
                 items = Convert.ToBoolean(StringToInt(Get2DAString("polymorph", "MergeI", polyID)) == 1);
-            //--------------------------------------------------------------------------
+
             // Send message to PC about which items get merged to this form
-            //--------------------------------------------------------------------------
             string merge = "Merged: ";
             if (Convert.ToBoolean(armor)) merge += "<cazþ>Armor, Helmet, Shield";
             if (Convert.ToBoolean(items)) merge += ",</c> <caþa>Rings, Amulet, Cloak, Boots, Belt, Bracers";
 
-            //--------------------------------------------------------------------------
-            // Determine which items get their item properties merged onto the shifters
-            // new form.
-            //--------------------------------------------------------------------------
+            // Determine which items get their item properties merged onto the shifters new form.
             bool weapon = Convert.ToBoolean(StringToInt(Get2DAString("polymorph", "MergeW", polyID)) == 1);
             if (weapon || Extensions.WS_COPY_WEAPON_PROPS_TO_UNARMED == 1)
                 merge += ",</c> <cþAA>Weapon";
@@ -92,10 +89,7 @@ namespace EldritchWarrior.Source.Shifter
             uint spellTargetObject = GetSpellTargetObject();
             SendMessageToPC(spellTargetObject, merge + ".</c>");
 
-            //--------------------------------------------------------------------------
-            // Store the old objects so we can access them after the character has
-            // changed into his new form
-            //--------------------------------------------------------------------------
+            // Store the old objects so we can access them after the character has changed into his new form
             uint oldWeapon;
             uint oldArmor;
             uint oldLeftRing;
@@ -166,10 +160,8 @@ namespace EldritchWarrior.Source.Shifter
 
             Effect effectPolymorph = EffectPolymorph(polyID);
 
-            //--------------------------------------------------------------------------
             // Iznoghoud: Handle stacking item properties here.
             effectPolymorph = Extensions.AddStackablePropertiesToPoly(OBJECT_SELF, effectPolymorph, Convert.ToBoolean(weapon), Convert.ToBoolean(items), Convert.ToBoolean(armor), oldArmor, oldLeftRing, oldRightRing, oldAmulet, oldCloak, oldBracer, oldBoots, oldBelt, oldHelmet, oldShield, oldWeapon, oldHide);
-            //--------------------------------------------------------------------------
 
             effectPolymorph = ExtraordinaryEffect(effectPolymorph);
             //Fire cast spell at event for the specified target SPELLABILITY_ELEMENTAL_SHAPE
@@ -180,9 +172,7 @@ namespace EldritchWarrior.Source.Shifter
             ApplyEffectToObject(DurationType.Instant, (Effect)EffectVisualEffect((VisualEffectType)VisualEffectType.Vfx_Imp_Polymorph), OBJECT_SELF);
             ApplyEffectToObject(DurationType.Temporary, effectPolymorph, OBJECT_SELF, HoursToSeconds((int)GetLevelByClass((ClassType)ClassType.Druid)));
 
-            //--------------------------------------------------------------------------
             // This code handles the merging of item properties
-            //--------------------------------------------------------------------------
             uint newWeapon = GetItemInSlot(InventorySlotType.RightHand, OBJECT_SELF);
             uint newArmor = GetItemInSlot(InventorySlotType.CreatureArmor, OBJECT_SELF);
             uint newLeftClaw = GetItemInSlot(InventorySlotType.CreatureLeft, OBJECT_SELF);
@@ -192,14 +182,10 @@ namespace EldritchWarrior.Source.Shifter
             //identify weapon
             SetIdentified(newWeapon, true);
 
-            //--------------------------------------------------------------------------
             // ...Weapons
-            //--------------------------------------------------------------------------
             if (Convert.ToBoolean(weapon))
             {
-                //------------------------------------------------------------------
                 // Merge weapon properties...
-                //------------------------------------------------------------------
                 Extensions.WildshapeCopyWeaponProperties(spellTargetObject, oldWeapon, newWeapon);
             }
             else
@@ -235,28 +221,19 @@ namespace EldritchWarrior.Source.Shifter
                 };
             }
 
-            //--------------------------------------------------------------------------
             // ...Armor
-            //--------------------------------------------------------------------------
             if (armor)
             {
-                //----------------------------------------------------------------------
                 // Merge item properties from armor and helmet...
-                //----------------------------------------------------------------------
                 Extensions.WildshapeCopyNonStackProperties(oldArmor, newArmor);
                 Extensions.WildshapeCopyNonStackProperties(oldHelmet, newArmor);
                 Extensions.WildshapeCopyNonStackProperties(oldShield, newArmor);
                 Extensions.WildshapeCopyNonStackProperties(oldHide, newArmor);
             }
-
-            //--------------------------------------------------------------------------
             // ...Magic Items
-            //--------------------------------------------------------------------------
             if (items)
             {
-                //----------------------------------------------------------------------
                 // Merge item properties from from rings, amulets, cloak, boots, belt
-                //----------------------------------------------------------------------
                 Extensions.WildshapeCopyNonStackProperties(oldLeftRing, newArmor);
                 Extensions.WildshapeCopyNonStackProperties(oldRightRing, newArmor);
                 Extensions.WildshapeCopyNonStackProperties(oldAmulet, newArmor);
