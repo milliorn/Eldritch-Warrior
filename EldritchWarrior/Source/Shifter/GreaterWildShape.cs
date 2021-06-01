@@ -69,7 +69,7 @@ namespace EldritchWarrior.Source.Shifter
 
 
             int levelByClass = GetLevelByClass(ClassType.Shifter);
-            int polymorphtype;
+            int polymorphtype = 0;
             // Determine which form to use based on spell id, gender and level
 
             switch (spellID)
@@ -216,15 +216,15 @@ namespace EldritchWarrior.Source.Shifter
             // Determine which items get their item properties merged onto the shifters
             // new form.
 
-            bool isWeapon = ShifterMergeWeapon(polymorphtype);
+            bool isWeapon = Extensions.ShifterMergeWeapon(polymorphtype);
 
-            if (GW_ALWAYS_COPY_ARMOR_PROPS)
-                isArmor = TRUE;
+            if (Extensions.GW_ALWAYS_COPY_ARMOR_PROPS)
+                isArmor = true;
             else
                 isArmor = ShifterMergeArmor(polymorphtype);
 
             if (GW_ALWAYS_COPY_ITEM_PROPS)
-                isItems = TRUE;
+                isItems = true;
             else
                 isItems = ShifterMergeItems(polymorphtype);
 
@@ -264,7 +264,7 @@ namespace EldritchWarrior.Source.Shifter
             uint oHideOld;
 
             int nServerSaving = GetLocalInt(OBJECT_SELF, "GW_ServerSave");
-            if (nServerSaving != TRUE)
+            if (nServerSaving != true)
             {
                 //if not polymorphed get items worn and store on player.
                 oWeaponOld = GetItemInSlot(INVENTORY_SLOT_RIGHTHAND, OBJECT_SELF);
@@ -346,7 +346,7 @@ namespace EldritchWarrior.Source.Shifter
             uint oBite = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B, OBJECT_SELF);
 
             //identify weapon
-            SetIdentified(oWeaponNew, TRUE);
+            SetIdentified(oWeaponNew, true);
 
             
             // ...Weapons
@@ -364,29 +364,29 @@ namespace EldritchWarrior.Source.Shifter
                 switch (GW_COPY_WEAPON_PROPS_TO_UNARMED)
                 {
                     case 1: // Copy over weapon properties to claws/bite
-                        WildshapeCopyNonStackProperties(oWeaponOld, oClawLeft, TRUE);
-                        WildshapeCopyNonStackProperties(oWeaponOld, oClawRight, TRUE);
-                        WildshapeCopyNonStackProperties(oWeaponOld, oBite, TRUE);
+                        WildshapeCopyNonStackProperties(oWeaponOld, oClawLeft, true);
+                        WildshapeCopyNonStackProperties(oWeaponOld, oClawRight, true);
+                        WildshapeCopyNonStackProperties(oWeaponOld, oBite, true);
                         break;
                     case 2: // Copy over glove properties to claws/bite
                         WildshapeCopyNonStackProperties(oBracerOld, oClawLeft, false);
                         WildshapeCopyNonStackProperties(oBracerOld, oClawRight, false);
                         WildshapeCopyNonStackProperties(oBracerOld, oBite, false);
-                        copyGlovesToClaws = TRUE;
+                        copyGlovesToClaws = true;
                         break;
                     case 3: // Copy over weapon properties to claws/bite if wearing a weapon, otherwise copy gloves
                         if (GetIsObjectValid(oWeaponOld))
                         {
-                            WildshapeCopyNonStackProperties(oWeaponOld, oClawLeft, TRUE);
-                            WildshapeCopyNonStackProperties(oWeaponOld, oClawRight, TRUE);
-                            WildshapeCopyNonStackProperties(oWeaponOld, oBite, TRUE);
+                            WildshapeCopyNonStackProperties(oWeaponOld, oClawLeft, true);
+                            WildshapeCopyNonStackProperties(oWeaponOld, oClawRight, true);
+                            WildshapeCopyNonStackProperties(oWeaponOld, oBite, true);
                         }
                         else
                         {
                             WildshapeCopyNonStackProperties(oBracerOld, oClawLeft, false);
                             WildshapeCopyNonStackProperties(oBracerOld, oClawRight, false);
                             WildshapeCopyNonStackProperties(oBracerOld, oBite, false);
-                            copyGlovesToClaws = TRUE;
+                            copyGlovesToClaws = true;
                         }
                         break;
                     default: // Do not copy over anything

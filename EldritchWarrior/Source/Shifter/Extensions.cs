@@ -506,5 +506,12 @@ namespace EldritchWarrior.Source.Shifter
         // newly equipped melee weapon
         //------------------------------------------------------------------------------
         public static bool ShifterMergeWeapon(int polymorphConstant) => Convert.ToBoolean(StringToInt(Get2DAString("polymorph", "MergeW", polymorphConstant)) == 1);
+
+        //------------------------------------------------------------------------------
+        // GZ, Oct 19, 2003
+        // Returns TRUE if the shifter's current armor should be merged onto his
+        // creature hide after shifting.
+        //------------------------------------------------------------------------------
+        public static bool ShifterMergeArmor(int polymorphConstant) => Convert.ToBoolean(StringToInt(Get2DAString("polymorph", "MergeA", polymorphConstant)) == 1);
     }
 }
