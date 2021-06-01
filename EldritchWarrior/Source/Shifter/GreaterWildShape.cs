@@ -1,3 +1,4 @@
+using System;
 using NWN.Framework.Lite;
 using NWN.Framework.Lite.Enum;
 using static NWN.Framework.Lite.NWScript;
@@ -221,225 +222,192 @@ namespace EldritchWarrior.Source.Shifter
             if (Extensions.GW_ALWAYS_COPY_ARMOR_PROPS)
                 isArmor = true;
             else
-                isArmor = ShifterMergeArmor(polymorphtype);
+                isArmor = Extensions.ShifterMergeArmor(polymorphtype);
 
-            if (GW_ALWAYS_COPY_ITEM_PROPS)
+            if (Extensions.GW_ALWAYS_COPY_ITEM_PROPS)
                 isItems = true;
             else
-                isItems = ShifterMergeItems(polymorphtype);
-
-            
+                isItems = Extensions.ShifterMergeItems(polymorphtype);
             // Send message to PC about which items get merged to this form
-            
-            string sMerge;
-            sMerge = "Merged: "; // <c~¬þ>: This is a color code that makes the text behind it sort of light blue.
-            if (isArmor) sMerge += "<cazþ>Armor, Helmet, Shield";
-            if (isItems) sMerge += ",</c> <caþa>Rings, Amulet, Cloak, Boots, Belt, Bracers";
-            if (isWeapon || GW_COPY_WEAPON_PROPS_TO_UNARMED == 1)
-                sMerge += ",</c> <cþAA>Weapon";
-            else if (GW_COPY_WEAPON_PROPS_TO_UNARMED == 2)
-                sMerge += ",</c> <cþAA>Gloves to unarmed attacks";
-            else if (GW_COPY_WEAPON_PROPS_TO_UNARMED == 3)
-                sMerge += ",</c> <cþAA>Weapon (if you had one equipped) or gloves to unarmed attacks";
-            else
-                sMerge += ",</c> <cþAA>No weapon or gloves to unarmed attacks";
-            uint spellTargetObject = GetSpellTargetObject();
-            SendMessageToPC(spellTargetObject, sMerge + ".</c>");
 
+            string merge = "Merged: ";
+            if (isArmor) merge += "<cazþ>Armor, Helmet, Shield";
+            if (isItems) merge += ",</c> <caþa>Rings, Amulet, Cloak, Boots, Belt, Bracers";
+            if (isWeapon || Extensions.GW_COPY_WEAPON_PROPS_TO_UNARMED == 1)
+                merge += ",</c> <cþAA>Weapon";
+            else if (Extensions.GW_COPY_WEAPON_PROPS_TO_UNARMED == 2)
+                merge += ",</c> <cþAA>Gloves to unarmed attacks";
+            else if (Extensions.GW_COPY_WEAPON_PROPS_TO_UNARMED == 3)
+                merge += ",</c> <cþAA>Weapon (if you had one equipped) or gloves to unarmed attacks";
+            else
+                merge += ",</c> <cþAA>No weapon or gloves to unarmed attacks";
+
+            uint spellTargetObject = GetSpellTargetObject();
+            SendMessageToPC(spellTargetObject, merge + ".</c>");
 
             // Store the old objects so we can access them after the character has
             // changed into his new form
 
-            uint oWeaponOld;
-            uint oArmorOld;
-            uint oRing1Old;
-            uint oRing2Old;
-            uint oAmuletOld;
-            uint oCloakOld;
-            uint oBootsOld;
-            uint oBeltOld;
-            uint oHelmetOld;
-            uint oShield;
-            uint oBracerOld;
-            uint oHideOld;
+            uint weaponOld;
+            uint armorOld;
+            uint ring1Old;
+            uint ring2Old;
+            uint amuletOld;
+            uint cloakOld;
+            uint bootsOld;
+            uint beltOld;
+            uint helmetOld;
+            uint shield;
+            uint bracerOld;
+            uint hideOld;
 
-            int nServerSaving = GetLocalInt(OBJECT_SELF, "GW_ServerSave");
-            if (nServerSaving != true)
+            if (Convert.ToBoolean(GetLocalInt(OBJECT_SELF, "GW_ServerSave")) != true)
             {
                 //if not polymorphed get items worn and store on player.
-                oWeaponOld = GetItemInSlot(INVENTORY_SLOT_RIGHTHAND, OBJECT_SELF);
-                oArmorOld = GetItemInSlot(INVENTORY_SLOT_CHEST, OBJECT_SELF);
-                oRing1Old = GetItemInSlot(INVENTORY_SLOT_LEFTRING, OBJECT_SELF);
-                oRing2Old = GetItemInSlot(INVENTORY_SLOT_RIGHTRING, OBJECT_SELF);
-                oAmuletOld = GetItemInSlot(INVENTORY_SLOT_NECK, OBJECT_SELF);
-                oCloakOld = GetItemInSlot(INVENTORY_SLOT_CLOAK, OBJECT_SELF);
-                oBootsOld = GetItemInSlot(INVENTORY_SLOT_BOOTS, OBJECT_SELF);
-                oBeltOld = GetItemInSlot(INVENTORY_SLOT_BELT, OBJECT_SELF);
-                oHelmetOld = GetItemInSlot(INVENTORY_SLOT_HEAD, OBJECT_SELF);
-                oShield = GetItemInSlot(INVENTORY_SLOT_LEFTHAND, OBJECT_SELF);
-                oBracerOld = GetItemInSlot(INVENTORY_SLOT_ARMS, OBJECT_SELF);
-                oHideOld = GetItemInSlot(INVENTORY_SLOT_CARMOUR, OBJECT_SELF);
-                SetLocalObject(OBJECT_SELF, "GW_OldWeapon", oWeaponOld);
-                SetLocalObject(OBJECT_SELF, "GW_OldArmor", oArmorOld);
-                SetLocalObject(OBJECT_SELF, "GW_OldRing1", oRing1Old);
-                SetLocalObject(OBJECT_SELF, "GW_OldRing2", oRing2Old);
-                SetLocalObject(OBJECT_SELF, "GW_OldAmulet", oAmuletOld);
-                SetLocalObject(OBJECT_SELF, "GW_OldCloak", oCloakOld);
-                SetLocalObject(OBJECT_SELF, "GW_OldBoots", oBootsOld);
-                SetLocalObject(OBJECT_SELF, "GW_OldBelt", oBeltOld);
-                SetLocalObject(OBJECT_SELF, "GW_OldHelmet", oHelmetOld);
-                SetLocalObject(OBJECT_SELF, "GW_OldBracer", oBracerOld);
-                SetLocalObject(OBJECT_SELF, "GW_OldHide", oHideOld);
+                weaponOld = GetItemInSlot(InventorySlotType.RightHand, OBJECT_SELF);
+                armorOld = GetItemInSlot(InventorySlotType.Chest, OBJECT_SELF);
+                ring1Old = GetItemInSlot(InventorySlotType.LeftHand, OBJECT_SELF);
+                ring2Old = GetItemInSlot(InventorySlotType.RightRing, OBJECT_SELF);
+                amuletOld = GetItemInSlot(InventorySlotType.Neck, OBJECT_SELF);
+                cloakOld = GetItemInSlot(InventorySlotType.Cloak, OBJECT_SELF);
+                bootsOld = GetItemInSlot(InventorySlotType.Boots, OBJECT_SELF);
+                beltOld = GetItemInSlot(InventorySlotType.Belt, OBJECT_SELF);
+                helmetOld = GetItemInSlot(InventorySlotType.Head, OBJECT_SELF);
+                shield = GetItemInSlot(InventorySlotType.LeftHand, OBJECT_SELF);
+                bracerOld = GetItemInSlot(InventorySlotType.Arms, OBJECT_SELF);
+                hideOld = GetItemInSlot(InventorySlotType.CreatureArmor, OBJECT_SELF);
 
-                if (GetIsObjectValid(oShield))
+                SetLocalObject(OBJECT_SELF, "GW_OldWeapon", weaponOld);
+                SetLocalObject(OBJECT_SELF, "GW_OldArmor", armorOld);
+                SetLocalObject(OBJECT_SELF, "GW_OldRing1", ring1Old);
+                SetLocalObject(OBJECT_SELF, "GW_OldRing2", ring2Old);
+                SetLocalObject(OBJECT_SELF, "GW_OldAmulet", amuletOld);
+                SetLocalObject(OBJECT_SELF, "GW_OldCloak", cloakOld);
+                SetLocalObject(OBJECT_SELF, "GW_OldBoots", bootsOld);
+                SetLocalObject(OBJECT_SELF, "GW_OldBelt", beltOld);
+                SetLocalObject(OBJECT_SELF, "GW_OldHelmet", helmetOld);
+                SetLocalObject(OBJECT_SELF, "GW_OldBracer", bracerOld);
+                SetLocalObject(OBJECT_SELF, "GW_OldHide", hideOld);
+
+                if (GetIsObjectValid(shield))
                 {
-                    if (GetBaseItemType(oShield) != BASE_ITEM_LARGESHIELD &&
-                        GetBaseItemType(oShield) != BASE_ITEM_SMALLSHIELD &&
-                        GetBaseItemType(oShield) != BASE_ITEM_TOWERSHIELD)
+                    if (GetBaseItemType(shield) != BaseItemType.LargeShield &&
+                        GetBaseItemType(shield) != BaseItemType.SmallShield &&
+                        GetBaseItemType(shield) != BaseItemType.TowerShield)
                     {
-                        oShield = OBJECT_INVALID;
+                        shield = OBJECT_INVALID;
                     }
                 }
-                SetLocalObject(OBJECT_SELF, "GW_OldShield", oShield);
+                SetLocalObject(OBJECT_SELF, "GW_OldShield", shield);
             }
             else
             {
                 //If server saving use items stored earlier.
-                oWeaponOld = GetLocalObject(OBJECT_SELF, "GW_OldWeapon");
-                oArmorOld = GetLocalObject(OBJECT_SELF, "GW_OldArmor");
-                oRing1Old = GetLocalObject(OBJECT_SELF, "GW_OldRing1");
-                oRing2Old = GetLocalObject(OBJECT_SELF, "GW_OldRing2");
-                oAmuletOld = GetLocalObject(OBJECT_SELF, "GW_OldAmulet");
-                oCloakOld = GetLocalObject(OBJECT_SELF, "GW_OldCloak");
-                oBootsOld = GetLocalObject(OBJECT_SELF, "GW_OldBoots");
-                oBeltOld = GetLocalObject(OBJECT_SELF, "GW_OldBelt");
-                oHelmetOld = GetLocalObject(OBJECT_SELF, "GW_OldHelmet");
-                oShield = GetLocalObject(OBJECT_SELF, "GW_OldShield");
-                oBracerOld = GetLocalObject(OBJECT_SELF, "GW_OldBracer");
-                oHideOld = GetLocalObject(OBJECT_SELF, "GW_OldHide");
-                SetLocalInt(OBJECT_SELF, "GW_ServerSave", false);
+                weaponOld = GetLocalObject(OBJECT_SELF, "GW_OldWeapon");
+                armorOld = GetLocalObject(OBJECT_SELF, "GW_OldArmor");
+                ring1Old = GetLocalObject(OBJECT_SELF, "GW_OldRing1");
+                ring2Old = GetLocalObject(OBJECT_SELF, "GW_OldRing2");
+                amuletOld = GetLocalObject(OBJECT_SELF, "GW_OldAmulet");
+                cloakOld = GetLocalObject(OBJECT_SELF, "GW_OldCloak");
+                bootsOld = GetLocalObject(OBJECT_SELF, "GW_OldBoots");
+                beltOld = GetLocalObject(OBJECT_SELF, "GW_OldBelt");
+                helmetOld = GetLocalObject(OBJECT_SELF, "GW_OldHelmet");
+                shield = GetLocalObject(OBJECT_SELF, "GW_OldShield");
+                bracerOld = GetLocalObject(OBJECT_SELF, "GW_OldBracer");
+                hideOld = GetLocalObject(OBJECT_SELF, "GW_OldHide");
+                SetLocalInt(OBJECT_SELF, "GW_ServerSave", 0);
             }
 
 
 
             // Here the actual polymorphing is done
-
             Effect effectPolymorph = EffectPolymorph(polymorphtype);
 
             // Iznoghoud: Handle stacking item properties here.
-            effectPolymorph = AddStackablePropertiesToPoly(OBJECT_SELF, effectPolymorph, isWeapon, isItems, isArmor, oArmorOld, oRing1Old, oRing2Old, oAmuletOld, oCloakOld, oBracerOld, oBootsOld, oBeltOld, oHelmetOld, oShield, oWeaponOld, oHideOld);
-            
+            effectPolymorph = Extensions.AddStackablePropertiesToPoly(OBJECT_SELF, effectPolymorph, isWeapon, isItems, isArmor, armorOld, ring1Old, ring2Old, amuletOld, cloakOld, bracerOld, bootsOld, beltOld, helmetOld, shield, weaponOld, hideOld);
+
             effectPolymorph = ExtraordinaryEffect(effectPolymorph);
             ClearAllActions(); // prevents an exploit
             Effect visualEffect = EffectVisualEffect(VisualEffectType.Vfx_Imp_Polymorph);
-            ApplyEffectToObject(DURATION_TYPE_INSTANT, visualEffect, OBJECT_SELF);
-            ApplyEffectToObject(DURATION_TYPE_PERMANENT, effectPolymorph, OBJECT_SELF);
-            SignalEvent(spellTargetObject, EventSpellCastAt(OBJECT_SELF, GetSpellId(), false));
+            ApplyEffectToObject(DurationType.Instant, visualEffect, OBJECT_SELF);
+            ApplyEffectToObject(DurationType.Permanent, effectPolymorph, OBJECT_SELF);
+            SignalEvent(spellTargetObject, EventSpellCastAt(OBJECT_SELF, (SpellType)GetSpellId(), false));
 
-            
+
             // This code handles the merging of item properties
-            
-            uint oWeaponNew = GetItemInSlot(INVENTORY_SLOT_RIGHTHAND, OBJECT_SELF);
-            uint oArmorNew = GetItemInSlot(INVENTORY_SLOT_CARMOUR, OBJECT_SELF);
-            uint oClawLeft = GetItemInSlot(INVENTORY_SLOT_CWEAPON_L, OBJECT_SELF);
-            uint oClawRight = GetItemInSlot(INVENTORY_SLOT_CWEAPON_R, OBJECT_SELF);
-            uint oBite = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B, OBJECT_SELF);
+            uint oWeaponNew = GetItemInSlot(InventorySlotType.RightHand, OBJECT_SELF);
+            uint oArmorNew = GetItemInSlot(InventorySlotType.CreatureArmor, OBJECT_SELF);
+            uint oClawLeft = GetItemInSlot(InventorySlotType.CreatureLeft, OBJECT_SELF);
+            uint oClawRight = GetItemInSlot(InventorySlotType.CreatureRight, OBJECT_SELF);
+            uint oBite = GetItemInSlot(InventorySlotType.CreatureBite, OBJECT_SELF);
 
-            //identify weapon
             SetIdentified(oWeaponNew, true);
 
-            
-            // ...Weapons
-            
             if (isWeapon)
             {
-                //------------------------------------------------------------------
-                // Merge weapon properties...
-                //------------------------------------------------------------------
-                WildshapeCopyWeaponProperties(spellTargetObject, oWeaponOld, oWeaponNew);
+                Extensions.WildshapeCopyWeaponProperties(spellTargetObject, weaponOld, oWeaponNew);
             }
             else
             {
-                bool copyGlovesToClaws = false;
-                switch (GW_COPY_WEAPON_PROPS_TO_UNARMED)
+                switch (Extensions.GW_COPY_WEAPON_PROPS_TO_UNARMED)
                 {
                     case 1: // Copy over weapon properties to claws/bite
-                        WildshapeCopyNonStackProperties(oWeaponOld, oClawLeft, true);
-                        WildshapeCopyNonStackProperties(oWeaponOld, oClawRight, true);
-                        WildshapeCopyNonStackProperties(oWeaponOld, oBite, true);
+                        Extensions.WildshapeCopyNonStackProperties(weaponOld, oClawLeft, true);
+                        Extensions.WildshapeCopyNonStackProperties(weaponOld, oClawRight, true);
+                        Extensions.WildshapeCopyNonStackProperties(weaponOld, oBite, true);
                         break;
                     case 2: // Copy over glove properties to claws/bite
-                        WildshapeCopyNonStackProperties(oBracerOld, oClawLeft, false);
-                        WildshapeCopyNonStackProperties(oBracerOld, oClawRight, false);
-                        WildshapeCopyNonStackProperties(oBracerOld, oBite, false);
-                        copyGlovesToClaws = true;
+                        Extensions.WildshapeCopyNonStackProperties(bracerOld, oClawLeft, false);
+                        Extensions.WildshapeCopyNonStackProperties(bracerOld, oClawRight, false);
+                        Extensions.WildshapeCopyNonStackProperties(bracerOld, oBite, false);
                         break;
                     case 3: // Copy over weapon properties to claws/bite if wearing a weapon, otherwise copy gloves
-                        if (GetIsObjectValid(oWeaponOld))
+                        if (GetIsObjectValid(weaponOld))
                         {
-                            WildshapeCopyNonStackProperties(oWeaponOld, oClawLeft, true);
-                            WildshapeCopyNonStackProperties(oWeaponOld, oClawRight, true);
-                            WildshapeCopyNonStackProperties(oWeaponOld, oBite, true);
+                            Extensions.WildshapeCopyNonStackProperties(weaponOld, oClawLeft, true);
+                            Extensions.WildshapeCopyNonStackProperties(weaponOld, oClawRight, true);
+                            Extensions.WildshapeCopyNonStackProperties(weaponOld, oBite, true);
                         }
                         else
                         {
-                            WildshapeCopyNonStackProperties(oBracerOld, oClawLeft, false);
-                            WildshapeCopyNonStackProperties(oBracerOld, oClawRight, false);
-                            WildshapeCopyNonStackProperties(oBracerOld, oBite, false);
-                            copyGlovesToClaws = true;
+                            Extensions.WildshapeCopyNonStackProperties(bracerOld, oClawLeft, false);
+                            Extensions.WildshapeCopyNonStackProperties(bracerOld, oClawRight, false);
+                            Extensions.WildshapeCopyNonStackProperties(bracerOld, oBite, false);
                         }
                         break;
                     default: // Do not copy over anything
                         break;
-                };
+                }
             }
 
-            
-            // ...Armor
-            
             if (isArmor)
             {
-                //----------------------------------------------------------------------
-                // Merge item properties from armor and helmet...
-                //----------------------------------------------------------------------
-                WildshapeCopyNonStackProperties(oArmorOld, oArmorNew);
-                WildshapeCopyNonStackProperties(oHelmetOld, oArmorNew);
-                WildshapeCopyNonStackProperties(oShield, oArmorNew);
-                WildshapeCopyNonStackProperties(oHideOld, oArmorNew);
+                // Merge item properties from armor and helmet...----
+                Extensions.WildshapeCopyNonStackProperties(armorOld, oArmorNew);
+                Extensions.WildshapeCopyNonStackProperties(helmetOld, oArmorNew);
+                Extensions.WildshapeCopyNonStackProperties(shield, oArmorNew);
+                Extensions.WildshapeCopyNonStackProperties(hideOld, oArmorNew);
             }
 
-            
-            // ...Magic Items
-            
+
             if (isItems)
             {
-                //----------------------------------------------------------------------
-                // Merge item properties from from rings, amulets, cloak, boots, belt
-                //----------------------------------------------------------------------
-                WildshapeCopyNonStackProperties(oRing1Old, oArmorNew);
-                WildshapeCopyNonStackProperties(oRing2Old, oArmorNew);
-                WildshapeCopyNonStackProperties(oAmuletOld, oArmorNew);
-                WildshapeCopyNonStackProperties(oCloakOld, oArmorNew);
-                WildshapeCopyNonStackProperties(oBootsOld, oArmorNew);
-                WildshapeCopyNonStackProperties(oBeltOld, oArmorNew);
-                WildshapeCopyNonStackProperties(oBracerOld, oArmorNew);
+                // Merge item properties from from rings, amulets, cloak, boots, belt----
+                Extensions.WildshapeCopyNonStackProperties(ring1Old, oArmorNew);
+                Extensions.WildshapeCopyNonStackProperties(ring2Old, oArmorNew);
+                Extensions.WildshapeCopyNonStackProperties(amuletOld, oArmorNew);
+                Extensions.WildshapeCopyNonStackProperties(cloakOld, oArmorNew);
+                Extensions.WildshapeCopyNonStackProperties(bootsOld, oArmorNew);
+                Extensions.WildshapeCopyNonStackProperties(beltOld, oArmorNew);
+                Extensions.WildshapeCopyNonStackProperties(bracerOld, oArmorNew);
             }
 
-            
+
             // Set artificial usage limits for special ability spells to work around
             // the engine limitation of not being able to set a number of uses for
             // spells in the polymorph radial
-            
-            ShifterSetGWildshapeSpellLimits(spellID);
 
+            Extensions.ShifterSetGWildshapeSpellLimits(spellID);
         }
-
-
-
-
-
-
-
-
     }
 }

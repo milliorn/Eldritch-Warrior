@@ -500,18 +500,59 @@ namespace EldritchWarrior.Source.Shifter
             }
         }
 
-        //------------------------------------------------------------------------------
-        // GZ, Oct 19, 2003
         // Returns TRUE if the shifter's current weapon should be merged onto his
         // newly equipped melee weapon
-        //------------------------------------------------------------------------------
-        public static bool ShifterMergeWeapon(int polymorphConstant) => Convert.ToBoolean(StringToInt(Get2DAString("polymorph", "MergeW", polymorphConstant)) == 1);
+        public static bool ShifterMergeWeapon(int polymorphConstant) => StringToInt(Get2DAString("polymorph", "MergeW", polymorphConstant)) == 1;
 
-        //------------------------------------------------------------------------------
-        // GZ, Oct 19, 2003
         // Returns TRUE if the shifter's current armor should be merged onto his
         // creature hide after shifting.
+        public static bool ShifterMergeArmor(int polymorphConstant) => StringToInt(Get2DAString("polymorph", "MergeA", polymorphConstant)) == 1;
+
+        // Returns TRUE if the shifter's current items (gloves, belt, etc) should
+        // be merged onto his creature hide after shifting.
+        public static bool ShifterMergeItems(int polymorphConstant) => StringToInt(Get2DAString("polymorph", "MergeI", polymorphConstant)) == 1;
+
+        // Introduces an artificial limit on the special abilities of the Greater
+        // Wildshape forms, in order to work around the engine limitation
+        // of being able to cast any assigned spell an unlimited number of times
         //------------------------------------------------------------------------------
-        public static bool ShifterMergeArmor(int polymorphConstant) => Convert.ToBoolean(StringToInt(Get2DAString("polymorph", "MergeA", polymorphConstant)) == 1);
+        public static void ShifterSetGWildshapeSpellLimits(int spellId)
+        {
+            string id;
+            int levelByClass = GetLevelByClass(ClassType.Shifter);
+            switch (spellId)
+            {
+                case 673:       // Drider Shape
+                    id = "688"; // SpellIndex of Drider Darkness Ability
+                    SetLocalInt(OBJECT_SELF, "X2_GWILDSHP_LIMIT_" + id, 1 + levelByClass / 10);
+                    break;
+
+                case 670:     // Basilisk Shape
+                    id = "687"; // SpellIndex of Petrification Gaze Ability
+                    SetLocalInt(OBJECT_SELF, "X2_GWILDSHP_LIMIT_" + id, 1 + levelByClass / 5);
+                    break;
+
+                case 679:      // Medusa Shape
+                    id = "687"; // SpellIndex of Petrification Gaze Ability
+                    SetLocalInt(OBJECT_SELF, "X2_GWILDSHP_LIMIT_" + id, 1 + levelByClass / 5);
+                    break;
+
+                case 682:      // Drow shape
+                    id = "688"; // Darkness Ability
+                    SetLocalInt(OBJECT_SELF, "X2_GWILDSHP_LIMIT_" + id, 1 + levelByClass / 10);
+                    break;
+
+                case 691:      // Mindflayer shape
+                    id = "693"; // SpellIndex Mind Blast Ability
+                    SetLocalInt(OBJECT_SELF, "X2_GWILDSHP_LIMIT_" + id, 1 + levelByClass / 3);
+                    break;
+
+                case 705:       // Vampire Domination Gaze
+                    id = "800";
+                    SetLocalInt(OBJECT_SELF, "X2_GWILDSHP_LIMIT_" + id, 1 + levelByClass / 5);
+                    break;
+
+            }
+        }
     }
 }
