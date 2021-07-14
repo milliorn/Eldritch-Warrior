@@ -8,7 +8,7 @@ using NWN.Framework.Lite.Bioware;
 
 namespace EldritchWarrior.Source.Shifter
 {
-    public class Extensions
+    public static class Extensions
     {
         /*
         What this script changes:
@@ -82,15 +82,17 @@ namespace EldritchWarrior.Source.Shifter
         // Copies oldWeapon's Properties to newWeapon, but only properties that do not stack
         // with properties of the same type. If oldWeapon is a weapon, then weapon must be true.
         ///</summary>
-        void WildshapeCopyNonStackProperties(uint oldWeapon, uint newWeapon, bool weapon = false)
+        public static void WildshapeCopyNonStackProperties(uint oldWeapon, uint newWeapon, bool weapon = false)
         {
             if (GetIsObjectValid(oldWeapon) && GetIsObjectValid(newWeapon))
             {
                 ItemProperty ip = GetFirstItemProperty(oldWeapon);
-                while (GetIsItemPropertyValid(ip)) // Loop through all the item properties.
+                // Loop through all the item properties.
+                while (GetIsItemPropertyValid(ip))
                 {
-                    if (weapon) // If a weapon, then we must make sure not to transfer between ranged and non-ranged weapons!
+                    if (weapon)
                     {
+                        // If a weapon, then we must make sure not to transfer between ranged and non-ranged weapons!
                         if (GetWeaponRanged(oldWeapon) == GetWeaponRanged(newWeapon))
                         {
                             AddItemProperty(DurationType.Instant, ip, newWeapon);
@@ -104,14 +106,13 @@ namespace EldritchWarrior.Source.Shifter
                             AddItemProperty(DurationType.Permanent, ip, newWeapon);
                         }
                     }
-                    ip = GetNextItemProperty(oldWeapon); // Get next property
+                    ip = GetNextItemProperty(oldWeapon);
                 }
             }
         }
 
-        // Returns true if ip is an item property that will stack with other properties
-        // of the same type: Ability, AC, Saves, Skills.
-        bool GetIsStackingProperty(ItemProperty ip) => GetItemPropertyType(ip) == ItemPropertyType.AbilityBonus || (GW_ALLOW_AC_STACKING && (GetItemPropertyType(ip) == ItemPropertyType.ACBonus)) ||
+        // Returns true if ip is an item property that will stack with other properties of the same type: Ability, AC, Saves, Skills.
+        public static bool GetIsStackingProperty(ItemProperty ip) => GetItemPropertyType(ip) == ItemPropertyType.AbilityBonus || (GW_ALLOW_AC_STACKING && (GetItemPropertyType(ip) == ItemPropertyType.ACBonus)) ||
                     GetItemPropertyType(ip) == ItemPropertyType.DecreasedAbilityScore || (GW_ALLOW_AC_STACKING && (GetItemPropertyType(ip) == ItemPropertyType.DecreasedAC)) ||
                     GetItemPropertyType(ip) == ItemPropertyType.SavingThrowBonus ||
                     GetItemPropertyType(ip) == ItemPropertyType.SavingThrowBonusSpecific ||
@@ -124,7 +125,7 @@ namespace EldritchWarrior.Source.Shifter
                     GetItemPropertyType(ip) == ItemPropertyType.DamageVulnerability;
 
         // Returns the AC bonus type of item: AC_*_BONUS
-        ItemPropertyArmorClassModifierType GetItemACType(uint item)
+        public static ItemPropertyArmorClassModifierType GetItemACType(uint item)
         {
             if (GetBaseItemType(item) == BaseItemType.Armor || GetBaseItemType(item) == BaseItemType.Bracer)
             {
@@ -155,14 +156,15 @@ namespace EldritchWarrior.Source.Shifter
 
         // Looks for Stackable Properties on item, and sets local variables to count the total bonus.
         // Also links any found AC bonuses/penalties to poly.
-        Effect ExamineStackableProperties(uint pc, Effect poly, uint item)
+        public static Effect ExamineStackableProperties(uint pc, Effect poly, uint item)
         {
-            if (!GetIsObjectValid(item)) return poly; // If not valid, don't do any unnecessary work.
+            // If not valid, don't do any unnecessary work.
+            if (!GetIsObjectValid(item)) return poly;
 
             ItemProperty ip = GetFirstItemProperty(item);
-            while (GetIsItemPropertyValid(ip)) // Loop through all the item properties
+            while (GetIsItemPropertyValid(ip))
             {
-                if (GetIsStackingProperty(ip)) // See if it's a stacking property
+                if (GetIsStackingProperty(ip))
                 {
                     int subType = GetItemPropertySubType(ip);
                     // This contains whether a bonus is str, dex,
@@ -174,7 +176,7 @@ namespace EldritchWarrior.Source.Shifter
                     // variables here because there are no arrays in NWScript, and
                     // declaring a variable for every skill, ability type and saving
                     // throw type in here is a little overboard.
-                    if (GetItemPropertyType(ip) == ItemPropertyType.AbilityBonus) // Which type of property is it?
+                    if (GetItemPropertyType(ip) == ItemPropertyType.AbilityBonus)
                     {
                         SetLocalInt(pc, "ws_ability_" + IntToString(subType), GetLocalInt(pc, "ws_ability_" + IntToString(subType)) + GetItemPropertyCostTableValue(ip));
                     }
@@ -238,17 +240,19 @@ namespace EldritchWarrior.Source.Shifter
 
         // if isItem is true, Adds all the stackable properties on all the objects given to poly.
         // if isItem is false, Adds only the stackable properties on armor and helmet to poly.
-        Effect AddStackablePropertiesToPoly(uint pc, Effect poly, bool isWeapon, bool isItem, bool isArmor,
+        public static Effect AddStackablePropertiesToPoly(uint pc, Effect poly, bool isWeapon, bool isItem, bool isArmor,
         uint oldArmor, uint oldRing1, uint oldRing2, uint oldAmulet, uint cloakOld, uint oldBracer, uint oldBoots, uint oldBelt, uint oldHelmet, uint oShield, uint oWeapon, uint oHideOld)
         {
-            if (isArmor) // Armor properties get carried over
+            // Armor properties get carried over
+            if (isArmor)
             {
                 poly = ExamineStackableProperties(pc, poly, oldArmor);
                 poly = ExamineStackableProperties(pc, poly, oldHelmet);
                 poly = ExamineStackableProperties(pc, poly, oShield);
                 poly = ExamineStackableProperties(pc, poly, oHideOld);
             }
-            if (isItem) // Item properties get carried over
+            // Item properties get carried over
+            if (isItem)
             {
                 poly = ExamineStackableProperties(pc, poly, oldRing1);
                 poly = ExamineStackableProperties(pc, poly, oldRing2);
@@ -258,6 +262,7 @@ namespace EldritchWarrior.Source.Shifter
                 poly = ExamineStackableProperties(pc, poly, oldBelt);
                 poly = ExamineStackableProperties(pc, poly, oldBracer);
             }
+
             // AC bonuses are attached to poly inside ExamineStackableProperties
             int i; // This will loop over all the different ability subtypes (eg str, dex, con, etc)
             int j; // This will contain the sum of the stackable bonus type we're looking at
@@ -265,39 +270,42 @@ namespace EldritchWarrior.Source.Shifter
             {
                 j = GetLocalInt(pc, "ws_ability_" + IntToString(i));
                 // Add the sum of this ability bonus to the polymorph effect.
-                if (j > 0) // Sum was Positive
+                if (j > 0)
                     poly = EffectLinkEffects(EffectAbilityIncrease((AbilityType)i, j), poly);
-                else if (j < 0) // Sum was Negative
+                else if (j < 0)
                     poly = EffectLinkEffects(EffectAbilityDecrease((AbilityType)i, -j), poly);
                 DeleteLocalInt(pc, "ws_ability_" + IntToString(i));
             }
-            for (i = 0; i <= 26; i++) // **** Handle Skill Bonuses ****
+            // **** Handle Skill Bonuses ****
+            for (i = 0; i <= 26; i++)
             {
                 j = GetLocalInt(pc, "ws_skill_" + IntToString(i));
                 // Add the sum of this skill bonus to the polymorph effect.
-                if (j > 0) // Sum was Positive
+                if (j > 0)
                     poly = EffectLinkEffects(EffectSkillIncrease((SkillType)i, j), poly);
-                else if (j < 0) // Sum was Negative
+                else if (j < 0)
                     poly = EffectLinkEffects(EffectSkillDecrease(i, -j), poly);
                 DeleteLocalInt(pc, "ws_skill_" + IntToString(i));
             }
-            for (i = 0; i <= 21; i++) // **** Handle Saving Throw vs element Bonuses ****
+            // **** Handle Saving Throw vs element Bonuses ****
+            for (i = 0; i <= 21; i++)
             {
                 j = GetLocalInt(pc, "ws_save_elem_" + IntToString(i));
                 // Add the sum of this saving throw bonus to the polymorph effect.
-                if (j > 0) // Sum was Positive
+                if (j > 0)
                     poly = EffectLinkEffects(EffectSavingThrowIncrease((int)SavingThrowType.All, j, (SavingThrowType)i), poly);
-                else if (j < 0) // Sum was Negative
+                else if (j < 0)
                     poly = EffectLinkEffects(EffectSavingThrowDecrease((int)SavingThrowType.All, -j, (SavingThrowType)i), poly);
                 DeleteLocalInt(pc, "ws_save_elem_" + IntToString(i));
             }
-            for (i = 0; i <= 3; i++) // **** Handle Saving Throw specific Bonuses ****
+            // **** Handle Saving Throw specific Bonuses ****
+            for (i = 0; i <= 3; i++)
             {
                 j = GetLocalInt(pc, "ws_save_spec_" + IntToString(i));
                 // Add the sum of this saving throw bonus to the polymorph effect.
-                if (j > 0) // Sum was Positive
+                if (j > 0)
                     poly = EffectLinkEffects(EffectSavingThrowIncrease(i, j, SavingThrowType.All), poly);
-                else if (j < 0) // Sum was Negative
+                else if (j < 0)
                     poly = EffectLinkEffects(EffectSavingThrowDecrease(i, -j, SavingThrowType.All), poly);
                 DeleteLocalInt(pc, "ws_save_spec_" + IntToString(i));
             }
@@ -307,23 +315,24 @@ namespace EldritchWarrior.Source.Shifter
                 poly = EffectLinkEffects(EffectRegenerate(j, 6.0f), poly);
                 DeleteLocalInt(pc, "ws_regen");
             }
-            for (i = 0; i <= 13; i++) // **** Handle Damage Immunity and Vulnerability ****
+            // **** Handle Damage Immunity and Vulnerability ****
+            for (i = 0; i <= 13; i++)
             {
                 j = GetLocalInt(pc, "ws_dam_immun_" + IntToString(i));
                 // Add the sum of this Damage Immunity/Vulnerability to the polymorph effect.
-                if (j > 0) // Sum was Positive
+                if (j > 0)
                     poly = EffectLinkEffects(EffectDamageImmunityIncrease(ConvertNumToDamTypeConstant(i), j), poly);
-                else if (j < 0) // Sum was Negative
+                else if (j < 0)
                     poly = EffectLinkEffects(EffectDamageImmunityDecrease((int)ConvertNumToDamTypeConstant(i), -j), poly);
                 DeleteLocalInt(pc, "ws_dam_immun_" + IntToString(i));
             }
 
-            return poly; // Finally, we have the entire (possibly huge :P ) effect to be applied to the shifter.
+            return poly;
         }
 
         // Returns the spell that applied a Polymorph Effect currently on the player.
         // -1 if it was no spell, -2 if no polymorph effect found.
-        int ScanForPolymorphEffect(uint pc)
+        public static int ScanForPolymorphEffect(this uint pc)
         {
             Effect eEffect = GetFirstEffect(pc);
             while (GetIsEffectValid(eEffect))
@@ -339,7 +348,7 @@ namespace EldritchWarrior.Source.Shifter
 
         // Converts a number from iprp_damagetype.2da to the corresponding
         // DAMAGE_TYPE_* constants.
-        DamageType ConvertNumToDamTypeConstant(int itemDamType)
+        public static DamageType ConvertNumToDamTypeConstant(int itemDamType)
         {
             switch (itemDamType)
             {
@@ -360,7 +369,7 @@ namespace EldritchWarrior.Source.Shifter
         }
 
         // Converts a number from iprp_immuncost.2da to the corresponding percentage of immunity
-        int ConvertNumToImmunePercentage(int immuneCost)
+        public static int ConvertNumToImmunePercentage(int immuneCost)
         {
             switch (immuneCost)
             {
@@ -375,22 +384,21 @@ namespace EldritchWarrior.Source.Shifter
             }
         }
 
-        void WildshapeCopyWeaponProperties(uint pc, uint oldWeapon, uint newWeapon)
+        public static void WildshapeCopyWeaponProperties(uint pc, uint oldWeapon, uint newWeapon)
         {
             if (GetIsObjectValid(oldWeapon) && GetIsObjectValid(newWeapon))
             {
                 ItemProperty ip = GetFirstItemProperty(oldWeapon);
-                // If both are Melee Weapons
+
                 if (!GetWeaponRanged(oldWeapon) && !GetWeaponRanged(newWeapon))
                 {
                     while (GetIsItemPropertyValid(ip))
                     {
                         AddItemProperty(DurationType.Permanent, ip, newWeapon);
                         ip = GetNextItemProperty(oldWeapon);
-                    }// while
+                    }
                 }
 
-                // If both are Ranged Weapons
                 else if (GetWeaponRanged(oldWeapon) && GetWeaponRanged(newWeapon))
                 {
                     bool unlimitedAmmoFound = false;
@@ -400,7 +408,7 @@ namespace EldritchWarrior.Source.Shifter
 
                     while (GetIsItemPropertyValid(ip))
                     {
-                        if (GetItemPropertyType(ip) == ItemPropertyType.UnlimitedAmmunition) // 61 = Unlimited Ammo
+                        if (GetItemPropertyType(ip) == ItemPropertyType.UnlimitedAmmunition)
                         {
                             // For some reason, when removing/replacing an unlimited
                             // ammo property, the corresponding missile type will get
@@ -418,7 +426,7 @@ namespace EldritchWarrior.Source.Shifter
                             AddItemProperty(DurationType.Permanent, ip, newWeapon);
                             DestroyObject(ammo);
                         }
-                        else if (GetItemPropertyType(ip) == ItemPropertyType.Mighty) // 45 = Mighty
+                        else if (GetItemPropertyType(ip) == ItemPropertyType.Mighty)
                         {
                             ipNew = GetFirstItemProperty(newWeapon);
                             // Find the mighty value of the Polymorph's weapon
@@ -430,8 +438,8 @@ namespace EldritchWarrior.Source.Shifter
                                     break;
                                 }
                                 ipNew = GetNextItemProperty(newWeapon);
-                            } // while
-                              // If new mighty value bigger, remove old one and add new one.
+                            }
+                            // If new mighty value bigger, remove old one and add new one.
                             if (GetItemPropertyCostTableValue(ip) > oldMightyValue)
                             {
                                 RemoveItemProperty(newWeapon, ipNew);
@@ -443,8 +451,8 @@ namespace EldritchWarrior.Source.Shifter
                             AddItemProperty(DurationType.Permanent, ip, newWeapon);
                         }
                         ip = GetNextItemProperty(oldWeapon);
-                    } // while
-                      // Add basic unlimited ammo if necessary
+                    }
+                    // Add basic unlimited ammo if necessary
                     if (unlimitedAmmoFound == false && !GetItemHasItemProperty(newWeapon, ItemPropertyType.UnlimitedAmmunition))
                         AddItemProperty(DurationType.Permanent, ItemPropertyUnlimitedAmmo(ItemPropertyUnlimitedType.Basic), newWeapon);
                 }
@@ -463,5 +471,88 @@ namespace EldritchWarrior.Source.Shifter
             GetBaseItemType(item) == BaseItemType.CreaturePierceWeapon ||
             GetBaseItemType(item) == BaseItemType.CreatureSlashPierceWeapon ||
             GetBaseItemType(item) == BaseItemType.CreatureSlashWeapon;
+
+        public static void ReFireSpell(this uint pc, int spell)
+        {
+            // This is necessary so the spell can be re-fired on the player.
+            // Otherwise, if the shifter was in combat, it would wait in the action
+            // queue until the player stopped fighting. When in combat, it will make
+            // the shifter start attacking again.
+            uint attackee = GetAttackTarget(pc);
+
+            // We clear all actions if the player is not resting.
+            if (!GetIsResting(pc))
+            {
+                AssignCommand(pc, () => ClearAllActions());
+            }
+
+            // Re-fire the spell on the shifter.
+            SetLocalInt(pc, "GW_ServerSave", 1);
+
+            //ActionCastSpellAtObject(spell, pc, METAMAGIC_ANY, TRUE, 0, PROJECTILE_PATH_TYPE_DEFAULT, TRUE);
+            AssignCommand(pc, () => ActionCastSpellAtObject((SpellType)spell, pc, MetaMagicType.Any, true, 0, ProjectilePathType.Default, true));
+
+            // Start attacking our target again if we had one.
+            if (GetIsObjectValid(attackee))
+            {
+                // If we do not delaycommand here again, the stackable properties won't be re-applied.
+                AssignCommand(pc, () => DelayCommand(0.0f, () => ActionAttack(attackee)));
+            }
+        }
+
+        // Returns TRUE if the shifter's current weapon should be merged onto his
+        // newly equipped melee weapon
+        public static bool ShifterMergeWeapon(int polymorphConstant) => StringToInt(Get2DAString("polymorph", "MergeW", polymorphConstant)) == 1;
+
+        // Returns TRUE if the shifter's current armor should be merged onto his
+        // creature hide after shifting.
+        public static bool ShifterMergeArmor(int polymorphConstant) => StringToInt(Get2DAString("polymorph", "MergeA", polymorphConstant)) == 1;
+
+        // Returns TRUE if the shifter's current items (gloves, belt, etc) should
+        // be merged onto his creature hide after shifting.
+        public static bool ShifterMergeItems(int polymorphConstant) => StringToInt(Get2DAString("polymorph", "MergeI", polymorphConstant)) == 1;
+
+        // Introduces an artificial limit on the special abilities of the Greater
+        // Wildshape forms, in order to work around the engine limitation
+        // of being able to cast any assigned spell an unlimited number of times
+        //------------------------------------------------------------------------------
+        public static void ShifterSetGWildshapeSpellLimits(int spellId)
+        {
+            string id;
+            int levelByClass = GetLevelByClass(ClassType.Shifter);
+            switch (spellId)
+            {
+                case 673:       // Drider Shape
+                    id = "688"; // SpellIndex of Drider Darkness Ability
+                    SetLocalInt(OBJECT_SELF, "X2_GWILDSHP_LIMIT_" + id, 1 + levelByClass / 10);
+                    break;
+
+                case 670:     // Basilisk Shape
+                    id = "687"; // SpellIndex of Petrification Gaze Ability
+                    SetLocalInt(OBJECT_SELF, "X2_GWILDSHP_LIMIT_" + id, 1 + levelByClass / 5);
+                    break;
+
+                case 679:      // Medusa Shape
+                    id = "687"; // SpellIndex of Petrification Gaze Ability
+                    SetLocalInt(OBJECT_SELF, "X2_GWILDSHP_LIMIT_" + id, 1 + levelByClass / 5);
+                    break;
+
+                case 682:      // Drow shape
+                    id = "688"; // Darkness Ability
+                    SetLocalInt(OBJECT_SELF, "X2_GWILDSHP_LIMIT_" + id, 1 + levelByClass / 10);
+                    break;
+
+                case 691:      // Mindflayer shape
+                    id = "693"; // SpellIndex Mind Blast Ability
+                    SetLocalInt(OBJECT_SELF, "X2_GWILDSHP_LIMIT_" + id, 1 + levelByClass / 3);
+                    break;
+
+                case 705:       // Vampire Domination Gaze
+                    id = "800";
+                    SetLocalInt(OBJECT_SELF, "X2_GWILDSHP_LIMIT_" + id, 1 + levelByClass / 5);
+                    break;
+
+            }
+        }
     }
 }
